@@ -154,7 +154,7 @@ What limitations Hotoe applies for your application, so we can define a standard
 
 HE workspace application is now an encanced conception of WA, so they are going to be called $${\color{aquamarine}EWAs}$$.
 
-~ AGAIN –– Hotoe will NOT be supporting \<overlaysurface\>, \<backgroundsurface\> and \<locksccreensurface\> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one <surface> tag in your .html  
+$${\color{red}\sim \ AGAIN.}$$ Hotoe will NOT be supporting \<overlaysurface\>, \<backgroundsurface\> and \<lockscreensurface\> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one \<surface\> tag in your .html  
 So Hotoe ONLY serves OVERLAY applications
 
 > [!NOTE]
