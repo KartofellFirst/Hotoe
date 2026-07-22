@@ -51,8 +51,8 @@
 ## Showcase
 ```                                this media is loading...                                ```
 
-## Comunity
+## Community
 
 Feel free to open issues and ask stuff
 
-Contribute to be first in the new world of WA's
+Contribute to be among the first in the new world of WAs
