@@ -134,8 +134,8 @@ Throughout this document, we'll refer to this category as **workspace applicatio
 *Hotoe is not an attempt to own this category. Our goal is to define the philosophy and terminology, not to prevent alternative runtimes from existing.*
 
 So which existing applications, that are not system built-in, are already **workspace applications**?
-Waybar is a workspace application, Conky too...
-See? They are **not cross-platform, but still considered workspace applications** – mark that
+Waybar is a workspace application, Conky too...   
+See? They are **not cross-platform, but still considered workspace applications** – mark that  
 *We are not inventing this kind of software. We are giving it a name.*
 
 ### What is Hotoe Engine after what we just defined?
@@ -152,7 +152,9 @@ What limitations Hotoe applies for your application, so we can define a standard
 5. HE Workspace application receives full keyboard and pointer focus when the pointer enters the predefined region on your screen or when a predefined hotkey is triggered
 6. HE Workspace application does not have system-provided window decorations. If you want to create exit button: you make it on your own (like in game engines)
 
-~ AGAIN –– Hotoe will NOT be supporting <overlaysurface>, <backgroundsurface> and <locksccreensurface> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one <surface> tag in your .html 
+HE workspace application is now an encanced conception of WA, so they are going to be called $${\color{aquamarine}EWAs}$$.
+
+~ AGAIN –– Hotoe will NOT be supporting \<overlaysurface\>, \<backgroundsurface\> and \<locksccreensurface\> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one <surface> tag in your .html  
 So Hotoe ONLY serves OVERLAY applications
 
 > [!NOTE]
