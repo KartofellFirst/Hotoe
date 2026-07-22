@@ -99,13 +99,30 @@ Not another Electron. A new category.
 
 ---
 
-
 > [!NOTE]
-> Hotoe - placeholder for an actual product name
-> 
+> **Terminology Guide**
+>
+> - **HE** — Hotoe Engine (project shorthand)
+> - **WA** — Workspace Application (core concept)
+> - **EWA** — Enhanced WA / Enhanced Web Application
+>
+>   *We'll use EWA going forward — it sounds better, fits both contexts, and is easily memorable to those familiar with PWA.*
+>   $${\color{gray}\"WAs\ \-\ cringe\ to\ pronounce\.\ EWAs\ \-\ sounds\ perfect\ to\ me\"\ \sim\ Kidai}$$
+>
+> *Names are not final — open issues to discuss.*
+<!--
+> [!NOTE]
+> Decrypt:
+> <details><summary> HE, WA, EWA, EWAs</summary>
 > HE - Hotoe Engine shortening
-> 
+>
+> WA - Workspace Application abbreviation
+>
+> EWA - Enchanced WA. We're going to use this word later because it sounds a lot better and it technically fits
+> ALSO: EWA - Enchanced Web Application. Can be used since our main stack rn contains web technologies. Easely memorazable to the people who are familiar with PWA term.
+> </details>
 > Namings are changable, open issues
+-->
 
 
 ## What We're Building
