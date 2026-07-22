@@ -101,40 +101,42 @@ Not another Electron. A new category.
 
 
 > [!NOTE]
-> N - placeholder for an actual product name
+> Hotoe - placeholder for an actual product name
+> 
+> HE - Hotoe Engine shortening
 > 
 > Namings are changable, open issues
 
 
 ## What We're Building
 
-We're building **N** — a cross-platform runtime for that missing category. Not a replacement for Electron, Tauri, GTK, or Qt; those remain the right tool the moment an application genuinely wants to be a window. N exists for the applications that don't.
+We're building **Hotoe** — a cross-platform runtime for that missing category. Not a replacement for Electron, Tauri, GTK, or Qt; those remain the right tool the moment an application genuinely wants to be a window. Hotoe exists for the applications that don't.
 
 Throughout this document, we'll refer to this category as **workspace applications**: something that renders on screen without asking the Window Manager to treat it as a normal window, and without contesting windowed apps for space or window-level status.
 
-*N is not an attempt to own this category. Our goal is to define the philosophy and terminology, not to prevent alternative runtimes from existing.*
+*Hotoe is not an attempt to own this category. Our goal is to define the philosophy and terminology, not to prevent alternative runtimes from existing.*
 
 So which existing applications, that are not system built-in, are already **workspace applications**?
 Waybar is a workspace application, Conky too...
 See? They are **not cross-platform, but still considered workspace applications** – mark that
 *We are not inventing this kind of software. We are giving it a name.*
 
-### What is N after what we just defined?
+### What is Hotoe Engine after what we just defined?
 
-N is a framework for building cross-platform workspace applications, that uses world the well-known HTML, CSS and JS stack with your system's native webview as its rendering engine
+Hotoe Engine is a framework for building cross-platform workspace applications, that uses world the well-known HTML, CSS and JS stack with your system's native webview as its rendering engine
 
-N does not attempt to cover every possible kind of Workspace applications – it deliberately focuses on one subset: **overlay** workspace applications.
+Hotoe does not attempt to cover every possible kind of Workspace applications – it deliberately focuses on one subset: **overlay** workspace applications.
 
-What limitations N applies for your application, so we can define a standard:
-1. N Workspace application lives in an overlay (above system UI)
-2. N Workspace application does not interact with WM at all. Not even Exclusive zone
-3. N Workspace application does not have fullscreen
-4. N Workspace application is not required to be rectangular
-5. N Workspace application receives full keyboard and pointer focus when the pointer enters the predefined region on your screen or when a predefined hotkey is triggered
-6. N Workspace application does not have system-provided window decorations. If you want to create exit button: you make it on your own (like in game engines)
+What limitations Hotoe applies for your application, so we can define a standard:
+1. HE Workspace application lives in an overlay (above system UI)
+2. HE Workspace application does not interact with WM at all. Not even Exclusive zone
+3. HE Workspace application does not have fullscreen
+4. HE Workspace application is not required to be rectangular
+5. HE Workspace application receives full keyboard and pointer focus when the pointer enters the predefined region on your screen or when a predefined hotkey is triggered
+6. HE Workspace application does not have system-provided window decorations. If you want to create exit button: you make it on your own (like in game engines)
 
-~ AGAIN –– N will NOT be supporting <overlaysurface>, <backgroundsurface> and <locksccreensurface> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one <surface> tag in your .html 
-So N ONLY serves OVERLAY applications
+~ AGAIN –– Hotoe will NOT be supporting <overlaysurface>, <backgroundsurface> and <locksccreensurface> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one <surface> tag in your .html 
+So Hotoe ONLY serves OVERLAY applications
 
 > [!NOTE]
 > Want to start building your own engine for background layer and put its link or philosophy here?
