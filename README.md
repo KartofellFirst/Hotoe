@@ -55,4 +55,4 @@
 
 Feel free to open issues and ask stuff
 
-Contribute to be among the first in the new world of WAs
+Contribute to be among the first in the new world of EWAs
