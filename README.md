@@ -1,10 +1,10 @@
 
 > [!CAUTION]
-> This text has been refactored by AI to put my brainstorms into English markdown file.
+> This text has been partically refactored by AI to put my brainstorms into a single English markdown file.
 > 
-> Also, it has been fact-checked by the AI, so feel free to open issues if you see a mistake
+> It has also been fact‑checked by AI, so feel free to open issues if you spot a mistake.
 >
-> <details><summary>additional pre-word</summary>Everything without a graphical presence at all (some CLI tools or background daemons) or web applications did not take place in our applications classification. It's not a blind spot, it is just for simplification</details>
+> <details><summary>additional pre-word</summary>Everything without a graphical presence at all (some CLI tools or background daemons) or web applications did not take place in our applications classification. This is not a blind spot –– it is just for simplification</details>
 
 
 # Stop Thinking About Windows
@@ -110,18 +110,33 @@ Not another Electron. A new category.
 
 We're building **N** — a cross-platform runtime for that missing category. Not a replacement for Electron, Tauri, GTK, or Qt; those remain the right tool the moment an application genuinely wants to be a window. N exists for the applications that don't.
 
-We call that category a **workspace component**: something that renders on screen without asking the Window Manager to treat it as a normal window, and without contesting windowed apps for space or window-level status.
+Throughout this document, we'll refer to this category as **workspace applications**: something that renders on screen without asking the Window Manager to treat it as a normal window, and without contesting windowed apps for space or window-level status.
 
-We do not stop you from building your own workspace component engine, we want to build a philosophy and define some definitions.
+*N is not an attempt to own this category. Our goal is to define the philosophy and terminology, not to prevent alternative runtimes from existing.*
 
-What is N – N is a workspace component applications building framework, that uses world well-known HTML, CSS and JS stack with your system's native webview as the core
+So which existing applications, that are not system built-in, are already **workspace applications**?
+Waybar is a workspace application, Conky too...
+See? They are **not cross-platform, but still considered workspace applications** – mark that
+*We are not inventing this kind of software. We are giving it a name.*
 
-What N defines as a workspace component, so we can keep it cross-platform:
-1. Workspace component lives in overlay (above system UI)
-2. Workspace component does not interact with WM at all. Not even Exclusive zone
-3. Workspace component does not have fullscreen
-4. Workspace component is not necessary rectangular-shaped
-5. Workspace component takes full keyboard and cursor focus when you enter defined region on your screen or use prebuilt hotkey
-6. Workspace component is not surrounded by styled a window border. If you want to create exit button: you make it on your own (like in game engines)
+### What is N after what we just defined?
 
-Other conceptions like background-layer Workspace components are most likely going to be realised in separated repositories and frameforks, with their own conceptions. Technical part is going to be in another readme in the project, or even in the separate repository, i'll update later
+N is a framework for building cross-platform workspace applications, that uses world the well-known HTML, CSS and JS stack with your system's native webview as its rendering engine
+
+N does not attempt to cover every possible kind of Workspace applications – it deliberately focuses on one subset: **overlay** workspace applications.
+
+What limitations N applies for your application, so we can define a standard:
+1. N Workspace application lives in an overlay (above system UI)
+2. N Workspace application does not interact with WM at all. Not even Exclusive zone
+3. N Workspace application does not have fullscreen
+4. N Workspace application is not required to be rectangular
+5. N Workspace application receives full keyboard and pointer focus when the pointer enters the predefined region on your screen or when a predefined hotkey is triggered
+6. N Workspace application does not have system-provided window decorations. If you want to create exit button: you make it on your own (like in game engines)
+
+~ AGAIN –– N will NOT be supporting <overlaysurface>, <backgroundsurface> and <locksccreensurface> tags, because from my (creator) point of view, they must have different approach in their restrictions philosophy (maybe you would want an exclusive zone on a bg widget?) and it's just cleaner to have one <surface> tag in your .html 
+So N ONLY serves OVERLAY applications
+
+> [!NOTE]
+> Want to start building your own engine for background layer and put its link or philosophy here?
+>
+> – open a discussion
