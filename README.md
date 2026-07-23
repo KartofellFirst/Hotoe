@@ -7,7 +7,7 @@
 
 - [Linux (Wayland Session)](https://github.com/KartofellFirst/Hotoe) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
 - [MacOS](https://github.com/KartofellFirst/Hotoe-MacOS) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
-- [Windows](https://github.com/Yashik/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
+- [Windows](https://github.com/FaultedSapiens/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
 
 ---
 ## You are going to read
@@ -16,25 +16,25 @@
   <tr>
     <td>1.</td>
     <td>Main philosophy</td>
-    <td><a href="PHILOSOPHY.md">visit</a></td>
+    <td><a href="https://github.com/KartofellFirst/Hotoe/blob/main/PHILOSOPHY.md">visit</a></td>
     <td>← anyway</td>
   </tr>
   <tr>
     <td>2.</td>
     <td>What we are building</td>
-    <td><a href="PHILOSOPHY.md#what-were-building">visit</a></td>
+    <td><a href="https://github.com/KartofellFirst/Hotoe/blob/main/PHILOSOPHY.md#what-were-building">visit</a></td>
     <td>← if you are patient enough</td>
   </tr>
   <tr>
     <td>3.</td>
     <td>When do I pick Hotoe</td>
-    <td><a href="DeveloperQA.md">visit</a></td>
+    <td><a href="https://github.com/KartofellFirst/Hotoe/blob/main/DeveloperQA.md">visit</a></td>
     <td>← if you are a developer</td>
   </tr>
   <tr>
     <td>4.</td>
     <td><code>fx</code> | Native Capabilities API (Fluen-X documentation)</td>
-    <td><a href="Fluent-X.md">visit</a></td>
+    <td><a href="https://github.com/KartofellFirst/Hotoe/blob/main/Fluent-X.md">visit</a></td>
     <td>← if you are developing</td>
   </tr>
 </table>
