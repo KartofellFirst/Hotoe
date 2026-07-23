@@ -7,7 +7,7 @@
 
 - [Linux (Wayland Session)](https://github.com/KartofellFirst/Hotoe) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
 - [MacOS](https://github.com/KartofellFirst/Hotoe-MacOS) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
-- [Windows](https://github.com/Yashik/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
+- [Windows](https://github.com/FaultedSapiens/Hotoe) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
 
 ---
 ## You are going to read
