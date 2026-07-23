@@ -1,8 +1,8 @@
 
 > [!TIP]
-> Esteemated reading time: *~10 mins*.  
+> Estimated reading time: *~10 mins*.  
 > Dont be scared of big page length, we just have a lot of linebreaks ☺️  
-> *(It is actually **more comfortable** to read if you've used to sit in Group chats / Commentaries / Forums)*
+> *(It is actually **more comfortable** to read if you've used to sit in Group chats / Comments / Forums)*
 
 > [!CAUTION]
 > Some parts of this .md can be displayed wrong on mobile devices. <a href="https://github.com/KartofellFirst/Hotoe/blob/main/PHILOSOPHY.md">Open in browser</a>
@@ -16,7 +16,7 @@
 > **Terminology Guide**
 >
 > - **WM** - Window Manager (<a href="https://google.com/search?q=What Window Manager is as the type of software?">read more</a> if you're not familiar with the concept)  
-> - **GTK application** - Application bult with Gimp Toolkit (most likely cross-platform)
+> - **GTK application** - Application built with Gimp Toolkit (most likely cross-platform)
 > - **HE** — Hotoe Engine (project shorthand)
 > - **WA** — Workspace Application (core concept)
 > - **SWA** - A WA that has been built with system-specific framework and not designed to be cross-platform 
@@ -56,7 +56,7 @@ You can't find `window.setAlwaysOnTop()` or `window.openPopup()` in Unity, Unrea
 
 Why?  
 
-Because they cant provide that kind of API? No &mdash;
+Because they can't provide that kind of API? No &mdash;
 
 Because they have realized that you dont need to fight every WM to create your own UI.
 
@@ -115,27 +115,27 @@ Why is the first thing every framework gives you a rectangular window?
 
 Why are you suddenly negotiating with a Window Manager **you never wanted to interact with**?
 
+*Keep that question in mind, we'll get to the answer in a minute*
+
 <br><br>
 
-## You dont know what those apps that you call "System-specific" actually build with
-
+## You dont know what those apps that you call "system-specific" are actually built with
+<!-- made it look like waybar were not designed to be only for Wayland. Sorry guys, i needed an example-->
 Look at <a href="https://google.com/search?q=What is Waybar and analogs in MacOS / Windows">Waybar</a>. 
 
 Does it look like a GTK application? &mdash; Not at all.
 
 It looks like some privileged desktop component &mdash; something built with a special framework provided by the operating system *(SWA)*.
 
-That's the illusion. 
+That's the illusion.
 
-Because underneath, Waybar is just another GTK application. 
+Underneath, Waybar is just another GTK application.
 
-Most of the SWAs you know begin life as ordinary applications — GTK, Qt, WebViews. They actually could be cross-platform. 
+The interesting part isn't what it's built with.
 
-But the surprising part isn't what they're built with. 
+The interesting part is what it has to become.
 
-The surprising part is what they have to become.
-
-The moment these applications stop behaving like windows, every cross-platform abstraction disappears. 
+The moment these applications stop behaving like a normal window, every cross-platform abstraction disappears. 
 
 Developers suddenly fall back to platform-specific APIs — Wayland's layer-shell, Windows overlays, macOS widgets. 
 
@@ -144,7 +144,6 @@ The application didn't fundamentally change. Only its relationship with the Wind
 <br><br>
 
 ## Redefining the problem
-<!--Focus the problem again. Can seem unnecessary-->
 
 So, the simplest application possible — a round analog clock. 
 
@@ -176,7 +175,7 @@ The real problem sits one level higher:
 
 *We don't even have a mental category for software that intentionally avoids participating in window management.*
 
-That's why desktop bars, overlays, floating widgets, HUDs and etc always feel like exceptions, even tho they can be built with same frameworks as ordinary apps <!--continue here-->
+That's why desktop bars, overlays, floating widgets, HUDs and etc always feel like exceptions
 
 ---
 
@@ -190,43 +189,38 @@ If the answer is yes, today's frameworks are fantastic.
 
 If the answer is no... why do we pretend it's still the same kind of application?
 
-Games earned their own engines because they separated application logic from window management. Our category deserve exactly the same shift — not because it needs another renderer or another programming language, but because they represent a fundamentally different relationship with the desktop.
+Games earned their own engines because they separated application logic from window management. Our category deserves exactly the same shift — not because it needs another renderer or another programming language, but because it represents a fundamentally different relationship with the desktop.
 
-Abstractive:  
+Abstractly:  
 **A window is not an application. A window is a service provided by a Window Manager. And not every application needs that service.**
 
 Maybe applications that intentionally live **with** your workspace instead of **inside** it deserve a runtime of their own.
 
-Not another Electron. A new category.
+Not another <a href="https://google.com/search?q=What Electron is in short and what famous applications are built with it?">Electron</a>. A new category.
 
----
-
-<!--
-> [!NOTE]
-> Decrypt:
-> <details><summary> HE, WA, EWA, EWAs</summary>
-> HE - Hotoe Engine shortening
->
-> WA - Workspace Application abbreviation
->
-> EWA - Enchanced WA. We're going to use this word later because it sounds a lot better and it technically fits
-> ALSO: EWA - Enchanced Web Application. Can be used since our main stack rn contains web technologies. Easely memorazable to the people who are familiar with PWA term.
-> </details>
-> Namings are changable, open issues
--->
-
+<br><br>
 
 ## What We're Building
 
-We're building **Hotoe** — a cross-platform runtime for that missing category. Not a replacement for Electron, Tauri, GTK, or Qt; those remain the right tool the moment an application genuinely wants to be a window. Hotoe exists for the applications that don't.
+We're building **Hotoe** — a cross-platform runtime for that missing category. 
 
 Throughout this document, we'll refer to this category as **workspace applications**: something that renders on screen without asking the Window Manager to treat it as a normal window, and without contesting windowed apps for space or window-level status.
 
-Hotoe is not an attempt to own this category. Our goal is to define the philosophy and terminology, not to prevent alternative runtimes from existing.
+Hotoe is not an attempt to set up a WA monopoly &mdash;  
 
-*We are not first to invent this kind of software. We are giving it a name.* 
+**Our goal is to define the philosophy and terminology and give it to the next generations of engines.**
 
-<details><summary>What existing software already considered WA or EWA?</summary>
+Our ideas might not be revolutionary, they are just "in time". Watch Wayland-layer-shell documentation &mdash;
+
+They have already separated WAs from Native applications and moving in the same direction as we are. 
+
+Maybe in a decade Windows will get there too.
+
+Maybe macOS will follow even later.
+
+and Hotoe will be waiting, aged like a fine wine...
+
+<details><summary>See Software classification diagram (click to expand)</summary>
   WAs will have their undercategory: EWAs  
   
   We cant call Waybar, Conky or Rainmeter EWAs because, unlike WAs, EWAs must be cross-platform. 
@@ -235,7 +229,7 @@ Hotoe is not an attempt to own this category. Our goal is to define the philosop
         Software[Software] --> A["Windowed Application: Software that interacts with the WM (has GUI). Can be cross-platform"]
         A --> N["Native application: operating different types of windows, surfaces and tiling options. Can be cross-platform"]
         A --> G["Game: only need one window. Operates Surfaces inside that window. Does not talk to the WM. Accent on being cross-platform"]
-        A --> WA["Workspace Application: operates windows and surfaces in specific layers. Can be build with cross-platform framework, but cant be cross-platform due to the large range of system-specific funtions it has to contain"]
+        A --> WA["Workspace Application: operates windows and surfaces in specific layers. Can be built with cross-platform framework, but cant be cross-platform due to the large range of system-specific funtions it has to contain"]
         WA --> EWA[EWA: only need one window in specific layer. Operates Surfaces inside that window. Does not talk to the WM. Accent on being cross-platform]
         EWA --> Hotoe["Hotoe EWA: only allowed to sit in overlay"]
         EWA --> E["Different Engine EWAs : Soon may appear engines that provide toolkits for other window layers"]
@@ -244,12 +238,13 @@ Hotoe is not an attempt to own this category. Our goal is to define the philosop
 </details>
 
 > [!NOTE]
-> If you're making an engine for background / lockscreen / whatever else layer and want to name it like.. "Better Hotoe" or "Hotoe Background' - let us know, we'll add link to your project to the repository
+> If you are building your own engine and want to adopt our philosophy, or even name your project something like "Better Hotoe" or "Hotoe - MyVision", let us know! We will gladly add a link to your project in our repository.
 
+<br><br>
 
 ### What is Hotoe Engine after what we just defined?
 
-Hotoe Engine is a framework for building **EWAs** (cross-platform workspace applications), that uses world the well-known HTML, CSS and JS stack with your system's native webview as its rendering engine
+Hotoe Engine is a framework for building **EWAs** (cross-platform workspace applications), that uses the world well-known HTML, CSS and JS stack with your system's native webview as its rendering engine
 
 What limitations Hotoe applies to EWAs to make them cross-platform:
   1. EWA does not interact with WM at all. Not even  <a href="https://google.com/search?q=What is exclusive zone (wayland layer shell definition)">Exclusive zone</a>
@@ -261,7 +256,14 @@ What limitations Hotoe applies to its EWAs:
   4. Hotoe EWA receives full keyboard and pointer focus when the pointer enters the predefined region on your screen or when a predefined hotkey is triggered
   5. Hotoe EWA does not have system-provided window decorations. If you want to create exit button: you make it on your own (like in game engines)
 
-Hotoe does not attempt to cover every possible kind of Workspace applications – it deliberately focuses on one subset: **overlay** workspace applications.
-So Hotoe will NOT be supporting \<overlaysurface\>, \<backgroundsurface\> and \<lockscreensurface\> tags yet, as they must have different approach in their restrictions philosophy and probably different engines.  
-For it's just cleaner to have one \<surface\> tag in your index.html ()
 
+<sub>With great attention to detail (and written in our best broken English), the Hotoe team thanks everyone who read this file all the way to this line. Welcome to the community! ♡</sub>
+
+<!--Hotoe does not attempt to cover every possible kind of Workspace applications – it deliberately focuses on one subset: **overlay** workspace applications.
+So Hotoe will NOT be supporting \<overlaysurface\>, \<backgroundsurface\> and \<lockscreensurface\> tags yet, as they must have different approach in their restrictions philosophy and probably different engines.  
+For now it's just cleaner to have one \<surface\> tag in your index.html
+
+$${\color{red}\text{With great attention to detail (and written in our best broken English),}}$$  
+$${\color{red}\text{the Hotoe team thanks everyone who read this file all the way to this line.}}$$  
+$${\color{red}\text{Welcome to the community!}}$$
+-->
