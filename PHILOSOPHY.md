@@ -1,4 +1,9 @@
 
+> [!TIP]
+> Esteemated reading time: *~10 mins*.  
+> Dont be scared of big page length, we just have a lot of linebreaks ☺️  
+> *(It is actually **more comfortable** to read if you've used to sit in Group chats / Commentaries / Forums)*
+
 > [!CAUTION]
 > Some parts of this .md can be displayed wrong on mobile devices. <a href="https://github.com/KartofellFirst/Hotoe/blob/main/PHILOSOPHY.md">Open in browser</a>
 > 
@@ -33,18 +38,31 @@ Games have their own engines. Applications have their own frameworks. We've acce
 
 But have you ever asked yourself **why**?
 
-Is it because games need physics? 3D rendering? Shaders? Networking?
+Is it because games need physics? 
 
-No. Those are consequences, not the reason why games have been separated long ago. 
+3D rendering? 
+
+Shaders? 
+
+Networking?
+
+No.
+
+Those are consequences, not the reason why games have been separated long ago. 
 
 The real difference is much simpler. **Games don't think in windows.**
 
-You cant find `window.setAlwaysOnTop()` or `window.openPopup()` in Unity, Unreal or Godot.   
-Why? Because they cant provide that kind of API? No - because they have realised that you dont need to fight every WM to create your own UI.
+You can't find `window.setAlwaysOnTop()` or `window.openPopup()` in Unity, Unreal or Godot.   
 
-And this is actualy the right solution, this separation has given games their own input handlers, their own focus management and even their own graphics renderer. Games has became stronger as the type of applications after they gave up some of their native functionality.
+Why?  
 
-> Imagine your Minecraft inventory is opening in a separated window? That would look wildly exotic nowadays... 
+Because they cant provide that kind of API? No &mdash;
+
+Because they have realized that you dont need to fight every WM to create your own UI.
+
+And this is actually the right solution. This separation has given games their own input handlers, their own focus management, and even their own graphics renderer. Games became stronger as a category of applications after they gave up some native functionality.
+
+> Imagine your Minecraft inventory is opening in a separate window? That would look wildly exotic nowadays... 
 
 Games became their own category the moment developers stopped thinking of a window as the application.
 
@@ -57,54 +75,108 @@ why does it automatically have to be a window?**
 
 Not *can* be. *Has* to be.
 
-Every modern framework quietly assumes exactly that. Electron. Tauri. GTK. Qt. Flutter. Different languages, different architectures, exactly the same assumption:
+Every modern framework quietly assumes exactly that &mdash;
+
+Electron. 
+
+Tauri.
+
+GTK. 
+
+Qt. 
+
+Flutter. 
+
+Different languages, different architectures, exactly the same assumption:
 
 > Your application is managed by a Window Manager.
 
 For most software, that's completely reasonable.  
+
 A browser should have a window. A code editor should have a window. A spreadsheet should have a window.  
+
 They're supposed to participate in the desktop. Users move them, resize them, tile them, fullscreen them, switch between them. The Window Manager is doing exactly what it's designed to do.
 
 ---
 
 But what if your application doesn't belong there?
 
-Suppose you want to build a beautiful clock that permanently lives in the corner of the screen. Or a system monitor. A desktop companion. A floating music widget. An ambient utility.
+Suppose you want to build a beautiful clock that permanently lives in the corner of the screen. 
 
-Why is the first thing every framework gives you a rectangular window? Why are you suddenly negotiating with a Window Manager you never wanted to interact with?
+Or a system monitor. 
 
----
+A desktop companion. 
 
-Look at <a href="https://google.com/search?q=What is Waybar and analogs in MacOS / Windows">Waybar</a>. Does it look like a GTK application? Not at all. It looks like some privileged desktop component — something built with a special framework provided by the operating system.
+A floating music widget. 
 
-That's the illusion. Because underneath, Waybar is just another GTK application. GTK applications don't normally look like that. Yet Waybar proves they can.
+An ambient utility.
 
-The same is true for Conky. Rainmeter. Übersicht. None of them are powered by some magical "widget engine." They all begin life as ordinary applications built with ordinary technologies — GTK, Qt, WebViews.  
+Why is the first thing every framework gives you a rectangular window? 
 
-The surprising part isn't what they're built with. The surprising part is what they have to become.
+Why are you suddenly negotiating with a Window Manager **you never wanted to interact with**?
 
-The moment these applications stop behaving like windows, every cross-platform abstraction disappears. Developers suddenly fall back to platform-specific APIs — Wayland's layer-shell, Windows overlays, macOS widgets. The application didn't fundamentally change. Only its relationship with the Window Manager did.
+<br><br>
 
----
+## You dont know what those apps that you call "System-specific" actually build with
 
-Think about how strange that is.
+Look at <a href="https://google.com/search?q=What is Waybar and analogs in MacOS / Windows">Waybar</a>. 
 
-Imagine the simplest application possible — a round analog clock. It doesn't need tabs. It doesn't need resize handles. It doesn't need tiling. It doesn't need fullscreen. It barely even needs focus. It simply exists.
+Does it look like a GTK application? &mdash; Not at all.
+
+It looks like some privileged desktop component &mdash; something built with a special framework provided by the operating system *(SWA)*.
+
+That's the illusion. 
+
+Because underneath, Waybar is just another GTK application. 
+
+Most of the SWAs you know begin life as ordinary applications — GTK, Qt, WebViews. They actually could be cross-platform. 
+
+But the surprising part isn't what they're built with. 
+
+The surprising part is what they have to become.
+
+The moment these applications stop behaving like windows, every cross-platform abstraction disappears. 
+
+Developers suddenly fall back to platform-specific APIs — Wayland's layer-shell, Windows overlays, macOS widgets. 
+
+The application didn't fundamentally change. Only its relationship with the Window Manager did.
+
+<br><br>
+
+## Redefining the problem
+<!--Focus the problem again. Can seem unnecessary-->
+
+So, the simplest application possible — a round analog clock. 
+
+It doesn't need tabs. 
+
+It doesn't need resize handles. 
+
+It doesn't need tiling. 
+
+It doesn't need fullscreen. 
+
+It barely even needs focus. It simply exists.
 
 Today, writing that clock means implementing it three different ways: a macOS widget, a Wayland layer-shell surface, a Windows desktop overlay. 
 
 Not because clocks are platform-specific — because **our frameworks only know how to build windows.**
 
-Ironically, the moment you wrap the exact same clock inside a normal rectangular frame and let the Window Manager control it, Electron, Tauri, Flutter and GTK suddenly become excellent cross-platform solutions again. The application didn't become more portable. It became more window-like.
+Ironically, the moment you wrap the exact same clock inside a normal rectangular frame and let the Window Manager control it, Electron, Tauri, Flutter and GTK suddenly become excellent cross-platform solutions again. 
+
+The application didn't become more portable. It became more window-like.
 
 ---
 
-This isn't a failure of Electron, GTK, or Qt. They're solving the problem they were created to solve: windowed applications.
+This isn't a failure of Electron, GTK, or Qt. 
+
+They're solving the problem they were created to solve: windowed applications.
 
 The real problem sits one level higher:  
+
 *We don't even have a mental category for software that intentionally avoids participating in window management.*
 
-Today we recognize two kinds of cross-platform graphical software: games and windowed desktop applications. Everything else gets awkwardly squeezed into one of them. That's why desktop bars, overlays, floating widgets, HUDs and etc always feel like exceptions instead of first-class citizens.
+That's why desktop bars, overlays, floating widgets, HUDs and etc always feel like exceptions, even tho they can be built with same frameworks as ordinary apps <!--continue here-->
 
 ---
 
