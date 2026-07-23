@@ -1,4 +1,4 @@
-# $${\color{white}Hotoe}$$ $${\color{gray}Engine}$$
+# Hotoe $${\color{gray}Engine}$$ 
 
 *A dilemma about what a window is and what is application*
 
