@@ -7,13 +7,21 @@
 > <details><summary>additional pre-word</summary>Everything without a graphical presence at all (some CLI tools or background daemons) or web applications did not take place in our applications classification. This is not a blind spot –– it is just for simplification</details>
 
 
-> [!NOTE]
+> [!IMPORTANT]
 > **Terminology Guide**
 >
-> **WM** - Window Manager (<a href="https://google.com/search?q=What Window Manager is as the type of software?">read more</a> if you're not familiar with the concept)  
-> **GTK application** - Application bult with Gimp Toolkit (most likely cross-platform)
+> - **WM** - Window Manager (<a href="https://google.com/search?q=What Window Manager is as the type of software?">read more</a> if you're not familiar with the concept)  
+> - **GTK application** - Application bult with Gimp Toolkit (most likely cross-platform)
+> - **HE** — Hotoe Engine (project shorthand)
+> - **WA** — Workspace Application (core concept)
+> - **SWA** - A WA that has been built with system-specific framework and not designed to be cross-platform 
+> - **EWA** — Enhanced WA. Like games separated from apps, EWAs separated from WAs (core concept)
+>
+> *Some wise words at the end of the note:*  
+> $${\color{gray}\""WAs\ developer\"\ is\  cringe\ to\ pronounce\ \text{—}\ nobody\ is\ going\ to\ call\ themselves\ that\.}$$  
+> $\qquad$ $\qquad$ $\qquad$ $\qquad$ $\qquad$ $\qquad$ $\qquad$ $${\color{gray}Okay\,\ EWAs\ is\ a\ little\ better" \sim\ Drunk\ DeepSeek}$$ 
  
-# Stop Thinking About Windows
+# PHILOSOPHY: *What cross-platform means. Window-centric model. New type of applications.*
 
 When you're about to start a new project, you probably ask yourself one question before choosing a framework.
 
@@ -31,9 +39,10 @@ No. Those are consequences, not the reason why games have been separated long ag
 
 The real difference is much simpler. **Games don't think in windows.**
 
-Unity, Unreal and Godot don't expose APIs like `window.openPopup()` or `window.setAlwaysOnTop()` not because they can't - because game UI isn't something the operating system manages. 
+You cant find `window.setAlwaysOnTop()` or `window.openPopup()` in Unity, Unreal or Godot.   
+Why? Because they cant provide that kind of API? No - because they have realised that you dont need to fight every WM to create your own UI.
 
-And this is actualy the right solution, this separation has given games their own input handlers, their own focus management and even their own graphics renderer. Games has became stronger after they realized that they dont need to cooperate with your WM, they only need to ask for a surface to draw on.
+And this is actualy the right solution, this separation has given games their own input handlers, their own focus management and even their own graphics renderer. Games has became stronger as the type of applications after they gave up some of their native functionality.
 
 > Imagine your Minecraft inventory is opening in a separated window? That would look wildly exotic nowadays... 
 
@@ -95,7 +104,7 @@ This isn't a failure of Electron, GTK, or Qt. They're solving the problem they w
 The real problem sits one level higher:  
 *We don't even have a mental category for software that intentionally avoids participating in window management.*
 
-Today we recognize three kinds of graphical software: games and windowed desktop applications. Everything else gets awkwardly squeezed into one of them. That's why desktop bars, overlays, floating widgets, HUDs and etc always feel like exceptions instead of first-class citizens.
+Today we recognize two kinds of cross-platform graphical software: games and windowed desktop applications. Everything else gets awkwardly squeezed into one of them. That's why desktop bars, overlays, floating widgets, HUDs and etc always feel like exceptions instead of first-class citizens.
 
 ---
 
@@ -111,6 +120,7 @@ If the answer is no... why do we pretend it's still the same kind of application
 
 Games earned their own engines because they separated application logic from window management. Our category deserve exactly the same shift — not because it needs another renderer or another programming language, but because they represent a fundamentally different relationship with the desktop.
 
+Abstractive:  
 **A window is not an application. A window is a service provided by a Window Manager. And not every application needs that service.**
 
 Maybe applications that intentionally live **with** your workspace instead of **inside** it deserve a runtime of their own.
@@ -119,17 +129,6 @@ Not another Electron. A new category.
 
 ---
 
-> [!NOTE]
-> **Terminology Guide**
->
-> - **HE** — Hotoe Engine (project shorthand)
-> - **WA** — Workspace Application (core concept)
-> - **SWA** - Workspace Application that has built in system-specific framework
-> - **EWA** — Enhanced WA / Enhanced Web Application
->
->   *We'll use EWA going forward — it sounds better, fits both contexts, marks expanded philosophy and is easily memorable to those familiar with PWA.*
->   
-> $${\color{gray}\"WAs\ are\  cringe\ to\ pronounce\.\" \sim\ Kidai}$$ &nbsp;
 <!--
 > [!NOTE]
 > Decrypt:
@@ -168,7 +167,7 @@ Hotoe is not an attempt to own this category. Our goal is to define the philosop
         WA --> EWA[EWA: only need one window in specific layer. Operates Surfaces inside that window. Does not talk to the WM. Accent on being cross-platform]
         EWA --> Hotoe["Hotoe EWA: only allowed to sit in overlay"]
         EWA --> E["Different Engine EWAs : Soon may appear engines that provide toolkits for other window layers"]
-        Software --> SWA["System provided Workspace Application: WAs that built with system specific frameworks. Not made to be cross-platform"]
+        Software --> SWA["SWA: WAs that built with system specific frameworks. Not made to be cross-platform"]
   ```
 </details>
 
