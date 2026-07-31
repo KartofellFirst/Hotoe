@@ -9,7 +9,7 @@ Philosophy [6 min](#why) <br>
 Read the documentation [10 min](fxAPI.md) <br>
 Start with Hotoe [1 min](#1-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Popular questions -> [here](DeveloperQA.md) <br>
-Pages version of a website -> [link](https://KartofellFirst.github.io/Hotoe)
+Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)
 
 ## Available platforms:
 - [Linux (Wayland Session)](https://github.com/KartofellFirst/Hotoe-Wayland) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
