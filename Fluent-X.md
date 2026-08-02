@@ -1,87 +1,203 @@
-# Fluent-X API
+# Fluent-X Native Capabilities API
+Official shorthand is fxAPI. In JS it is named `fx`. <br>
+`fxAPI` is fully supported by Hotoe engine and shipped within every EWA built with it<br>
 
-*following is not an API, just my brainstorms from previous projects not related to Hotoe*
+Fluent-X API v1.0.0 toolkit contains 5 categories of methods:<br>
+*absolute necessary* -> [visit](#surface-management) <br>
+<sup>input regions management, closing an application and etc</sup><br>
+*IPC related* -> [visit](#ipc-related-methods) <br>
+<sup>communicate your JS backend to whatever other backend you want through local IPC</sup><br>
+*Filesystem related* -> [visit](#filesystem-api) <br>
+<sup>write, open and remove files from disk right from your JS backend</sup><br>
+*Local database* -> [visit](#json-atabase) <br>
+<sup>store and read values from cache without managing files</sup><br>
+*global hotkeys* -> [visit](#other) <br>
+<sup>allow shortcuts even when your application looses focus</sup><br>
 
-### FluentKit:
-Чтобы наши разрабочики не думали о сложных интеграциях с системой, а просто писали приложения, Fluent-X предоставляет набор нативных инструментов которые на любой OS вызываются одинаково и возвращают ответы одного формата.
+# not finished
 
-Пакет v1:
-rec - записи и демонстрации экрана
-shot - скриншоты
-audiostream - очевидно
-system - использование RAM, CPU и все такое
-colorpicker - узнать цвет и положение пикселя на экране
-### EWV:
-Расшифровка: Enhanced Web View. Берем нативный webkit системы и инжектируем туда наши методы. Чтобы дальше не мучаться заранее обозначу что они все лежат в одном классе типа navigator.fx.method_name() или fx.method_name, но навигатор это привычное дело уже как будто.
-Наши приложения, запускаемые Fluent-X runtime называются EWAs соответственно. 
+### IPC Related Methods
 
-— лирическое отступление —
-Что сейчас есть из похожего?
- Electron - очень интересная штука, но сильно усложненная и кто-то говорит еще тяжелая. Мы не против и не конкурируем с Electron, у нас разные цели.
- PWA - буквально наша концепция, только эти ебланы на бигкорпах сделали их зависимыми от браузеров. Кеш работает через жопу, рандомным образом может сбрасываться. Доступа к локальному хранилищу все еще нет. Пуши работают через задницу (но это в целом для всех платформ кроме нашей актуально, так что не буду акцентировать внимание). Приложение скачано, но без интернета не открывается… Что за хуйня? И куки обещали «долгие», на деле пуши перестают работать через 2 часа тк сессия слетает. Я с PWA возился пару месяцев и вижу прекрасно что это в целом хуйня, а не я криворукий. Была бы не хуйня - все бы их писали, но технология мертвая сейчас.
-— конец —
+Publishing string into IPC:
+> ```html
+> <button onclick="push('button clicked')"></button>
+> ```
+> *IPC server:*
+> ```bash
+> button clicked
+> ```
+> 
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>button onclick="fx.pushString('button clicked')"</nobr></pre></details>
 
-EWA - написал приложение на HTML, CSS, JS - все, оно готово запускаться во Fluent-X runtime. 
-* добавил в js navigator.fx.create(«this application name») - тебе вернется true, твой файл установлен в локальное хранилище. Стили вынесены в <style>, скрипты в <script>.
-* дальше пошел вызывать navigator.fx.cacheSource(DOM) по элементам которые надо сохранить локально -> парсер сам пройдется по приложению, установит твою статику в локальную директорию приложения и заменит пути на пути до локальных файлов.
-* статикой одной не отделаться, fx обеспечивает тебя типа локальной бд (navigator.fx.store()), но на деле это просто json. я надеюсь ты там мегабайты текста не будешь хранить, поэтому тебя это устроит.
+Adding IPC message listener:
+> ```javascript
+> receive {
+>     console.log(message);
+>     push("Got your message, dear backend!");
+> }
+> ```
+> 
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>window.addEventListener('busMessage', function(event) {
+>     const message = event.detail;
+>     console.log(message);
+>     push("Got your message, dear backend!");
+> });</nobr></pre></details>
 
-— лирическое отступление —
-На всех методах защита от мусора есть: если приложение наскачивает статики на больше чем +-100мб, без разрешения пользователя продолжить загрузку не получится. Может увеличу лимит потом.
-+ Ты ответственен за оперативку, как это было в вебе где это нужно чтобы страница открывалась как можно быстрее, только здесь это просто чтобы приложение было легче. Поэтому все картинки в webp, все векторы в svg. ~navigator.fx.cacheClear() твой верный друг — сбрасывать часто сбрасывать кэш приложения можно не бояться, т.к. локально установленные файлы моментально переоткроются через source теги. 
-— конец —
+---
 
-Думаешь все? Но тогда это не был бы Fluent-X. EWAs - это околонативные приложения, а не нищие PWA. 
-navigator.fx.setWindowSize(x, y) - хочешь плеер в одну строчку? - сделай. Размер окна теперь в твоих руках
-navigator.fx.setBackgroundWorker(‘Js script inline’) - headless демон твоего приложения на JS. Не нужно учить другие языки, JS достаточно хорош собой. Настрой коннект между ними через консоль, или бд, или вообще внешний сервер. А можешь вообще не настраивать. (Dbus-а нет, по крайней мере в версии v1 речи о интеграции dbus в JS пока не идет) navigator.fx.setWidget(DOM, align) -> добавляет твой div в глобальный трей системы. Вернет тебе id для работы
-Выводи что хочешь через navigator.fx.updateWidget(id)
+### File System API
 
-navigator.fx.collapse() -> если background worker и виджет уже настроены, то интерфейс не всегда нужен? окно можно закрыть. этот метод 1 в 1 идентичен с тем если бы пользователь сам тыкнул «закрыть».
-navigator.fx.expand(args) -> обратное от collapse. допустим в виджете своем ты добавишь это <div onclick="navigator.fx.expand()»></div> и все, теперь при клике по виджету открывается приложение. Args будут передаваться в строку URL, чтобы ты мог прописать необычные сценарии взаимодействия с приложением.
+All file operations support path shortcuts like `~/` (home directory) or `$CONFIG/`.
+<details><summary>Full list of supported shortcuts (click)</summary>
+  
+  - `$DOWNLOADS`  
+  - `$DOCUMENTS`  
+  - `$DESKTOP`  
+  - `$VIDEOS`  
+  - `$PICTURES`  
+  - `$MUSIC`   
+  
+  // XDG  
+  - `$CONFIG`  
+  - `$DATA`  
+  - `$CACHE`  
+  - `$HOME`  
+</details>
 
-navigator.fx.allowAccessToLocalDirectory(path) - source запросы до файлов в выбранной глобальной директории не будут блокироваться, но нужно подтверждение пользователя.
+Reading text files & checking existence:
+> ```javascript
+> readFile("~/Hotoe/main.py")
+>     .then(file => console.log(file.content))
+>     .catch(err => console.log("File missing or unreadable:", err));
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.requestFileContent("~/Hotoe/main.py")</nobr></pre></details>
 
-navigator.fx.la() вернет вывод ls -la для работы с содержимым директорий к которым предоставлен доступ.
+Reading binary files / Opening images:
+> To load local images or binary assets into the DOM, request them as base64 and set them directly as a data URL source:
+> ```javascript
+> // Pass `true` as the second argument to request base64 encoding
+> readFile("~/Hotoe/assets/icon.png", true)
+>     .then(file => {
+>         document.querySelector('#avatar').src = `data:image/png;base64,${file.content}`;
+>     });
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.requestFileContent("~/Hotoe/assets/icon.png", true)</nobr></pre></details>
 
-Не буду углубляться: 
-navigator.fx.killApplicationBackgroundWorker()
-navigator.fx.hotkeyBind(string, “js code here”)
-navigator.fx.removeWidget(id)
-navigator.fx.getWidgets() -> список айди
-navigator.fx.usage() 
+Creating or writing files (String or Base64):
+> ```javascript
+> // Write plain text
+> write("~/Hotoe/main.txt", "Hello World!");
+>
+> // Write raw binary/image data from a Base64 string (3rd argument = true)
+> write("~/Hotoe/saved_image.png", base64String, true)
+>     .then(() => console.log("Image binary saved!"))
+>     .catch(err => console.error(err));
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.writeFile("~/Hotoe/saved_image.png", base64String, true)</nobr></pre></details>
 
-Все остальное обещанное:
-navigator.fx.push()
-navigator.fx.epush()
-navigator.fx.exec()
+Deleting a file:
+> ```javascript
+> remove("~/Hotoe/temp.txt");
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.removeFile("~/Hotoe/temp.txt")</nobr></pre></details>
 
-О них дальше поподробнее
-E-push:
-На старте приложения запускается демон уведомлений. Помимо того, что он ловит локальные fx.push() - он также работает со внешними серверами.
+Scanning directories:
+> ```javascript
+> scan("~/Hotoe")
+>     .then(dir => {
+>         dir.items.forEach(item => {
+>             const [name, path, isDir, isFile, size] = item;
+>             console.log(`${isDir ? "📁" : "📄"} ${name} (${size} bytes)`);
+>         });
+>     });
+> ```
+> Each item in `dir.items` returns a fixed 4-element array:
+> 1. `name` *(string)* — File name (`"main.py"`)
+> 2. `path` *(string)* — Full resolved path (`"/home/user/Hotoe/main.py"`)
+> 3. `isDir` *(boolean)* — `true` if directory, `false` if file
+> 4. `size` *(number)* — File size in bytes
+>
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.scanDirectory("~/Hotoe")</nobr></pre></details>
 
-Introducing: e-push -> вместо работы с какими-то централизованными серверами как это делается во всех остальных системах уведомлений (APNS, Firebase), e-push обеспечивает тебя прямым p2p сокетом до клиента.
+---
 
-Настройка: из своего сайта или приложения ты запрашиваешь navigator.fx.epush(“wss://uri.to.setup.socket.connection?args_to=identify_user”) -> пользователь соглашается -> твой url для установления сокетов на старте добавляется в список. 
+### Input Regions & Focus
 
-Теперь всегда когда его компьютер онлайн и разрешает допуск уведомлений, у вас устанавливается сокет и ты можешь отправить ему пуш по этому тоннелю (просто передать json) 
+Setting up the input region:
+> ```html
+> <body SIR>...whatever...</body> <!--SIR - Set as Input Region-->
+> ```
+> Now `<body>` prevents clicks through the transparent webview overlay. Alternatively, add the `.hotoe-input-region-regulator-box` class manually.
 
-В чем плюсы? 
-- Ты знаешь что пуш дошел до пользователя
-- Если пуш не дошел, ты будешь в курсе и сам решаешь что с ним делать - попробовать еще раз позже или забить и перестать пытаться отправлять его
-- Fluent-X не требует разной структуры уведомлений для разных OS, поэтому твой пуш будет одного вида и одинаково хорошо покажется и на MacOS, и на Linux и на любой другой платформе
+Recalculating input regions after DOM updates (resizing/moving elements):
+> ```javascript
+> SIRs(); // Recalculates bounding boxes
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.recalculateInputRegions()</nobr></pre></details>
 
-Минусы? 
-- Теперь ты хранишь пуши на своей стороне. Но наверное это то как эта технология и должна была работать с самого начала
+Managing focus events globally:
+> ```javascript
+> focus {
+>     if (!focus) {
+>         console.log("Cursor left the input region");
+>     }
+> }
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>window.addEventListener('focusEvent', function(event) {
+>     const focus = event.detail;
+>     if (!focus) {
+>         console.log("Cursor left the input region");
+>     }
+> });</nobr></pre></details>
 
-Использование e-push не ограничивает тебя от использования стандартных методов. Мучайся с их кроссплатформенным геморроем и ограничениями если концепт e-push тебя не устраивает.
-Совмещай для максимальной продуктивности или дай пользователю выбрать где он хочет получать уведомления.
-Философия EWAs и exec():
-Вместо того чтобы бесконечно расширять API (fx.*), инструменты которые не необходимы для разработки любого EWA вызываются через navigator.fx.exec() (в том числе FluentKit). Мы не собираемся интегрировать работу с консолью в каждый календарь, и это вещь которую важно осознавать.
+---
 
-EWA - не обязательно тяжелое приложение. Не обязательно даже приложение с хоть какой-либо смысловой нагрузкой. Порой EWA — это просто томагочи которого приятно видеть на экране. И зачем разработчику томагочи нужен весь арсенал нативных приложений?   Но при этом EWA может работать и с ffmpeg, и с git и с ollama. Ты отправляешь команду и получаешь ответ как результат выполнения функции когда консольная утилита отправила ответ.
+### Hotkeys
+Setting up a global hotkey combination, that works even when your app loses focus:
+> ```javascript
+> hotkey("SUPER+D", "myevent")
+> 
+> /* you can setup events listener immediately
+> or only after user allows registration (hotkey(...).then(e => / user allowed registration logic / ))
+> or warn him after he refused to do that (hotkey(...).catch(e => / user declined the request logic /))
+> */
+> window.addEventsListener("myevent", function (e) {
+>     push("user just pressed SUPER+D!")
+> })
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.registerHotkey()</nobr></pre></details>
+>
+> <details><summary>Wayland problems (click)</summary>
+> Unfortunately, on Wayland reading global keyboard events is impossible.  
+> 
+> We've solved this problem by shipping small CLI utility inside our Wayland backend, but even this do not guarantee that after user allows the registration, he will not forget to bind combination to his config or will not bind it to another key combination.  
+>  
+> If event in `.then(event)` block returns with `{"method": "manually"}` - you must keep in mind the human factor it contains.
+> </details>
 
-Интерактивный режим?
-Метод ⁠exec()⁠ по умолчанию работает в режиме Short Execution с таймаутом Х секунд (для предотвращения зависания рантайма от незавершающихся процессов вроде ⁠tail -f⁠). Для интерактивного режима (⁠>>>⁠) и долгих скриптов можно предусмотреть специальные флаги, однако я настоятельно рекомендую тебе не использовать такие утилиты в проектах, так как до ответа от exec твой JS на странице полностью зависнет. Ты можешь предупредить об этом пользователя каким-то индикатором, но я бы все равно не работал с тяжелыми утилитами через JS. 
 
-Кроссплатформенность?
-Да, может показаться, что exec убивает кроссплатформенность, ведь не все утилиты по одинаковому работают на всех OS. Но в таком случае почему для работы с такими специфичными консольными утилитами ты решил что тебе нужно именно EWA? Если ты хочешь построить оболочку для brew может рассмотришь Swift и более нативные варианты? 
+---
+
+### Other Utilities
+
+Embedding template environment variables:
+> ```javascript
+> const ipc_socket_address = {% LOCAL_BUS_ADDRESS %};
+> ```
+
+Closing the application:
+> ```javascript
+> CLOSE();
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.closeApplication()</nobr></pre></details>
