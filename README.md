@@ -34,13 +34,13 @@ We don’t provide any complicated file structure, don’t require learning Node
 You can also connect any other backend you want in 2 lines from your JS. Node/Python/Go/Rust/Whatever else with their libraries and specialties. We don't restrict that, we provide toolkit for that.
 
 ### The Alternatives
-Hotoe currently has no alternatives whatsoever. Here is how current solutions compare:
+Hotoe currently has no alternatives. Here is how current solutions compare:
 
 | Framework | Desktop Layer Support | DX (Web Tech) | Cross-Platform HUDs | The Catch |
 | :--- | :---: | :---: | :---: | :--- |
-| *Electron / Tauri / Wails* | No | **Great** | Broken | Has issues with standard widow protocols on Wayland; Currently unusable for this kind of tasks |
-| *GTK / Qt + Binds* | **Native** | Painful | Linux Only | Awful DX compare to Electron-like frameworks; With binds are not cross-platform |
-| **Hotoe** | **Native** | **Great** | **Yes** | Specified toolkit that does not support normal windows. Ideal for [EWAs](PHILOSOPHY.md), but strange for normal apps |
+| *Electron / Tauri / Wails* | No | **Great** | Limited | No native layer-shell / overlay support on Wayland |
+| *GTK / Qt + Bindings* | **Native** | Painful | Linux Only | Much worse DX than web-tech stacks. Wayland-chained |
+| **Hotoe** | **Native** | **Great** | **Yes** | Built only for EWAs — not for standard windowed apps |
 
 <br>
 
