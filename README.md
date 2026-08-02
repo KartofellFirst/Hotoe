@@ -8,7 +8,7 @@ The main repo of every Hotoe Engine.
 ## Navigator: 
 What is Hotoe [3 min](#description) <br>
 Read the documentation [10 min](fxAPI.md) <br>
-Start with Hotoe [1 min](#1-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
+Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Popular questions -> [here](DeveloperQA.md) <br>
 **Pages version of the repo** -> [link](https://KartofellFirst.github.io/Hotoe)
 <br><br>
