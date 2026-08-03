@@ -16,6 +16,38 @@ Fluent-X API v1.0.0 toolkit contains 5 categories of methods:<br>
 
 # not finished
 
+### Surface Management 
+Setting up the input region:
+> ```html
+> <body SIR>...whatever...</body> <!--SIR - Set as Input Region-->
+> ```
+> Now `<body>` prevents clicks through the transparent webview overlay. Alternatively, add the `.hotoe-input-region-regulator-box` class manually.
+
+Recalculating input regions after DOM updates (resizing/moving elements):
+> ```javascript
+> SIRs(); // Recalculates bounding boxes
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.recalculateInputRegions()</nobr></pre></details>
+
+Managing focus events globally: <br>
+<sup>when any of your input regions is receives or looses the pointer focus, this triggers</sup>
+
+> ```javascript
+> focus {
+>     if (!focus) {
+>         console.log("Cursor left the input region");
+>     }
+> }
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>window.addEventListener('focusEvent', function(event) {
+>     const focus = event.detail;
+>     if (!focus) {
+>         console.log("Cursor left the input region");
+>     }
+> });</nobr></pre></details>
+
 ### IPC Related Methods
 
 Publishing string into IPC:
@@ -128,34 +160,7 @@ Scanning directories:
 
 ### Input Regions & Focus
 
-Setting up the input region:
-> ```html
-> <body SIR>...whatever...</body> <!--SIR - Set as Input Region-->
-> ```
-> Now `<body>` prevents clicks through the transparent webview overlay. Alternatively, add the `.hotoe-input-region-regulator-box` class manually.
 
-Recalculating input regions after DOM updates (resizing/moving elements):
-> ```javascript
-> SIRs(); // Recalculates bounding boxes
-> ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.recalculateInputRegions()</nobr></pre></details>
-
-Managing focus events globally:
-> ```javascript
-> focus {
->     if (!focus) {
->         console.log("Cursor left the input region");
->     }
-> }
-> ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>window.addEventListener('focusEvent', function(event) {
->     const focus = event.detail;
->     if (!focus) {
->         console.log("Cursor left the input region");
->     }
-> });</nobr></pre></details>
 
 ---
 
