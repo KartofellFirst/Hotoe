@@ -98,24 +98,34 @@ All file operations support path shortcuts like `~/` (home directory) or `$CONFI
 
 Reading text files & checking existence:
 > ```javascript
-> readFile("~/Hotoe/main.py")
+> read("~/Hotoe/main.py")
 >     .then(file => console.log(file.content))
 >     .catch(err => console.log("File missing or unreadable:", err));
 > ```
+> 
+> In this usecase `file` contains:
+> 1. `type` *(string)* — text
+> 2. `mime` *(string)* — mimetype of the file
+> 4. `content` *(string)* — formed data URI for fast loading into src attributes
+>
 > <details><summary>parses into (click):</summary>
 > <pre><nobr>fx.requestFileContent("~/Hotoe/main.py")</nobr></pre></details>
 
 Reading binary files / Opening images:
-> To load local images or binary assets into the DOM, request them as base64 and set them directly as a data URL source:
+> To load local images or binary assets into the DOM, set them directly as a data URL source:
 > ```javascript
-> // Pass `true` as the second argument to request base64 encoding
-> readFile("~/Hotoe/assets/icon.png", true)
->     .then(file => {
->         document.querySelector('#avatar').src = `data:image/png;base64,${file.content}`;
->     });
+> // 
+> read("~/Hotoe/assets/icon.png", true).then(file => { document.querySelector('#avatar').src = file.content });
 > ```
+>
+> In this usecase `file` contains:
+> 1. `type` *(string)* — binary
+> 2. `mime` *(string)* — mimetype of the file
+> 3. `encoded` *(string)* — raw encoded base64 content
+> 4. `content` *(string)* — formed data URI for fast loading into src attributes
+>
 > <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.requestFileContent("~/Hotoe/assets/icon.png", true)</nobr></pre></details>
+> <pre><nobr>fx.requestFileContent("~/Hotoe/assets/icon.png")</nobr></pre></details>
 
 Creating or writing files (String or Base64):
 > ```javascript
@@ -139,8 +149,7 @@ Deleting a file:
 
 Scanning directories:
 > ```javascript
-> scan("~/Hotoe")
->     .then(dir => {
+> scan("~/Hotoe").then(dir => {
 >         dir.items.forEach(item => {
 >             const [name, path, isDir, size] = item;
 >             console.log(`${isDir ? "📁" : "📄"} ${name} (${size} bytes)`);
