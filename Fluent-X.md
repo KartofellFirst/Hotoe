@@ -7,12 +7,12 @@ Fluent-X API v1.0.0 toolkit contains 5 categories of methods:<br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
 <sup>communicate your JS backend to whatever other backend you want through local IPC</sup><br>
-*Filesystem related* -> [visit](#filesystem-api) <br>
+*Filesystem related* -> [visit](#file-system-api) <br>
 <sup>write, open and remove files from disk right from your JS backend</sup><br>
 *Local database* -> [visit](#json-atabase) <br>
 <sup>store and read values from cache without managing files</sup><br>
-*global hotkeys* -> [visit](#other) <br>
-<sup>allow shortcuts even when your application looses focus</sup><br>
+*other* -> [visit](#other) <br>
+<sup>global shortcuts and terminal commands execution</sup><br>
 
 # not finished
 
@@ -58,8 +58,6 @@ All file operations support path shortcuts like `~/` (home directory) or `$CONFI
   - `$VIDEOS`  
   - `$PICTURES`  
   - `$MUSIC`   
-  
-  // XDG  
   - `$CONFIG`  
   - `$DATA`  
   - `$CACHE`  
@@ -112,7 +110,7 @@ Scanning directories:
 > scan("~/Hotoe")
 >     .then(dir => {
 >         dir.items.forEach(item => {
->             const [name, path, isDir, isFile, size] = item;
+>             const [name, path, isDir, size] = item;
 >             console.log(`${isDir ? "📁" : "📄"} ${name} (${size} bytes)`);
 >         });
 >     });
