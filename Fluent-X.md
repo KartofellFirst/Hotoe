@@ -8,15 +8,16 @@ This document describes the convenient high-level API and serves as a user manua
 If you want to contribute with Hotoe, docs for you are upcoming. For now for the exact method signatures, return structures, event names, error handling and internal behaviour, see engine-contributing guidelines in Hotoe-Wayland repo. [Return to README](/)
 </blockquote>
 
-
 > [!NOTE]
-> Hotoe parser might not be ideal and return unexpected behavior in very few cases of use (ignore calls or break code in complicated parts).
+> The Hotoe parser is not perfect. In rare and complex cases it may ignore some sugar calls or produce unexpected results.
 >
-> In case you are facing issues with that, we provide this manual in 2 ways. Raw `fx.*` calls and high-level sugar-calls.<br>
-> You can combine both ways — using raw JS API in complicated parts and sugar-calls when you want to keep your code short and easy to read. Parser is built to work with that
+> Because of this we document **both** styles:
+> - High-level sugar (`push()`, `read()`, `SIRs()`…)
+> - Raw `fx.*` calls
+>
+> You can freely mix them, parser built to tolerate both. Use sugar for simple readable code and fall back to raw `fx.*` in complicated parts.
 
-
-### Fluent-X API v1 toolkit contains 5 categories of methods:<br>
+### Fluent-X API v1 toolkit contains 6 categories of methods:<br>
 *Essential* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
@@ -25,8 +26,10 @@ If you want to contribute with Hotoe, docs for you are upcoming. For now for the
 <sup>write, open and remove files from disk right from your JS backend</sup><br>
 *Local database* -> [visit](#database-related-methods) <br>
 <sup>manage values from cache without touching files</sup><br>
-*other* -> [visit](#other-utilities) <br>
-<sup>global shortcuts and terminal commands execution</sup><br>
+*Most powerful* -> [visit](#most-powerful-tool) <br>
+<sup>terminal commands execution and daemons managing</sup><br>
+*Other* -> [visit](#other-utilities) <br>
+<sup>global shortcuts and else convenient stuff</sup><br>
 
 ## Basics
 Setting up the input region:<br>
@@ -231,6 +234,49 @@ Deleting from Cache:<br>
 
 ---
 
+## Most powerful tool
+> [!IMPORTANT]
+> The most powerful tool of all shown above is unarguably **exec()**. From what I see, right now we're the only ones stupid enough to bring shell into webview frontend (or maybe Neutralino too?). <br>
+> That means you have to be extra-careful with your embedded parts of the code you're using in your app. Don’t use links — pre-load static files. Make sure the app does not damage or make vulnerable the PC of yours or others.
+
+Executing fire-and-forget terminal command:<br>
+<sup>second argument is optional, same as `.then()` and `.catch()` blocks. Default timeout is 30s</sup>
+> ```javascript
+> exec("python main.py", {"timeout": 30000})
+> ```
+>
+> Promise returns with 3 strings array: <br>
+> `stdout`, `stderr` and `exitCode` <br>
+> 
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.execute("python main.py", {"timeout": 30000})</nobr></pre></details>
+
+Starting a background daemon:<br>
+<sup>a separated process that will be running even when your app is closed. You can get process id from `.then()`</sup>
+> ```javascript
+> exec("python main.py", {"daemon": true}).then(pid => console.log(pid))
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.execute("python main.py", {"daemon": true})</nobr></pre></details>
+
+Becoming aware of running daemons:<br>
+<sup>You don't have to store PIDs unless it's for special purposes. Engine does that for you</sup>
+> ```javascript
+> getDaemons().then(list => console.log(list))
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.getDaemons()</nobr></pre></details>
+
+Killing a daemon:<br>
+<sup>I could call this function `slay()` or `exorcise()`, but I think that's enough with my namings</sup>
+> ```javascript
+> kill(pid) // + optional .then/catch()
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.killDaemon(pid)</nobr></pre></details>
+
+---
+
 ## Other Utilities
 
 ### hotkey
@@ -261,10 +307,17 @@ Setting up a global hotkey combination:<br>
 > If event in `.then(event)` block returns with `{"method": "manually"}` - you must keep in mind the human factor it contains.
 > </details>
 
-### exec()
-> [!IMPORTANT]
-> The most powerful tool of all shown above is unarguably **exec()**. From what I see, right now we're the only ones stupid enough to bring shell into webview frontend. <br>
-> That means you have to be extra-careful with your embedded parts of the code you're using in your app. Don’t use links — pre-load static files. Make sure the app does not damage or make vulnerable the PC of yours or others.
+### openExternal()
+> [!TIP]
+> If you feel extreme need in opening external files or websites, use standard tools for that.
+
+Opening a link in system's standard browser:<br>
+<sup>browser will open in a standard window below your application</sup>
+> ```javascript
+> openExternal("https://youtube.com/randomvideolink")
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.openExternal("https://youtube.com/randomvideolink")</nobr></pre></details>
 
 ### Environment variables
 Embedding template environment variables:
