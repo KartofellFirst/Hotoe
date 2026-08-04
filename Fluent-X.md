@@ -292,7 +292,7 @@ Setting up a global hotkey combination:<br>
 > or only after user allows registration (hotkey(...).then(e => / user allowed registration logic / ))
 > or warn him after he refused to do that (hotkey(...).catch(e => / user declined the request logic /))
 > */
-> window.addEventsListener("myevent", function (e) {
+> window.addEventListener("myevent", function (e) {
 >     push("user just pressed SUPER+D!")
 > })
 > ```
