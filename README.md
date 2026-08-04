@@ -54,7 +54,7 @@ because they don’t have the same approach as ours. **Hotoe ships its standards
 ### Switching to Hotoe is not a problem
 You may be thinking you are losing tools by switching to Hotoe. But you don’t have to lose your `npm`... 
 
-[How to connect any additional backend to Hotoe in 2 lines](Extencions.md)
+[How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
 
 Hotoe does not require you to lock inside of its API. Hotoe built to build EWAs. And EWAs are embeddable and able to cooperate with normal apps. **We don’t restrict that, we provide toolkit for that.**
 
