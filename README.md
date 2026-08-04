@@ -29,9 +29,10 @@ It abstracts low-level display layers (like Wayland's `layer_shell` or OS-native
 
 ## Is Hotoe better?
 For
-- A frontander that just wants to build something native already
+- A frontend guy that just wants to build something native already
 - Newbies in programming who want to customize their systems
-- A tired appdev who is tired of big Electron, Tauri APIs and 20 minutes "quick starts" as they call it.
+- A tired appdev who’s done with big Electron/Tauri APIs and 20-minute “quick starts”
+- Someone whose frontend is already a 10k+ line file and doesn’t want to figure out how to bolt Node or Rust on top of it
 
 — YES.
 
