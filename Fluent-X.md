@@ -11,7 +11,7 @@ Fluent-X API v1 toolkit contains 5 categories of methods:<br>
 <sup>write, open and remove files from disk right from your JS backend</sup><br>
 *Local database* -> [visit](#database-related-methods) <br>
 <sup>manage values from cache without touching files</sup><br>
-*other* -> [visit](#other) <br>
+*other* -> [visit](#other-utilities) <br>
 <sup>global shortcuts and terminal commands execution</sup><br>
 
 ## Basics
