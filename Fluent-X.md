@@ -1,16 +1,16 @@
 # Fluent-X Native Capabilities API
-Official shorthand is fxAPI. In JS it is named `fx`. <br>
-`fxAPI` is fully supported by Hotoe engine and shipped within every EWA built with it<br>
+Official shorthand is fxAPI. In JS just `fx`. <br>
+`fxAPI` is fully supported by every Hotoe Engine and shipped within every EWA built with it<br>
 
-Fluent-X API v1.0.0 toolkit contains 5 categories of methods:<br>
+Fluent-X API v1 toolkit contains 5 categories of methods:<br>
 *absolute necessary* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
 <sup>communicate your JS backend to whatever other backend you want through local IPC</sup><br>
 *Filesystem related* -> [visit](#file-system-api) <br>
 <sup>write, open and remove files from disk right from your JS backend</sup><br>
-*Local database* -> [visit](#json-atabase) <br>
-<sup>store and read values from cache without managing files</sup><br>
+*Local database* -> [visit](#database-related-methods) <br>
+<sup>manage values from cache without touching files</sup><br>
 *other* -> [visit](#other) <br>
 <sup>global shortcuts and terminal commands execution</sup><br>
 
@@ -174,6 +174,46 @@ Scanning directories:
 >
 > <details><summary>parses into (click):</summary>
 > <pre><nobr>fx.scanDirectory("~/Hotoe")</nobr></pre></details>
+
+---
+
+## Database Related Methods
+
+> Our engines already store some of your application data into cached *.json* file, so we decided to share it with you! <br>
+> This is not encrypted storage with SQL commands, **do not trust** it with secured data or very long strings, it will fail you.<br>
+> We call this "a convenient replacement for cookies"
+
+Saving or rewriting to cache:<br>
+<sup>you store any variable under its special key</sup>
+>```javascript
+> store(data, "var-01") 
+>```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.saveToCache(data, "var-01")</nobr></pre></details>
+
+Getting values from cache:<br>
+<sup>you're grabbing the key to then open the cell with the value</sup>
+> ```javascript
+> grab("id").then(value => console.log(value))
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.getValueFromCache("id")</nobr></pre></details>
+
+Getting keys to values:<br>
+<sup>you don't have to keep all the keys with yourself... just go and take them!</sup>
+> ```javascript
+> rob().then(keys => push(keys))
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.getKeyValues()</nobr></pre></details>
+
+Deleting from Cache:<br>
+<sup>toss the key away and this data should not bother you anymore... `.catch(err)` works here too if needed</sup>
+> ```javascript
+> toss("id")
+> ```
+> <details><summary>parses into (click):</summary>
+> <pre><nobr>fx.deleteFromCache("id")</nobr></pre></details>
 
 ---
 
