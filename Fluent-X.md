@@ -2,12 +2,12 @@
 Official shorthand is fxAPI. In JS just `fx`. <br>
 `fxAPI` is fully supported by every Hotoe Engine and shipped within every EWA built with it<br>
 
-This document describes the convenient high-level API and serves user-manual role.
+This document describes the convenient high-level API and serves as a user manual.
 
 For the exact method signatures, return structures, event names, error handling and internal behaviour, see the engine source code starting from the line `# ===== fx API =====` in [main.py](https://github.com/KartofellFirst/Hotoe-Wayland/blob/main/main.py) (Wayland).
 
 Fluent-X API v1 toolkit contains 5 categories of methods:<br>
-*absolute necessary* -> [visit](#basics) <br>
+*Essantial* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
 <sup>communicate your JS backend to whatever other backend you want through local IPC</sup><br>
