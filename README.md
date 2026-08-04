@@ -36,7 +36,7 @@ For
 
 — YES.
 
-The main thing we want you to understand about Hotoe is that this is not just another framework. Hotoe built **specifically** for its type of applications. 
+The main thing we want you to understand about Hotoe is that this is not just another framework. Hotoe is built **specifically** for its type of applications. 
 
 That is why our API is way shorter than whatever other frameworks can provide you with — we just don’t put any tools there that are not supposed to be.
 
@@ -128,13 +128,13 @@ EWAs are Hotoe applications that follow *Hotoe manners* list.
 <blockquote>
 <br><ol>
 <li>EWA <b>does not</b> cover full screen for a long time without giving user an opportunity to temporarily hide it or collapse it into something small — <br><hr> 
-Your application has an advantage of user's system. Its above everything. As the carriers of such responsibility, we should always give user a choice.</li><br>
+Your application has an advantage of user's system. It's above everything. As the carriers of such responsibility, we should always give user a choice.</li><br>
 <li>EWA <b>preferably</b> is not managing external applications lifecycle. We always try to keep content on the surface (inside the box) we've been given<br><hr>
 Exceptions: app launchers, docks or every other application whose main purpose is to help opening external windowed software or webpages.</li><br>
 <li>EWA <b>does not</b> interact with the WM.<br><hr>Leave it to normal apps. If you want a normal window use other frameworks.<br>Things like exclusive zone are not allowed too (if you even know what is it). Think of a EWA more like a guest in user's system.</li><br>
 <li>Everything that can be localized <b>must</b> be localized<br><hr>To keep your application snappy, sources must be pre-loaded. Ideally, your application has to be able to open offline.</li><br>
 <li>No <b>embedded content</b> should have access to the API<br><hr>The only rule that secures your application. You must open external links in user's standard browser where they are sandboxed. <br>Things like JS libraries and iframe content better be pre-loaded, so no one can inject fxAPI calls into them unnoticed.</li><br>
-<li>EWA decides itself how its UI looks. EWA's shapes are not necessarily rectangular. Minimize button might collapse, close button might minimize. We dont style your application with frames, dont tile them. We fight for EWA's beauty being untouched and we appreciate artists that bring life in their rices with our framework. <b>Don’t be scared</b> of making something unusual.</li><br>
+<li>EWA decides itself how its UI looks. EWA's shapes are not necessarily rectangular. Minimize button might collapse, close button might minimize. We dont style your application with frames, dont tile them. We fight for EWA's beauty being untouched and we appreciate artists that bring life in their rises with our framework. <b>Don’t be scared</b> of making something unusual.</li><br>
 <br></ol>
 </blockquote>
 </details>
@@ -147,7 +147,7 @@ Oh, we have.. **everything**. Except windows. You'll like it. Welcome to the com
 ## Contributing
 We are always open to new ideas, bug reports, and contributions! If you want to help build the EWA ecosystem, feel free to submit a Pull Request or open an Issue.
 
-Everyone who helps with the project getting added to [NOTICE](NOTICE)
+Everyone who helps with the project get added to [NOTICE](NOTICE)
 
 <br><br>
 
