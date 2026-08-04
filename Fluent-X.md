@@ -1,13 +1,23 @@
 # Fluent-X Native Capabilities API
-Official shorthand is fxAPI. In JS just `fx`. <br>
-`fxAPI` is fully supported by every Hotoe Engine and shipped within every EWA built with it<br>
+<blockquote>
+Official shorthand is <b>fxAPI</b>. In JS just <code>fx</code>. <br>
+<b>fxAPI</b> is fully supported by every Hotoe Engine and shipped within every EWA built with it<br>
 
-This document describes the convenient high-level API and serves as a user manual.
+This document describes the convenient high-level API and serves as a user manual. 
 
-For the exact method signatures, return structures, event names, error handling and internal behaviour, see the engine source code starting from the line `# ===== fx API =====` in [main.py](https://github.com/KartofellFirst/Hotoe-Wayland/blob/main/main.py) (Wayland).
+If you want to contribute with Hotoe, docs for you are upcoming. For now for the exact method signatures, return structures, event names, error handling and internal behaviour, see engine-contributing guidelines in Hotoe-Wayland repo. [Return to README](/)
+</blockquote>
 
-Fluent-X API v1 toolkit contains 5 categories of methods:<br>
-*Essantial* -> [visit](#basics) <br>
+
+> [!NOTE]
+> Hotoe parser might not be ideal and return unexpected behavior in very few cases of use (ignore calls or break code in complicated parts).
+>
+> In case you are facing issues with that, we provide this manual in 2 ways. Raw `fx.*` calls and high-level sugar-calls.<br>
+> You can combine both ways — using raw JS API in complicated parts and sugar-calls when you want to keep your code short and easy to read. Parser is built to work with that
+
+
+### Fluent-X API v1 toolkit contains 5 categories of methods:<br>
+*Essential* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
 <sup>communicate your JS backend to whatever other backend you want through local IPC</sup><br>
@@ -222,6 +232,11 @@ Deleting from Cache:<br>
 ---
 
 ## Other Utilities
+
+### hotkey
+> [!TIP]
+> Every EWA has to have a way to open it. PC or laptop is not a tablet. We can leave zones on screen where user hovers to open your app or make him open it manually every time he needs it, but the best approach for lightweight applications, HUDs and etc is to bind a global hotkey —
+
 Setting up a global hotkey combination:<br>
 <sup>works even when your app loses focus</sup>
 > ```javascript
@@ -246,7 +261,16 @@ Setting up a global hotkey combination:<br>
 > If event in `.then(event)` block returns with `{"method": "manually"}` - you must keep in mind the human factor it contains.
 > </details>
 
+### exec()
+> [!IMPORTANT]
+> The most powerful tool of all shown above is unarguably **exec()**. From what I see, right now we're the only ones stupid enough to bring shell into webview frontend. <br>
+> That means you have to be extra-careful with your embedded parts of the code you're using in your app. Don’t use links — pre-load static files. Make sure the app does not damage or make vulnerable the PC of yours or others.
+
+### Environment variables
 Embedding template environment variables:
 > ```javascript
 > const ipc_socket_address = {% LOCAL_BUS_ADDRESS %};
 > ```
+
+
+
