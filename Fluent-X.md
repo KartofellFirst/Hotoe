@@ -123,7 +123,7 @@ All file operations support path shortcuts like `~/` (home directory) or `$CONFI
   - `$HOME`  
 </details>
 
-Reading text files & checking existence:
+Reading text files & checking existence:<br>
 <sup>this, of course, works with global paths too</sup>
 > ```javascript
 > read("essay.txt")
@@ -236,7 +236,7 @@ Deleting from Cache:<br>
 
 ## Most powerful tool
 > [!IMPORTANT]
-> The most powerful tool of all shown above is unarguably **exec()**. From what I see, right now we're the only ones stupid enough to bring shell into webview frontend (or maybe Neutralino too?). <br>
+> The most powerful tool of all shown above is unarguably **exec()**. From what I see, right now we're the only ones stupid enough to bring shell into webview frontend. <br>
 > That means you have to be extra-careful with your embedded parts of the code you're using in your app. Don’t use links — pre-load static files. Make sure the app does not damage or make vulnerable the PC of yours or others.
 
 Executing fire-and-forget terminal command:<br>
