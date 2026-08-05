@@ -35,7 +35,7 @@ Is definitely for:
 - Someone whose frontend is already a 10k+ line document and he doesn’t want to figure out how to bolt Node or Rust on top of it
 
 You don’t learn ~~Node~~, don’t learn ~~Rust~~. **Basic JS is already enough to build an application**.<br>
-Our API is conveniently scoped on EWAs, so it is hard to find something shorter and easier.
+Our API is conveniently scoped on EWAs, so it is hard to find something shorter and easier for every one of the above.
 
 <br>
 
@@ -55,7 +55,7 @@ Here's a current situation in short:
 | :--- | :---: | :---: | :---: | :--- |
 | *Electron / Tauri / Wails* | No | **Great** | Limited | No native layer-shell / overlay support on Wayland |
 | *GTK / Qt + Bindings* | **Native** | Painful | Linux Only | Much worse DX than web-tech stacks. Wayland-chained |
-| **Hotoe** | **Native** | **Great** | **Yes** | The catch? |
+| **Hotoe** | **Native** | **Great** | **Yes** | **The catch?** |
 
 No cross-platform solution introduced except Hotoe. That leads us to the next problem
 
