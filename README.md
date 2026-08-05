@@ -6,13 +6,12 @@ The main repo of every Hotoe Engine.
 <br><br>
 
 ## Navigator: 
-What is Hotoe [1 min](#description) <br>
-When do I pick Hotoe [3 min](#is-hotoe-better) <br>
-Switching to Hotoe is not a problem [2 min](#switching-to-hotoe-is-not-a-problem) <br>
+What is Hotoe [4 min](#description) <br>
 Read the documentation [10 min](Fluent-X.md) <br>
 Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Popular questions -> [here](DeveloperQA.md) <br>
-**Pages version of the repo** -> [link](https://KartofellFirst.github.io/Hotoe)
+Showcase gallery -> [here](#switching-to-hotoe-is-not-a-problem) <br>
+<sub>recommended</sub><br>Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)
 <br><br>
 
 ## Available platforms:
@@ -23,45 +22,32 @@ Popular questions -> [here](DeveloperQA.md) <br>
 
 ## Description
 
-**Hotoe** is a lightweight cross-platform application engine designed specifically for building desktop HUDs, bars, menus, and [EWAs](PHILOSOPHY.md) using standard Web technologies.
+**Hotoe** is a lightweight application engine designed specifically for building EWAs (bars, menus, HUDs. [Learn more](EWA.md)) using standard Web technologies.
 
 It abstracts low-level display layers (like Wayland's `layer_shell` or OS-native overlay surfaces) into a unified, zero-config HTML/CSS/JS runtime, powered by [Fluent-X Native Capabilities API](Fluent-X.md).
 
-## Is Hotoe better?
-For
-- A frontend guy that just wants to build something native already
-- Newbies in programming who want to customize their systems
-- A tired appdev who’s done with big Electron/Tauri APIs and 20-minute “quick starts”
-- Someone whose frontend is already a 10k+ line file and doesn’t want to figure out how to bolt Node or Rust on top of it
+### Is Hotoe a good fit?
+Is definitely for:
+- A frontend guy who can make beautiful things, but can't run it without a browser runtime
+- Newbies in programming who want to customize their systems, but it's hard to find the best stack to learn rn
+- A tired dev who’s done with big Electron/Tauri APIs and 20-minute “quick starts” and knows he just needs an EWA
+- Someone whose frontend is already a 10k+ line document and doesn’t want to figure out how to bolt Node or Rust on top of it
 
-— YES.
-
-The main thing we want you to understand about Hotoe is that this is not just another framework. Hotoe is built **specifically** for its type of applications. 
-
-That is why our API is way shorter than whatever other frameworks can provide you with — we just don’t put any tools there that are not supposed to be.
+Our API is and conveniently scoped on EWAs, making it short and readable.
 
 You don’t learn ~~Node~~, don’t learn ~~Rust~~. **You already know basic JS and that's enough for an application**.
 
-You won't find any other framework where the whole app fits into one .html file. It's either:
-> "we have built a whole new language on top of JS"
-
-or
-
-> "build your pseudo-browser on Node to run your HTML frontend as an app"
-
-because they don’t have the same approach as ours. **Hotoe ships its standards into the industry**
-
-### Switching to Hotoe is not a problem
-You may be thinking you are losing tools by switching to Hotoe. But you don’t have to lose your `npm`... 
-
+### Commong problems
+How not to loose your npm, pip and other 
 [How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
 
 Hotoe does not require you to lock inside of its API. Hotoe built to build EWAs. And EWAs are embeddable and able to cooperate with normal apps. **We don’t restrict that, we provide toolkit for that.**
 
 Switching to Hotoe is not a problem, it's the solution for the problem.
 
-## The Alternatives
-Here is our alternatives to compare and make sure we are better:
+### Problems we take care of
+You could not know, but your usual frameworks are not built to create widgets, menus and etc..
+Here's a current situation in short:
 
 | Framework | Desktop Layer Support | DX (Web Tech) | Cross-Platform HUDs | The Catch |
 | :--- | :---: | :---: | :---: | :--- |
@@ -69,7 +55,6 @@ Here is our alternatives to compare and make sure we are better:
 | *GTK / Qt + Bindings* | **Native** | Painful | Linux Only | Much worse DX than web-tech stacks. Wayland-chained |
 | **Hotoe** | **Native** | **Great** | **Yes** | Built only for EWAs — not for standard windowed apps |
 
-That means in some cases Hotoe provides more flexibility than a normal framework.
 
 <br><br>
 
