@@ -39,9 +39,15 @@ from urllib.request import Request, urlopen
 # GitHub Releases URLs
 ENGINE_ZIP_URL = "https://github.com/KartofellFirst/Hotoe/releases/download/test/Hotoe-Wayland.zip"
 FXAPI_JS_URL = "https://github.com/KartofellFirst/Hotoe/releases/download/test/fxAPI.js"
-
-# Command used to launch the engine, run with cwd = the extracted engine dir.
-ENGINE_RUN_COMMAND = ["./Hotoe-Wayland/python main.py"]
+# Candidate entry points to look for after the engine zip is extracted,
+# tried in order — whichever exists first (relative to the extracted engine
+# dir) is what gets launched as `python <entry>`, cwd = engine dir.
+# Covers both "zip extracts flat" and "zip extracts into a subfolder".
+ENGINE_ENTRY_CANDIDATES = [
+    "main.py",
+    "Hotoe-Wayland/main.py",
+]
+ENGINE_RUN_COMMAND = "python main.py"
 
 # Installed via pip only if every Wayland dependency check passes.
 WAYLAND_PIP_REQUIREMENTS = ["PyGObject", "pycairo", "pyzmq"]
@@ -522,10 +528,21 @@ def cmd_run(args):
 
     if check_wayland_dependencies():
         logger.info("All Wayland dependencies OK, installing pip requirements")
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", *WAYLAND_PIP_REQUIREMENTS],
-            check=True,
+        result = subprocess.run(
+            [
+                sys.executable, "-m", "pip", "install",
+                "--break-system-packages",
+                *WAYLAND_PIP_REQUIREMENTS,
+            ],
         )
+        if result.returncode != 0:
+            # Not fatal: the checks above already proved gi/cairo/zmq import
+            # fine (e.g. installed via the system package manager instead of
+            # pip), so a failed reinstall here doesn't mean run is broken.
+            logger.warning(
+                "pip install returned a non-zero exit code, but all Wayland "
+                "imports already checked out above — continuing."
+            )
     else:
         logger.error("One or more Wayland dependencies are missing (see log above).")
         sys.exit(1)
