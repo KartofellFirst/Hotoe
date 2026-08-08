@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-Hotoe CLI — standalone, single-file. No pip dependencies required just to
-run this script; only `run` on Wayland pip-installs the engine's own native
-bindings (PyGObject / pycairo / pyzmq) once dependency checks pass.
+Hotoe CLI v0.1.0
 
 Usage:
     hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
-    hotoe compile [-w/--wd=path/to/dir]
+    hotoe compile [-w/--wd=path/to/dir] 
     hotoe build          (not implemented yet)
 """
 
@@ -39,7 +37,7 @@ WAYLAND_PIP_REQUIREMENTS = ["PyGObject", "pycairo", "pyzmq"]
 
 CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache", "hotoe")
 
-IGNORE_NAMES = {".git", "__pycache__", ".venv", ".hotoe", "__MACOSX", ".DS_Store"}
+IGNORE_NAMES = {".git", "__pycache__", ".venv", "venv", ".hotoe", "__MACOSX", ".DS_Store"}
 ENGINE_READY_MARKER = "_engine_ready"
 
 SHORTCUTS = {
@@ -86,8 +84,54 @@ PLATFORM = detect_platform()
 logger.info("Detected platform: %s", PLATFORM)
 
 
+RUN_SH_TEMPLATE = """#!/usr/bin/env bash
+set -e
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$DIR"
 
-VENV_DIRNAME = "venv"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+    echo "Error: python3 not found on PATH. Install Python 3 and try again." >&2
+    exit 1
+fi
+
+check_native() {
+    "$PYTHON_BIN" -c "
+import gi, sys
+gi.require_version('Gtk', '4.0')
+gi.require_version('Gtk4LayerShell', '1.0')
+gi.require_version('WebKit', '6.0')
+from gi.repository import Gtk, Gtk4LayerShell, WebKit
+" >/dev/null 2>&1
+}
+
+check_pip_pkgs() {
+    "$PYTHON_BIN" -c "import gi, cairo, zmq" >/dev/null 2>&1
+}
+
+if ! check_pip_pkgs; then
+    echo "Installing missing Python packages (PyGObject, pycairo, pyzmq)..."
+    "$PYTHON_BIN" -m pip install --user PyGObject pycairo pyzmq \
+        || "$PYTHON_BIN" -m pip install --user --break-system-packages PyGObject pycairo pyzmq \
+        || {
+            echo "Could not install required packages automatically." >&2
+            echo "Install manually: PyGObject, pycairo, pyzmq" >&2
+            exit 1
+        }
+fi
+
+if ! check_native; then
+    echo "Error: missing system GTK4 / Gtk4LayerShell / WebKit6 libraries." >&2
+    echo "These come from your OS package manager, e.g.:" >&2
+    echo "  Arch:   pacman -S gtk4-layer-shell webkitgtk-6.0" >&2
+    echo "  Debian: apt install gir1.2-gtk-4.0 gir1.2-webkit-6.0 libgtk4-layer-shell0" >&2
+    exit 1
+fi
+
+exec "$PYTHON_BIN" main.py "$@"
+"""
+
 
 def _venv_dir():
     return os.path.join(CACHE_DIR, PLATFORM + "-venv")
@@ -233,22 +277,6 @@ def _check_ctypes_lib(lib_name):
         return True, None
     except Exception as e: return False, str(e)
 
-def _check_import(module_name):
-    try:
-        importlib.import_module(module_name)
-        return True, None
-    except Exception as e: return False, str(e)
-
-def _check_gi_stack():
-    try:
-        import gi
-        gi.require_version("Gtk", "4.0")
-        gi.require_version("Gtk4LayerShell", "1.0")
-        gi.require_version("WebKit", "6.0")
-        from gi.repository import Gtk, Gio, Gdk, Gtk4LayerShell, WebKit  
-        return True, None
-    except Exception as e: return False, str(e)
-
 _BINDING_CHECK_SCRIPT = r"""
 import json, importlib
 results = {}
@@ -270,54 +298,6 @@ check("gi_stack", _gi_stack)
 check("cairo", lambda: importlib.import_module("cairo"))
 check("zmq", lambda: importlib.import_module("zmq"))
 print(json.dumps(results))
-"""
-
-RUN_SH_TEMPLATE = """#!/usr/bin/env bash
-set -e
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$DIR"
-
-PYTHON_BIN="${PYTHON_BIN:-python3}"
-
-if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
-    echo "Error: python3 not found on PATH. Install Python 3 and try again." >&2
-    exit 1
-fi
-
-check_native() {
-    "$PYTHON_BIN" -c "
-import gi, sys
-gi.require_version('Gtk', '4.0')
-gi.require_version('Gtk4LayerShell', '1.0')
-gi.require_version('WebKit', '6.0')
-from gi.repository import Gtk, Gtk4LayerShell, WebKit
-" >/dev/null 2>&1
-}
-
-check_pip_pkgs() {
-    "$PYTHON_BIN" -c "import gi, cairo, zmq" >/dev/null 2>&1
-}
-
-if ! check_pip_pkgs; then
-    echo "Installing missing Python packages (PyGObject, pycairo, pyzmq)..."
-    "$PYTHON_BIN" -m pip install --user PyGObject pycairo pyzmq \
-        || "$PYTHON_BIN" -m pip install --user --break-system-packages PyGObject pycairo pyzmq \
-        || {
-            echo "Could not install required packages automatically." >&2
-            echo "Install manually: PyGObject, pycairo, pyzmq" >&2
-            exit 1
-        }
-fi
-
-if ! check_native; then
-    echo "Error: missing system GTK4 / Gtk4LayerShell / WebKit6 libraries." >&2
-    echo "These come from your OS package manager, e.g.:" >&2
-    echo "  Arch:   pacman -S gtk4-layer-shell webkitgtk-6.0" >&2
-    echo "  Debian: apt install gir1.2-gtk-4.0 gir1.2-webkit-6.0 libgtk4-layer-shell0" >&2
-    exit 1
-fi
-
-exec "$PYTHON_BIN" main.py "$@"
 """
 
 def check_python_bindings(venv_python):
@@ -354,25 +334,6 @@ def check_native_library():
     else:
         logger.error("[FAIL] libgtk4-layer-shell.so -> %s", error)
     return ok
-# def check_wayland_dependencies():
-#     """checks every dependency individually, logs [OK]/[FAIL] for each, returns True iff all pass."""
-#     checks = [
-#         ("libgtk4-layer-shell.so", lambda: _check_ctypes_lib("libgtk4-layer-shell.so")),
-#         ("gi (PyGObject)", lambda: _check_import("gi")),
-#         ("gi.repository: Gtk4 / Gtk4LayerShell / WebKit6", _check_gi_stack),
-#         ("cairo (pycairo)", lambda: _check_import("cairo")),
-#         ("zmq (pyzmq)", lambda: _check_import("zmq")),
-#     ]
-
-#     all_ok = True
-#     for label, check_fn in checks:
-#         ok, error = check_fn()
-#         if ok: logger.info("[OK]   %s", label)
-#         else:
-#             all_ok = False
-#             logger.error("[FAIL] %s -> %s", label, error)
-
-#     return all_ok
 
 # ============================================================
 # Parse and compile
@@ -646,7 +607,7 @@ def main():
     run_p.add_argument("-s", "--set_main", dest="set_main", help="set main file name")
     run_p.set_defaults(func=cmd_run)
 
-    compile_p = sub.add_parser("compile", help="compile the app into app.zip")
+    compile_p = sub.add_parser("compile", help="compile the app into app.zip with run.sh file")
     compile_p.add_argument("-w", "--wd", dest="wd", help="working directory path")
     compile_p.set_defaults(func=cmd_compile)
 
