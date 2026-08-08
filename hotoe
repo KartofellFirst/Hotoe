@@ -39,8 +39,7 @@ WAYLAND_PIP_REQUIREMENTS = ["PyGObject", "pycairo", "pyzmq"]
 
 CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache", "hotoe")
 
-IGNORE_NAMES = {".git", "__pycache__", ".venv"}
-
+IGNORE_NAMES = {".git", "__pycache__", ".venv", ".hotoe", "__MACOSX", ".DS_Store"}
 ENGINE_READY_MARKER = "_engine_ready"
 
 SHORTCUTS = {
@@ -80,8 +79,43 @@ def detect_platform():
     if system == "Darwin": return "macos"
     return "unknown"
 
+logger = logging.getLogger("hotoe")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
 PLATFORM = detect_platform()
 logger.info("Detected platform: %s", PLATFORM)
+
+
+
+VENV_DIRNAME = "venv"
+
+def _venv_dir():
+    return os.path.join(CACHE_DIR, PLATFORM + "-venv")
+
+def _venv_python():
+    bin_name = "Scripts/python.exe" if PLATFORM == "windows" else "bin/python"
+    return os.path.join(_venv_dir(), bin_name)
+
+def ensure_wayland_venv():
+    venv_python = _venv_python()
+    if os.path.isfile(venv_python):
+        return venv_python
+    venv_dir = _venv_dir()
+    logger.info("Creating venv at %s", venv_dir)
+    subprocess.run(
+        [sys.executable, "-m", "venv", "--system-site-packages", venv_dir],
+        check=True,
+    )
+    return venv_python
+
+def install_wayland_pip_requirements(venv_python):
+    logger.info("Installing pip requirements into venv")
+    subprocess.run(
+        [venv_python, "-m", "pip", "install", *WAYLAND_PIP_REQUIREMENTS],
+        check=True,
+    )
+
+
 
 # ============================================================
 # Downloading 
@@ -108,14 +142,18 @@ def _download(url, dest_path):
             os.remove(tmp_path)
         raise
 
-def download_fxapi():
-    dest_path = os.path.join(CACHE_DIR, PLATFORM, "fxAPI.js")
-    if os.path.exists(dest_path): return dest_path 
-    _download(FXAPI_JS_URL[PLATFORM], dest_path)
-    return dest_path
-
-def _engine_is_ready(eng_dir):
-    return os.path.isfile(os.path.join(eng_dir, ENGINE_READY_MARKER))
+def _flatten_single_root(extract_dir):
+    junk = {"__MACOSX", "_engine_download.zip", ENGINE_READY_MARKER}
+    entries = [e for e in os.listdir(extract_dir) if e not in junk]
+    if len(entries) == 1:
+        root = os.path.join(extract_dir, entries[0])
+        if os.path.isdir(root):
+            for name in os.listdir(root):
+                shutil.move(os.path.join(root, name), os.path.join(extract_dir, name))
+            os.rmdir(root)
+    macosx = os.path.join(extract_dir, "__MACOSX")
+    if os.path.isdir(macosx):
+        shutil.rmtree(macosx)
 
 def download_engine(force=False):
     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
@@ -131,12 +169,43 @@ def download_engine(force=False):
     with zipfile.ZipFile(zip_path, "r") as zf:
         zf.extractall(eng_dir)
     os.remove(zip_path)
+    _flatten_single_root(eng_dir)
 
     with open(os.path.join(eng_dir, ENGINE_READY_MARKER), "w") as f:
         f.write("ok")
 
     download_fxapi()
     return eng_dir
+
+def download_fxapi():
+    dest_path = os.path.join(CACHE_DIR, PLATFORM, "fxAPI.js")
+    if os.path.exists(dest_path): return dest_path 
+    _download(FXAPI_JS_URL[PLATFORM], dest_path)
+    return dest_path
+
+def _engine_is_ready(eng_dir):
+    return os.path.isfile(os.path.join(eng_dir, ENGINE_READY_MARKER))
+
+# def download_engine(force=False):
+#     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
+#     if force and os.path.isdir(eng_dir):
+#         shutil.rmtree(eng_dir)
+#     if _engine_is_ready(eng_dir):
+#         return eng_dir
+# 
+#     os.makedirs(eng_dir, exist_ok=True)
+#     zip_path = os.path.join(eng_dir, "_engine_download.zip")
+#     _download(ENGINE_ZIP_URL[PLATFORM], zip_path)
+# 
+#     with zipfile.ZipFile(zip_path, "r") as zf:
+#         zf.extractall(eng_dir)
+#     os.remove(zip_path)
+# 
+#     with open(os.path.join(eng_dir, ENGINE_READY_MARKER), "w") as f:
+#         f.write("ok")
+# 
+#     download_fxapi()
+#     return eng_dir
 
 # def download_engine(force=False):
 #     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
@@ -180,31 +249,111 @@ def _check_gi_stack():
         return True, None
     except Exception as e: return False, str(e)
 
-def check_native_libraries():
+_BINDING_CHECK_SCRIPT = r"""
+import json, importlib
+results = {}
+def check(name, fn):
+    try:
+        fn()
+        results[name] = None
+    except Exception as e:
+        results[name] = str(e)
+
+check("gi", lambda: importlib.import_module("gi"))
+def _gi_stack():
+    import gi
+    gi.require_version("Gtk", "4.0")
+    gi.require_version("Gtk4LayerShell", "1.0")
+    gi.require_version("WebKit", "6.0")
+    from gi.repository import Gtk, Gio, Gdk, Gtk4LayerShell, WebKit
+check("gi_stack", _gi_stack)
+check("cairo", lambda: importlib.import_module("cairo"))
+check("zmq", lambda: importlib.import_module("zmq"))
+print(json.dumps(results))
+"""
+
+RUN_SH_TEMPLATE = """#!/usr/bin/env bash
+set -e
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$DIR"
+
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+    echo "Error: python3 not found on PATH. Install Python 3 and try again." >&2
+    exit 1
+fi
+
+check_native() {
+    "$PYTHON_BIN" -c "
+import gi, sys
+gi.require_version('Gtk', '4.0')
+gi.require_version('Gtk4LayerShell', '1.0')
+gi.require_version('WebKit', '6.0')
+from gi.repository import Gtk, Gtk4LayerShell, WebKit
+" >/dev/null 2>&1
+}
+
+check_pip_pkgs() {
+    "$PYTHON_BIN" -c "import gi, cairo, zmq" >/dev/null 2>&1
+}
+
+if ! check_pip_pkgs; then
+    echo "Installing missing Python packages (PyGObject, pycairo, pyzmq)..."
+    "$PYTHON_BIN" -m pip install --user PyGObject pycairo pyzmq \
+        || "$PYTHON_BIN" -m pip install --user --break-system-packages PyGObject pycairo pyzmq \
+        || {
+            echo "Could not install required packages automatically." >&2
+            echo "Install manually: PyGObject, pycairo, pyzmq" >&2
+            exit 1
+        }
+fi
+
+if ! check_native; then
+    echo "Error: missing system GTK4 / Gtk4LayerShell / WebKit6 libraries." >&2
+    echo "These come from your OS package manager, e.g.:" >&2
+    echo "  Arch:   pacman -S gtk4-layer-shell webkitgtk-6.0" >&2
+    echo "  Debian: apt install gir1.2-gtk-4.0 gir1.2-webkit-6.0 libgtk4-layer-shell0" >&2
+    exit 1
+fi
+
+exec "$PYTHON_BIN" main.py "$@"
+"""
+
+def check_python_bindings(venv_python):
+    proc = subprocess.run(
+        [venv_python, "-c", _BINDING_CHECK_SCRIPT],
+        capture_output=True, text=True,
+    )
+    try:
+        results = json.loads(proc.stdout.strip().splitlines()[-1])
+    except Exception:
+        logger.error("[FAIL] could not parse binding check output -> %s", proc.stderr)
+        return False
+
+    labels = {
+        "gi": "gi (PyGObject)",
+        "gi_stack": "gi.repository: Gtk4 / Gtk4LayerShell / WebKit6",
+        "cairo": "cairo (pycairo)",
+        "zmq": "zmq (pyzmq)",
+    }
+    all_ok = True
+    for key, label in labels.items():
+        err = results.get(key)
+        if err is None:
+            logger.info("[OK]   %s", label)
+        else:
+            all_ok = False
+            logger.error("[FAIL] %s -> %s", label, err)
+    return all_ok
+
+def check_native_library():
     ok, error = _check_ctypes_lib("libgtk4-layer-shell.so")
     if ok:
         logger.info("[OK]   libgtk4-layer-shell.so")
     else:
         logger.error("[FAIL] libgtk4-layer-shell.so -> %s", error)
     return ok
-
-
-def check_python_bindings():
-    checks = [
-        ("gi (PyGObject)", lambda: _check_import("gi")),
-        ("gi.repository: Gtk4 / Gtk4LayerShell / WebKit6", _check_gi_stack),
-        ("cairo (pycairo)", lambda: _check_import("cairo")),
-        ("zmq (pyzmq)", lambda: _check_import("zmq")),
-    ]
-    all_ok = True
-    for label, check_fn in checks:
-        ok, error = check_fn()
-        if ok:
-            logger.info("[OK]   %s", label)
-        else:
-            all_ok = False
-            logger.error("[FAIL] %s -> %s", label, error)
-    return all_ok
 # def check_wayland_dependencies():
 #     """checks every dependency individually, logs [OK]/[FAIL] for each, returns True iff all pass."""
 #     checks = [
@@ -434,20 +583,27 @@ def cmd_run(args):
     project_dir = args.wd or os.getcwd()
 
     if PLATFORM == "linux-wayland":
-        download_engine()
-        if not check_native_libraries():
-            logger.error("Please, make sure you installed every required package")
+        engine_dir = download_engine()
+
+        if not check_native_library():
+            logger.error(
+                "Missing native dependency libgtk4-layer-shell.so. "
+                "Install it via your system package manager first."
+            )
             sys.exit(1)
 
-        logger.info("Running pip...")
-        subprocess.run([sys.executable, "-m", "pip", "install", *WAYLAND_PIP_REQUIREMENTS], check=True)
-        logger.info("pip has finished the job >>> next: last final check")
+        venv_python = ensure_wayland_venv()
+        install_wayland_pip_requirements(venv_python)
 
-        if not check_python_bindings():
-            logger.error("After pip install some libraries has not been installed. (Check logs above)")
+        if not check_python_bindings(venv_python):
+            logger.error(
+                "Some bindings are still missing after pip install (see log above). "
+                "GI typelibs (Gtk4LayerShell/WebKit6) usually come from your system "
+                "package manager, e.g.: pacman -S gtk4-layer-shell webkitgtk-6.0"
+            )
             sys.exit(1)
-        
-        stage_engine_into_project(
+
+        output_dir = stage_engine_into_project(
             project_dir=project_dir,
             platform=PLATFORM,
             debug=args.debug,
@@ -455,12 +611,12 @@ def cmd_run(args):
         )
 
         logger.info("Launching engine")
-        subprocess.run(ENGINE_RUN_COMMAND[PLATFORM], shell=True, check=True)
+        subprocess.run([venv_python, "main.py"], cwd=output_dir, check=True)
         return
-    
+
     logger.error(
         "Only Wayland is supported right now (detected: %s). "
-        "Other PLATFORMforms aren't implemented yet.",
+        "Other platforms aren't implemented yet.",
         PLATFORM,
     )
     sys.exit(1)
@@ -469,8 +625,13 @@ def cmd_compile(args):
     project_dir = args.wd or os.getcwd()
     download_engine()
     output = stage_engine_into_project(project_dir=project_dir, platform=PLATFORM)
-    shutil.make_archive('app', 'zip', output)
-    logger.info("Compilation finished successfully -> %s", str(os.path.join(project_dir, "app.zip")))
+    path = os.path.join(output, "run.sh")
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(RUN_SH_TEMPLATE)
+    os.chmod(path, 0o755)
+    archive_base = os.path.join(project_dir, "app")
+    archive_path = shutil.make_archive(archive_base, "zip", output)
+    logger.info("Compilation finished successfully -> %s", archive_path)
 
 def cmd_build(args):
     print("`hotoe build` is not implemented yet.")
