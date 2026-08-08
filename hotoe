@@ -23,10 +23,10 @@ from random import randint
 from urllib.request import Request, urlopen
 
 ENGINE_ZIP_URL = {
-    "linux-wayland": "https://github.com/KartofellFirst/Hotoe/releases/download/test/Hotoe-Wayland.zip"
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.0.0/Hotoe-Wayland.zip"
 }
 FXAPI_JS_URL = {
-    "linux-wayland": "https://github.com/KartofellFirst/Hotoe/releases/download/test/fxAPI.js"
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.0.0/fxAPI.js"
 }
 
 ENGINE_RUN_COMMAND = {
