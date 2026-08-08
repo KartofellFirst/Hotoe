@@ -51,14 +51,18 @@ Recalculating input regions after DOM updates:<br>
 > <pre><nobr>fx.recalculateInputRegions()</nobr></pre></details>
 
 Closing the application:
-
 > ```javascript
 > CLOSE()
 > ```
-> 
 > <details><summary>parses into (click):</summary>
 > <pre><nobr>fx.closeApplication()</nobr></pre></details> 
 
+Setting up application properties:<br>
+<sup>You should absolutely add those `meta` tags to your `index.html`</sup>
+> ```html
+> <meta name="developer" content="my_name">
+> <meta name="id" content="com.hotoe.dummy-app">
+> ```
 
 Managing focus events globally: <br>
 <sup>when any of your input regions is receives or looses the pointer focus, this triggers</sup>
