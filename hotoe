@@ -5,16 +5,9 @@ run this script; only `run` on Wayland pip-installs the engine's own native
 bindings (PyGObject / pycairo / pyzmq) once dependency checks pass.
 
 Usage:
-    ./hotoe run [-debug]
-    ./hotoe compile [-debug]
-    ./hotoe build          (not implemented yet)
-
-Install (optional, Linux/macOS):
-    chmod +x hotoe
-    ./hotoe run
-
-Or just:
-    python3 hotoe run
+    hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
+    hotoe compile [-w/--wd=path/to/dir]
+    hotoe build          (not implemented yet)
 """
 
 import argparse
@@ -28,38 +21,27 @@ import shutil
 import subprocess
 import sys
 import zipfile
-from datetime import datetime, timezone
 from random import randint
 from urllib.request import Request, urlopen
 
-# ============================================================
-# CONFIG — edit these to point at your real release assets
-# ============================================================
+ENGINE_ZIP_URL = {
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe/releases/download/test/Hotoe-Wayland.zip"
+}
+FXAPI_JS_URL = {
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe/releases/download/test/fxAPI.js"
+}
 
-# GitHub Releases URLs
-ENGINE_ZIP_URL = "https://github.com/KartofellFirst/Hotoe/releases/download/test/Hotoe-Wayland.zip"
-FXAPI_JS_URL = "https://github.com/KartofellFirst/Hotoe/releases/download/test/fxAPI.js"
-# Candidate entry points to look for after the engine zip is extracted,
-# tried in order — whichever exists first (relative to the extracted engine
-# dir) is what gets launched as `python <entry>`, cwd = engine dir.
-# Covers both "zip extracts flat" and "zip extracts into a subfolder".
-ENGINE_ENTRY_CANDIDATES = [
-    "main.py",
-    "Hotoe-Wayland/main.py",
-]
-ENGINE_RUN_COMMAND = "python main.py"
+ENGINE_RUN_COMMAND = {
+    "linux-wayland": ".hotoe/python main.py"
+}
 
-# Installed via pip only if every Wayland dependency check passes.
 WAYLAND_PIP_REQUIREMENTS = ["PyGObject", "pycairo", "pyzmq"]
 
 CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache", "hotoe")
-ENGINE_DIR = os.path.join(CACHE_DIR, "engine")
 
-IGNORE_NAMES = {".git", "__pycache__", ".venv", "node_modules", "Hotoe.zip", ".hotoe-build"}
+IGNORE_NAMES = {".git", "__pycache__", ".venv"}
 
-# ============================================================
-# Parser rewrite tables (from the original parse_app.py)
-# ============================================================
+ENGINE_READY_MARKER = "_engine_ready"
 
 SHORTCUTS = {
     "push": "fx.pushString",
@@ -87,133 +69,133 @@ LISTENERS = {
 
 logger = logging.getLogger("hotoe")
 
-
-# ============================================================
-# Platform detection
-# ============================================================
-
 def detect_platform():
-    """Returns 'linux-wayland', 'linux-x11', 'windows', 'macos', or 'unknown'."""
+    """'linux-wayland'/'linux-x11'/'windows'/'macos'/'unknown'"""
     system = platform.system()
-
     if system == "Linux":
-        if os.environ.get("XDG_SESSION_TYPE", "").lower() == "wayland" or os.environ.get(
-            "WAYLAND_DISPLAY"
-        ):
+        if os.environ.get("XDG_SESSION_TYPE", "").lower() == "wayland" or os.environ.get("WAYLAND_DISPLAY"):
             return "linux-wayland"
         return "linux-x11"
-
-    if system == "Windows":
-        return "windows"
-
-    if system == "Darwin":
-        return "macos"
-
+    if system == "Windows": return "windows"
+    if system == "Darwin": return "macos"
     return "unknown"
 
+PLATFORM = detect_platform()
+logger.info("Detected platform: %s", PLATFORM)
 
 # ============================================================
-# Downloading (stdlib only — no `requests` dependency)
+# Downloading 
 # ============================================================
 
+# def _download(url, dest_path):
+#     logger.info("Downloading %s -> %s", url, dest_path)
+#     os.makedirs(os.path.dirname(dest_path) or ".", exist_ok=True)
+#     req = Request(url, headers={"User-Agent": "hotoe-cli"})
+#     with urlopen(req, timeout=60) as resp, open(dest_path, "wb") as out:
+#         shutil.copyfileobj(resp, out)
 def _download(url, dest_path):
     logger.info("Downloading %s -> %s", url, dest_path)
-    os.makedirs(os.path.dirname(dest_path) or ".", exist_ok=True)
+    dest_dir = os.path.dirname(dest_path) or "."
+    os.makedirs(dest_dir, exist_ok=True)
+    tmp_path = dest_path + ".part"
     req = Request(url, headers={"User-Agent": "hotoe-cli"})
-    with urlopen(req, timeout=60) as resp, open(dest_path, "wb") as out:
-        shutil.copyfileobj(resp, out)
+    try:
+        with urlopen(req, timeout=60) as resp, open(tmp_path, "wb") as out:
+            shutil.copyfileobj(resp, out)
+        os.replace(tmp_path, dest_path)  
+    except Exception:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+        raise
 
-
-def download_fxapi(dest_path=None):
-    """Downloads fxAPI.js on its own (used by both `run` and `compile`)."""
-    if dest_path is None:
-        dest_path = os.path.join(ENGINE_DIR, "fxAPI.js")
-    _download(FXAPI_JS_URL, dest_path)
+def download_fxapi():
+    dest_path = os.path.join(CACHE_DIR, PLATFORM, "fxAPI.js")
+    if os.path.exists(dest_path): return dest_path 
+    _download(FXAPI_JS_URL[PLATFORM], dest_path)
     return dest_path
 
+def _engine_is_ready(eng_dir):
+    return os.path.isfile(os.path.join(eng_dir, ENGINE_READY_MARKER))
 
 def download_engine(force=False):
-    """
-    Downloads engine.zip, extracts it into ENGINE_DIR, and downloads
-    fxAPI.js into ENGINE_DIR/fxAPI.js. Used by `run` only.
-    """
-    if force and os.path.isdir(ENGINE_DIR):
-        shutil.rmtree(ENGINE_DIR)
+    eng_dir = os.path.join(CACHE_DIR, PLATFORM)
+    if force and os.path.isdir(eng_dir):
+        shutil.rmtree(eng_dir)
+    if _engine_is_ready(eng_dir):
+        return eng_dir
 
-    os.makedirs(ENGINE_DIR, exist_ok=True)
-
-    zip_path = os.path.join(ENGINE_DIR, "_engine_download.zip")
-    _download(ENGINE_ZIP_URL, zip_path)
+    os.makedirs(eng_dir, exist_ok=True)
+    zip_path = os.path.join(eng_dir, "_engine_download.zip")
+    _download(ENGINE_ZIP_URL[PLATFORM], zip_path)
 
     with zipfile.ZipFile(zip_path, "r") as zf:
-        zf.extractall(ENGINE_DIR)
+        zf.extractall(eng_dir)
     os.remove(zip_path)
 
-    download_fxapi(os.path.join(ENGINE_DIR, "fxAPI.js"))
+    with open(os.path.join(eng_dir, ENGINE_READY_MARKER), "w") as f:
+        f.write("ok")
 
-    return ENGINE_DIR
+    download_fxapi()
+    return eng_dir
 
+# def download_engine(force=False):
+#     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
+#     if force and os.path.isdir(eng_dir): shutil.rmtree(eng_dir)
+#     if os.path.exists(eng_dir): return eng_dir
+
+#     os.makedirs(eng_dir, exist_ok=True)
+#     zip_path = os.path.join(eng_dir, "_engine_download.zip")
+#     _download(ENGINE_ZIP_URL[PLATFORM], zip_path)
+
+#     with zipfile.ZipFile(zip_path, "r") as zf:
+#         zf.extractall(eng_dir)
+#     os.remove(zip_path)
+#     download_fxapi()
+#     return eng_dir
 
 # ============================================================
 # Wayland dependency checks
 # ============================================================
-# Based on:
-#   from ctypes import CDLL
-#   try: CDLL('libgtk4-layer-shell.so')
-#   except: print("WTF?")
-#   import gi
-#   gi.require_version('Gtk', '4.0')
-#   gi.require_version('Gtk4LayerShell', '1.0')
-#   gi.require_version('WebKit', '6.0')
-#   from gi.repository import Gtk, Gio, Gdk, Gtk4LayerShell, WebKit
-#   import cairo
-#   import zmq
-#
-# stdlib-only imports (sys/os/json/threading/...) are skipped — never the
-# actual point of failure.
 
 def _check_ctypes_lib(lib_name):
     from ctypes import CDLL
-
     try:
         CDLL(lib_name)
         return True, None
-    except Exception as e:  # noqa: BLE001
-        return False, str(e)
-
+    except Exception as e: return False, str(e)
 
 def _check_import(module_name):
     try:
         importlib.import_module(module_name)
         return True, None
-    except Exception as e:  # noqa: BLE001
-        return False, str(e)
-
+    except Exception as e: return False, str(e)
 
 def _check_gi_stack():
     try:
         import gi
-
         gi.require_version("Gtk", "4.0")
         gi.require_version("Gtk4LayerShell", "1.0")
         gi.require_version("WebKit", "6.0")
-        from gi.repository import Gtk, Gio, Gdk, Gtk4LayerShell, WebKit  # noqa: F401
-
+        from gi.repository import Gtk, Gio, Gdk, Gtk4LayerShell, WebKit  
         return True, None
-    except Exception as e:  # noqa: BLE001
-        return False, str(e)
+    except Exception as e: return False, str(e)
+
+def check_native_libraries():
+    ok, error = _check_ctypes_lib("libgtk4-layer-shell.so")
+    if ok:
+        logger.info("[OK]   libgtk4-layer-shell.so")
+    else:
+        logger.error("[FAIL] libgtk4-layer-shell.so -> %s", error)
+    return ok
 
 
-def check_wayland_dependencies():
-    """Checks every dependency individually, logs [OK]/[FAIL] for each, returns True iff all pass."""
+def check_python_bindings():
     checks = [
-        ("libgtk4-layer-shell.so", lambda: _check_ctypes_lib("libgtk4-layer-shell.so")),
         ("gi (PyGObject)", lambda: _check_import("gi")),
         ("gi.repository: Gtk4 / Gtk4LayerShell / WebKit6", _check_gi_stack),
         ("cairo (pycairo)", lambda: _check_import("cairo")),
         ("zmq (pyzmq)", lambda: _check_import("zmq")),
     ]
-
     all_ok = True
     for label, check_fn in checks:
         ok, error = check_fn()
@@ -222,20 +204,38 @@ def check_wayland_dependencies():
         else:
             all_ok = False
             logger.error("[FAIL] %s -> %s", label, error)
-
     return all_ok
+# def check_wayland_dependencies():
+#     """checks every dependency individually, logs [OK]/[FAIL] for each, returns True iff all pass."""
+#     checks = [
+#         ("libgtk4-layer-shell.so", lambda: _check_ctypes_lib("libgtk4-layer-shell.so")),
+#         ("gi (PyGObject)", lambda: _check_import("gi")),
+#         ("gi.repository: Gtk4 / Gtk4LayerShell / WebKit6", _check_gi_stack),
+#         ("cairo (pycairo)", lambda: _check_import("cairo")),
+#         ("zmq (pyzmq)", lambda: _check_import("zmq")),
+#     ]
 
+#     all_ok = True
+#     for label, check_fn in checks:
+#         ok, error = check_fn()
+#         if ok: logger.info("[OK]   %s", label)
+#         else:
+#             all_ok = False
+#             logger.error("[FAIL] %s -> %s", label, error)
+
+#     return all_ok
 
 # ============================================================
-# Parser (adapted from the original parse_app.py)
+# Parse and compile
 # ============================================================
 
 class AppParser:
-    def __init__(self, source_dir, fxapi_path, output_path):
-        self.source_dir = source_dir
-        self.input_file = os.path.join(source_dir, "index.html")
+    def __init__(self, project_dir, fxapi_path, input_file, debug):
+        self.source_dir = project_dir
+        self.input_file = os.path.join(project_dir, input_file)
         self.fxapi_path = fxapi_path
-        self.output_path = output_path
+        self.output_dir = os.path.join(project_dir, ".hotoe")
+        self.debug_mode = debug
         self.content = ""
         self.fxAPI = ""
 
@@ -247,28 +247,18 @@ class AppParser:
 
         self._inline_external_assets()
 
-        if "<script>" not in self.content:
-            self.content = self.content.replace("</body>", "<script></script></body>")
-        if "<head>" not in self.content:
-            self.content = self.content.replace("<body>", "<head></head><body>")
+        if "<script>" not in self.content: self.content = self.content.replace("</body>", "<script></script></body>")
+        if "<head>" not in self.content: self.content = self.content.replace("<body>", "<head></head><body>")
 
         self.content = re.sub(r"<html[^>]*>", "<html>", self.content, flags=re.IGNORECASE)
-        self.content = self.content.replace(
-            "</head>", "<style>html { background: rgba(0,0,0,0.01); }</style>"
-        )
 
-        self.content = self.content.replace(
-            "<script>", f"\n<script>\n{self.fxAPI}\n</script>\n<script>"
-        )
+        self.content = self.content.replace("</head>", "<style>html { background: rgba(0,0,0,0.01); }</style>")
+
+        self.content = self.content.replace("<script>", f"\n<script>\n{self.fxAPI}\n</script>\n<script>")
 
         self.content = self.content.replace("{% LOCAL_BUS_ADDRESS %}", "ipc://hotoe-bus.ipc")
 
-        # IRR -> input region regulator. SIR -> set input region
-        self.content = re.sub(
-            rf"<\s*(\w+)([^>]*?)\s+{re.escape('SIR')}([^>]*)>",
-            r'<\1\2 class="hotoe-input-region-regulator-box"\3>',
-            self.content,
-        )
+        self.content = re.sub(rf"<\s*(\w+)([^>]*?)\s+{re.escape('SIR')}([^>]*)>", r'<\1\2 class="hotoe-input-region-regulator-box"\3>', self.content)
 
         for key, val in SHORTCUTS.items():
             self._smart_method_replace(key, val)
@@ -276,12 +266,21 @@ class AppParser:
         for key, val in LISTENERS.items():
             self._smart_listener_replace(key, val)
 
-        os.makedirs(os.path.dirname(self.output_path) or ".", exist_ok=True)
-        with open(self.output_path, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "execute", "hotoe-execute.html"), "w", encoding="utf-8") as f:
             f.write(self.content)
+        with open(os.path.join(self.output_dir, "manifest.json"), "w", encoding="utf-8") as mf:
+            mf.write(self._create_manifest())
+        return self.output_dir
 
-        logger.info("Parsed app written to %s", self.output_path)
-        return self.output_path
+    def _create_manifest(self):
+        meta_tags = re.findall(r'<meta\s+name=["\']([^"\']+)["\']\s+content=["\']([^"\']+)["\']\s*/?>', self.content)
+        rid = "".join(str(randint(0, 99)) for _ in range(10))
+        result = { "id": f"com.hotoe.dummy-{rid}", "developer": "sleepyhead_forgot_to_set_meta_tags", "debug": self.debug_mode }
+
+        for name, content in meta_tags:
+            if name == 'id': result['id'] = content
+            elif name == 'developer': result['developer'] = content
+        return json.dumps(result)
 
     def _smart_method_replace(self, replace, replaced):
         pattern = rf"(?<!\.)\b{re.escape(replace)}\s*\("
@@ -381,8 +380,7 @@ class AppParser:
         content = re.sub(
             r'<script\s+src=["\']([^"\']+)["\']\s*(?:type=["\']text/javascript["\'])?\s*></script>',
             inline_script,
-            content,
-        )
+        content)
 
         def inline_style(match):
             href = match.group(1)
@@ -398,19 +396,9 @@ class AppParser:
         content = re.sub(
             r'<link\s+rel=["\']stylesheet["\']\s+href=["\']([^"\']+)["\']\s*/?>',
             inline_style,
-            content,
-        )
+        content)
 
         self.content = content
-
-
-def parse_app(source_dir, fxapi_path, output_path):
-    return AppParser(source_dir, fxapi_path, output_path).parse()
-
-
-# ============================================================
-# Manifest + packaging
-# ============================================================
 
 def _copy_tree(src, dst):
     os.makedirs(dst, exist_ok=True)
@@ -422,171 +410,83 @@ def _copy_tree(src, dst):
         if os.path.isdir(s):
             shutil.copytree(s, d, dirs_exist_ok=True, ignore=shutil.ignore_patterns(*IGNORE_NAMES))
         else:
-            shutil.copy2(s, d)
+            try: shutil.copy2(s, d)
+            except: logger.warning("%s were ignored while copying project files", s)
 
+def stage_engine_into_project(project_dir, platform, input_file="index.html", debug=False):
+    fxapi_path = os.path.join(CACHE_DIR, platform, "fxAPI.js")
+    engine_dir = os.path.join(CACHE_DIR, platform)
+    output_dir = os.path.join(project_dir, ".hotoe")
+    execute_dir = os.path.join(project_dir, ".hotoe", "execute")
+    if os.path.isdir(output_dir): shutil.rmtree(output_dir)
 
-def build_manifest(debug=False):
-    """
-    Matches the real Hotoe manifest.json format:
-        { "id": "com.application.my", "debug": true, ... }
-    """
-    app_id = "".join(str(randint(0, 99)) for _ in range(10))
-    return {
-        "id": "com.application" + app_id,
-        "debug": debug,
-        "compiled_at": datetime.now(timezone.utc).isoformat(),
-    }
-
-
-def stage_project_into_engine(project_dir, engine_dir, fxapi_path, debug=False):
-    """
-    `run`: copies every file from `project_dir` (cwd the CLI was called
-    from) into <engine_dir>/execute, parses index.html there, and writes
-    manifest.json at <engine_dir>/manifest.json — matching:
-        dir/manifest.json
-        dir/execute/hotoe-execute.html
-        dir/execute/<application assets>
-        dir/<engine files>
-    """
-    execute_dir = os.path.join(engine_dir, "execute")
-    if os.path.isdir(execute_dir):
-        shutil.rmtree(execute_dir)
     _copy_tree(project_dir, execute_dir)
+    _copy_tree(engine_dir, output_dir)
 
-    output_path = os.path.join(execute_dir, "hotoe-execute.html")
-    parse_app(source_dir=execute_dir, fxapi_path=fxapi_path, output_path=output_path)
-
-    manifest_path = os.path.join(engine_dir, "manifest.json")
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(build_manifest(debug=debug), f, indent=2)
-
-    return execute_dir
-
-
-def compile_project(project_dir, fxapi_path, output_zip="Hotoe.zip", debug=False):
-    """
-    `compile`: no platform/dependency checks. Parses the project into a
-    temporary /execute folder, writes manifest.json, zips both into
-    Hotoe.zip in the project directory.
-    """
-    build_dir = os.path.join(project_dir, ".hotoe-build")
-    execute_dir = os.path.join(build_dir, "execute")
-    if os.path.isdir(build_dir):
-        shutil.rmtree(build_dir)
-    _copy_tree(project_dir, execute_dir)
-
-    output_path = os.path.join(execute_dir, "hotoe-execute.html")
-    parse_app(source_dir=execute_dir, fxapi_path=fxapi_path, output_path=output_path)
-
-    manifest_path = os.path.join(build_dir, "manifest.json")
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(build_manifest(debug=debug), f, indent=2)
-
-    zip_path = os.path.join(project_dir, output_zip)
-    if os.path.exists(zip_path):
-        os.remove(zip_path)
-
-    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
-        for root, _, files in os.walk(build_dir):
-            for file in files:
-                full_path = os.path.join(root, file)
-                arcname = os.path.relpath(full_path, build_dir)
-                zf.write(full_path, arcname)
-
-    shutil.rmtree(build_dir)
-    logger.info("Wrote %s", zip_path)
-    return zip_path
-
+    AppParser(project_dir, fxapi_path, input_file, debug).parse()
+    return output_dir
 
 # ============================================================
 # Commands
 # ============================================================
 
-def _setup_logging(debug):
-    logging.basicConfig(
-        level=logging.DEBUG if debug else logging.INFO,
-        format="[hotoe] %(levelname)s: %(message)s",
-    )
-
-
 def cmd_run(args):
-    _setup_logging(args.debug)
-    project_dir = os.getcwd()
+    project_dir = args.wd or os.getcwd()
 
-    plat = detect_platform()
-    logger.info("Detected platform: %s", plat)
+    if PLATFORM == "linux-wayland":
+        download_engine()
+        if not check_native_libraries():
+            logger.error("Please, make sure you installed every required package")
+            sys.exit(1)
 
-    if plat != "linux-wayland":
-        logger.error(
-            "Only Wayland is supported right now (detected: %s). "
-            "Other platforms aren't implemented yet.",
-            plat,
+        logger.info("Running pip...")
+        subprocess.run([sys.executable, "-m", "pip", "install", *WAYLAND_PIP_REQUIREMENTS], check=True)
+        logger.info("pip has finished the job >>> next: last final check")
+
+        if not check_python_bindings():
+            logger.error("After pip install some libraries has not been installed. (Check logs above)")
+            sys.exit(1)
+        
+        stage_engine_into_project(
+            project_dir=project_dir,
+            platform=PLATFORM,
+            debug=args.debug,
+            input_file=args.set_main or "index.html"
         )
-        sys.exit(1)
 
-    engine_dir = download_engine()
-
-    if check_wayland_dependencies():
-        logger.info("All Wayland dependencies OK, installing pip requirements")
-        result = subprocess.run(
-            [
-                sys.executable, "-m", "pip", "install",
-                "--break-system-packages",
-                *WAYLAND_PIP_REQUIREMENTS,
-            ],
-        )
-        if result.returncode != 0:
-            # Not fatal: the checks above already proved gi/cairo/zmq import
-            # fine (e.g. installed via the system package manager instead of
-            # pip), so a failed reinstall here doesn't mean run is broken.
-            logger.warning(
-                "pip install returned a non-zero exit code, but all Wayland "
-                "imports already checked out above — continuing."
-            )
-    else:
-        logger.error("One or more Wayland dependencies are missing (see log above).")
-        sys.exit(1)
-
-    fxapi_path = os.path.join(engine_dir, "fxAPI.js")
-    stage_project_into_engine(
-        project_dir=project_dir,
-        engine_dir=engine_dir,
-        fxapi_path=fxapi_path,
-        debug=args.debug,
+        logger.info("Launching engine")
+        subprocess.run(ENGINE_RUN_COMMAND[PLATFORM], shell=True, check=True)
+        return
+    
+    logger.error(
+        "Only Wayland is supported right now (detected: %s). "
+        "Other PLATFORMforms aren't implemented yet.",
+        PLATFORM,
     )
-
-    logger.info("Launching engine: %s", ENGINE_RUN_COMMAND)
-    subprocess.run(ENGINE_RUN_COMMAND, cwd=engine_dir, check=True)
-
-
+    sys.exit(1)
+    
 def cmd_compile(args):
-    _setup_logging(args.debug)
-    project_dir = os.getcwd()
-
-    fxapi_path = download_fxapi()
-    zip_path = compile_project(
-        project_dir=project_dir,
-        fxapi_path=fxapi_path,
-        output_zip="Hotoe.zip",
-        debug=args.debug,
-    )
-    logger.info("Compiled: %s", zip_path)
-
+    project_dir = args.wd or os.getcwd()
+    download_engine()
+    output = stage_engine_into_project(project_dir=project_dir, platform=PLATFORM)
+    shutil.make_archive('app', 'zip', output)
+    logger.info("Compilation finished successfully -> %s", str(os.path.join(project_dir, "app.zip")))
 
 def cmd_build(args):
     print("`hotoe build` is not implemented yet.")
-
 
 def main():
     parser = argparse.ArgumentParser(prog="hotoe")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    run_p = sub.add_parser("run", help="Run the app (Wayland only for now)")
-    run_p.add_argument("-debug", "--debug", dest="debug", action="store_true")
+    run_p = sub.add_parser("run", help="build and run the application on the current device")
+    run_p.add_argument("-d", "--debug", dest="debug", action="store_true")
+    run_p.add_argument("-w", "--wd", dest="wd", help="working directory path")
+    run_p.add_argument("-s", "--set_main", dest="set_main", help="set main file name")
     run_p.set_defaults(func=cmd_run)
 
-    compile_p = sub.add_parser("compile", help="Compile the app into Hotoe.zip")
-    compile_p.add_argument("-debug", "--debug", dest="debug", action="store_true")
+    compile_p = sub.add_parser("compile", help="compile the app into app.zip")
+    compile_p.add_argument("-w", "--wd", dest="wd", help="working directory path")
     compile_p.set_defaults(func=cmd_compile)
 
     build_p = sub.add_parser("build", help="(not implemented yet)")
