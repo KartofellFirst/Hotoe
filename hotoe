@@ -573,7 +573,12 @@ def cmd_run(args):
         )
 
         logger.info("Launching engine")
-        subprocess.run([venv_python, "main.py"], cwd=output_dir, check=True)
+        try: subprocess.run([venv_python, "main.py"], cwd=output_dir, check=True)
+        except subprocess.CalledProcessError as e:
+            logger.error("Engine exited with code %d.", e.returncode)
+            if args.debug: raise 
+            sys.exit(e.returncode)
+        except KeyboardInterrupt: sys.exit(130)
         return
 
     logger.error(
