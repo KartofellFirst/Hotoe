@@ -356,7 +356,7 @@ class AppParser:
 
         self.content = re.sub(r"<html[^>]*>", "<html>", self.content, flags=re.IGNORECASE)
 
-        self.content = self.content.replace("</head>", "<style>html { background: rgba(0,0,0,0.01); }</style>")
+        self.content = self.content.replace("</head>", "<style>html { background: rgba(0,0,0,0.01); }</style></head>")
 
         self.content = self.content.replace("<script>", f"\n<script>\n{self.fxAPI}\n</script>\n<script>")
 
