@@ -548,7 +548,7 @@ def cmd_run(args):
 
         if not check_native_library():
             logger.error(
-                ""libgtk4-layer-shell not found.\n"
+                "libgtk4-layer-shell not found.\n"
                 "The library may exist under a versioned name (.so.0, .so.1, etc.) — "
                 "create a symlink to the unversioned .so name and try again."
             )
