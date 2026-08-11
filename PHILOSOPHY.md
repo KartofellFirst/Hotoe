@@ -1,3 +1,20 @@
+> [!WARNING]
+>
+> **THIS FILE IS NO LONGER UPDATING**
+>
+> last rewrite was approximately somewhere before the first Hotoe release.
+> It has several logical gaps and errors, referencing to abstract definitions like Window-centric applications model, and not recommended for reading if you want to understand modern concepts of the Hotoe
+>
+> However, it is still able to demonstrate general ideas and inspire new projects...
+>
+> Treat it more like a moved-on history or a **museum exhibit**
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
 
 > [!TIP]
 > Estimated reading time: *~10 mins*.  

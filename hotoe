@@ -270,13 +270,6 @@ def _engine_is_ready(eng_dir):
 # Wayland dependency checks
 # ============================================================
 
-def _check_ctypes_lib(lib_name):
-    from ctypes import CDLL
-    try:
-        CDLL(lib_name)
-        return True, None
-    except Exception as e: return False, str(e)
-
 _BINDING_CHECK_SCRIPT = r"""
 import json, importlib
 results = {}
@@ -328,12 +321,13 @@ def check_python_bindings(venv_python):
     return all_ok
 
 def check_native_library():
-    ok, error = _check_ctypes_lib("libgtk4-layer-shell.so")
-    if ok:
-        logger.info("[OK]   libgtk4-layer-shell.so")
-    else:
-        logger.error("[FAIL] libgtk4-layer-shell.so -> %s", error)
-    return ok
+    from ctypes import util
+    pth = util.find_library("gtk4-layer-shell")
+    if pth is None:
+        logger.error("[FAIL] libgtk4-layer-shell.so")
+        return False
+    logger.info("[OK] libgtk4-layer-shell.so")
+    return True
 
 # ============================================================
 # Parse and compile
@@ -548,8 +542,9 @@ def cmd_run(args):
 
         if not check_native_library():
             logger.error(
-                "Missing native dependency libgtk4-layer-shell.so. "
-                "Install it via your system package manager first."
+                "libgtk4-layer-shell not found, make sure its installed.\n"
+                "The library may exist under a versioned name (.so.0, .so.1, etc.) — "
+                "create a symlink to the unversioned .so name and try again."
             )
             sys.exit(1)
 
@@ -572,7 +567,12 @@ def cmd_run(args):
         )
 
         logger.info("Launching engine")
-        subprocess.run([venv_python, "main.py"], cwd=output_dir, check=True)
+        try: subprocess.run([venv_python, "main.py"], cwd=output_dir, check=True)
+        except subprocess.CalledProcessError as e:
+            logger.error("Engine exited with code %d.", e.returncode)
+            if args.debug: raise 
+            sys.exit(e.returncode)
+        except KeyboardInterrupt: sys.exit(130)
         return
 
     logger.error(

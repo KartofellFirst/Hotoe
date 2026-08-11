@@ -27,7 +27,7 @@ Showcase gallery -> [here](#switching-to-hotoe-is-not-a-problem) <br>
 
 It abstracts low-level display layers (like Wayland's `layer_shell` or OS-native overlay surfaces) into a unified, zero-config HTML/CSS/JS runtime, powered by Fluent-X [Native Capabilities API](Fluent-X.md).
 
-### Is Hotoe a good fit?
+### Is Hotoe a good fit for me?
 Is definitely for:
 - A frontend guy who can make beautiful things, but doesn't know how to run it outside of a browser
 - Newbies in programming who want to customize their systems, but it's hard to find the best stack to learn rn
