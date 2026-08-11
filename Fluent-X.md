@@ -38,9 +38,15 @@ Setting up the input region:<br>
 > <mytag SIR>
 > ```
 > Now application grabs focus as `<mytag>` hovered. Alternatively, you can add the `.hotoe-input-region-regulator-box` class to your tag to have the same effect without sacrificing classes.
->
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>&lt;mytag class="hotoe-input-region-regulator-box"></nobr></pre></details>
+
+
+> [!CAUTION]
+> <details><summary>expand</summary>
+> if you will do something like: <br>
+> <code>&lt;mytag class="mytag" SIR></code> <br> <b>it will not work as SIR</b>
+> <details><summary>Why?</summary> Because <code>SIR</code> literally parses into the second class of your element like this: <br>
+> <code>&lt;mytag class="mytag" class="hotoe-input-region-regulator-box"></code> <br>
+> which will be ignored by your browser to avoid crashing the page. If you want to add class to your input region element, see instructions above</details></details>
 
 Recalculating input regions after DOM updates:<br>
 <sup>after resizing/moving/destroying elements</sup>
