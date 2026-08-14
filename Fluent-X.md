@@ -74,13 +74,13 @@ Managing focus events globally: <br>
 <sup>when any of your input regions is receives or looses the pointer focus, this triggers</sup>
 > ```javascript
 > focus {
->     if (!focus) console.log("Cursor left the input region");
+>     if (focus == "false") console.log("Cursor left the input region");
 > }
 > ```
 > <details><summary>parses into (click):</summary>
 > <pre><nobr>window.addEventListener('focusEvent', function(event) {
 >     const focus = event.detail;
->     if (!focus) console.log("Cursor left the input region");
+>     if (focus == "false") console.log("Cursor left the input region");
 > });</nobr></pre></details>
 
 ---
