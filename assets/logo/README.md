@@ -1,5 +1,5 @@
 # Introducing all logo variants in this folder <img src="pwt.png" width="30">
-Our logo shape may look simple, but it took considerable time to refine. <br><br>
+Our logo shape may look random, but it took quite time to refine. <br><br>
 It can be interpreted in different ways, yet every reading still reflects our ideas:
 1. A ghost with raised arms
 2. An outlined vampire standing there
