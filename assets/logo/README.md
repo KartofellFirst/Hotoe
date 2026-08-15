@@ -1,1 +1,32 @@
 # Introducing all logo variants in this folder <img src="pwt.png" width="30">
+Our logo shape is random but took us quite time to built it. <br><br>
+It might be seen as different objects, but no matter what first impression it gives, it still represents our ideas:
+1. A ghost with raised arms
+2. An outlined vampire standing there
+3. An arrow tail / A rocket shuttle tail
+
+
+they all somehow refer to Hotoe and it is what we call enough
+
+
+Main color palette is ![](https://img.shields.io/static/v1?label=&message=black&color=black), ![](https://img.shields.io/static/v1?label=&message=white&color=white) and ![](https://img.shields.io/static/v1?label=&message=9999FF&color=9999FF) <br>
+Minor adjustments are permitted until the design remains recognizable
+
+## Logo styles gallery
+<nobr><img src="bwc.PNG" width="150"> <img src="wbc.PNG" width="150"> <img src="wb.PNG" width="150"> <img src="bw.PNG" width="150"><img src="pw.PNG" width="150"> <img src="wp.PNG" width="150"></nobr>
+
+## Archive 
+Assets that were created during the logo design process are listed below in chronological order, from the most recent to the oldest<br>
+<nobr>
+  <img src="/arcihve/1.PNG" width="100"> 
+  <img src="/arcihve/2.PNG" width="100"> 
+  <img src="/arcihve/3.PNG" width="100"> 
+  <img src="/arcihve/4.PNG" width="100"> 
+  <img src="/arcihve/5.PNG" width="100"> 
+  <img src="/arcihve/6.PNG" width="100"> 
+  <img src="/arcihve/7.PNG" width="100"> 
+  <img src="/arcihve/8.PNG" width="100"> 
+  <img src="/arcihve/9.PNG" width="100"> 
+  <img src="/arcihve/10.PNG" width="100"> 
+  <img src="/arcihve/11.PNG" width="100">
+</nobr>
