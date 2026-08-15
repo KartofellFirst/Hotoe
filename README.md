@@ -1,18 +1,23 @@
-<img alt="header-logo">
+<h1><p align="center">Hotoe <img src="assets/logo/pwt.png" alt="logo" height="30"> <br>
+The main repo of every Hotoe Engine. </p>
+<p align="center">
+    <img src="assets/shield.png" alt="header-logo" height="20">
+    <img src="https://img.shields.io/static/v1?label=&message=Wayland&color=darkgreen&">
+    <img src="https://img.shields.io/static/v1?label=&message=macOS&color=yellow&">
+    <img src="https://img.shields.io/static/v1?label=&message=Windows&color=orange&">
+    <img src="https://img.shields.io/static/v1?label=&message=aarch64&color=green&">
+    <img src="https://img.shields.io/static/v1?label=&message=AMD64&color=green&">
+</p>
+</h1>
 
-# Hotoe
-<!-- <sub><i>Add some extra sugar</i></sub> -->
-The main repo of every Hotoe Engine. 
-<br><br>
-
-## Navigator: 
+### Navigator:
 What is Hotoe [3 min](#description) <br>
 How we solve your problems [3 min](#problems-we-take-care-of) <br>
 Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Read the documentation [10 min](Fluent-X.md) <br>
 Popular questions -> [here](DeveloperQA.md) <br>
-Showcase gallery -> [here](#switching-to-hotoe-is-not-a-problem) <br>
-<sub>recommended</sub><br>Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)
+Showcase gallery -> [here](Showcase.md) <br>
+<b><sub>recommended</sub><br>Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)</b>
 <br><br>
 
 ## Available platforms:
@@ -70,7 +75,7 @@ And this works with not-friends too btw. We expand the range of possible contrib
 
 ## Quick start 
 *Requirements:*  
-- Hotoe  
+- Hotoe [<— how to install?](Installation.md)
 - Basic HTML skills (optional)
 <br><br>
 
