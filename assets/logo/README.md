@@ -1,13 +1,11 @@
 # Introducing all logo variants in this folder <img src="pwt.png" width="30">
-Our logo shape is random but took us quite time to built it. <br><br>
-It might be seen as different objects, but no matter what first impression it gives, it still represents our ideas:
+Our logo shape may look simple, but it took considerable time to refine. <br><br>
+It can be interpreted in different ways, yet every reading still reflects our ideas:
 1. A ghost with raised arms
 2. An outlined vampire standing there
 3. An arrow tail / A rocket shuttle tail
 
-
-they all somehow refer to Hotoe and it is what we call enough
-
+All of these associations connect back to Hotoe — and for us, that’s enough
 
 Main color palette is ![](https://img.shields.io/static/v1?label=&message=black&color=black), ![](https://img.shields.io/static/v1?label=&message=white&color=white) and ![](https://img.shields.io/static/v1?label=&message=9999FF&color=9999FF) <br>
 Minor adjustments are permitted until the design remains recognizable <br>
