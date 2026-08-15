@@ -4,6 +4,7 @@ It can be interpreted in different ways, yet every reading still reflects our id
 1. A ghost with raised arms
 2. An outlined vampire standing there
 3. An arrow tail / A rocket shuttle tail
+4. A flower (often water lily / balloon flower)
 
 All of these associations connect back to Hotoe — and for us, that’s enough
 
