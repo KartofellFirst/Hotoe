@@ -26,7 +26,7 @@ Showcase gallery -> [here](Showcase.md) <br>
 - [Windows](https://github.com/FaultedSapiens/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
 <br><br><br>
 
-## Short about 
+## Shortly about everything
 
 **Hotoe** is a quickshell alternative, built for fast prototyping between systems and open to new developers from web-frontend. <br>
 It's a great solution to prototype big projects or their modules / trying new styles in a few hours.
