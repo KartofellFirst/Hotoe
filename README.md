@@ -43,10 +43,13 @@ Additionally we provide:
 + fast global hotkey binding across systems
 
 > [!IMPORTANT]
-> We're using wry model — working with your systems native webview. <br>
-> Depending on the platform, idle usage might wary from **30MiB** to **200MiB** per app. <br>
-> If this is too much for your demands, you'd rather not use Hotoe, but
-> don’t be surprised when thing that uses 50MiB on macOS will take 350MiB on Wayland. **Its not our problem**, it's about GTKWebview in general **and we are not able to fix this**.
+> We’re using the wry model — working with your system’s native webview.
+>
+> Depending on the platform, idle usage can range from **~30 MiB** to **~200 MiB** per app.
+>
+> If this is too much for your needs, Hotoe is probably not the right tool.
+>
+> Don’t be surprised when something that uses 50 MiB on macOS takes 300+ MiB on Wayland — this is a WebKitGTK characteristic, not something we can fix.
 
 > [!TIP]
 > Also, we highly recommend reading [the conepts of EWAs](EWAs.md) before you start <br>
