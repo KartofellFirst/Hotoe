@@ -55,16 +55,16 @@ Hotoe do not ask you to "learn" anything.<br>
 If you know JS — building with hotoe it is literally about aknowlegding existance of the second `navigator` on your page<br>
 
 Hotoe follows this one rule, that guarantees its minimalism — <br>
-_"Prototyping language should be easy and comfortable to use. Comfortable enough to keep choosing it compare to heavy real frameworks"_
+_"Prototyping language should be easy and comfortable to use. Comfortable enough to keep choosing it from heavy real frameworks"_
 
 <sub>2. Loosing your previous environment</sub>
-We storgly tolerate that, and admit that losing your your `npm`, `pip`, etc is not the way.<br>
-Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe!<br>
-You will be able to translate your backend to your next (optimized) versions of the project.<br><br>
+We storgly tolerate that, and admit that losing your your `npm`, `pip`, etc is not cool.<br>
+Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe.<br>
+Later you will be able to translate this backend to your next (optimized) versions of the project without rewriting it.<br><br>
 [How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
 
 <sub>3. Availability problems</sub><br>
-You could not know, but your usual frameworks are not built to create widgets, menus and etc.. <br>
+You could not know, but most of the frameworks you've heard about are not built to create widgets, menus and etc.. <br>
 Here's a current situation in short:
 
 | Framework | Layer Shell Support | DX (Web Tech) | Cross-Platform HUDs | The Catch |
