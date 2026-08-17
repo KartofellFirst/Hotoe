@@ -37,6 +37,11 @@ Hotoe provides full web-stack experience, including:
 + latest css styles 
 + DOM page structure
 
+Additionally we provide:
++ local database
++ ipc related methods
++ fast global hotkey binding actoss systems
+
 > [!IMPORTANT]
 > We're using wry model — working with your systems native webview. <br>
 > Depending on the platform, idle usage might wary from **30MiB** to **200MiB**. <br>
