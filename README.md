@@ -50,8 +50,12 @@ You want to build a HUD, <br>
 but learning Hotoe from scratch <br> 
 then after prototyping your HUD learning another framework to optimize it might sound too much.<br>
 
-Thats why Hotoe's API is built to be compact. That's why we have a quickstart in 1 minute. <br>
-Prototyping language should be easy and comfortable to use.
+But here's the catch: <br>
+Hotoe do not ask you to "learn" anything.<br>
+If you know JS — building with hotoe it is literally about aknowlegding existance of the second `navigator` on your page<br>
+
+Hotoe follows this one rule, that is guarantees our minimalism — <br>
+__"Prototyping language should be easy and comfortable to use. Comfortable enough to keep choosing it compare to heavy real frameworks"__
 
 <sub>2. Loosing your previous environment</sub>
 We storgly tolerate that, and admit that losing your your `npm`, `pip`, etc is not the way.<br>
