@@ -57,19 +57,19 @@ Additionally we provide:
 
 <sub>1. Switching to another framework problem</sub><br>
 You want to build a HUD, <br>
-but learning Hotoe from scratch <br> 
-then after prototyping your HUD learning another framework to optimize it might sound too much.<br>
+but learning Hotoe from scratch, then after prototyping your HUD learning another framework to optimize it might sound too much of extra work.<br>
 
-Yeah, but lets be real here from the point of the guy who used this thing for a while: <br>
+But lets be real here: <br>
 Hotoe do not ask you to "learn" anything.<br>
 If you know JS — building with hotoe it is literally about aknowlegding existance of the second `navigator` on your page<br>
+You just go and write. That's why our quickstart is in 1 minute
 
 Hotoe follows this one rule, that guarantees its minimalism — <br>
 _"Prototyping language should be easy and comfortable to use. Comfortable enough to keep choosing it from heavy real frameworks"_
 
-<sub>2. Loosing your previous environment</sub>
-We storgly tolerate that, and admit that losing your your `npm`, `pip`, etc is not cool.<br>
-Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe.<br>
+<sub>2. Loosing your previous environment</sub><br>
+We admit that losing your your `npm`, `pip`, etc is not cool, and we tolerate that.<br>
+Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe in 2 lines.<br>
 Later you will be able to translate this backend to your next (optimized) versions of the project without rewriting it.<br><br>
 [How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
 
@@ -89,8 +89,10 @@ No cross-platform solution introduced except Hotoe. That leads us to the next pr
 How my friend from MacOS will contribute if I use `layer_shell_qt`?<br>
 He can't. He's forced to use QEMU or make platform bridges (it will still not look the same tho).
 
-But with Hotoe now it is possible, of course. <br>
-And this works with not-friends too btw. We expand the range of possible contributors for your project already from "picking a framework" stage of planning.
+Hotoe made to solve this problem. <br>
+Design the prototype together, optimize alone on your favorite gtk/qt/whatever else you decide to use..<br>
+<br>
+The neat part is that this works with not-friends too. We expand the range of possible contributors for your project already from "picking a framework" stage of planning.
 
 <br><br>
 
