@@ -26,21 +26,26 @@ Showcase gallery -> [here](Showcase.md) <br>
 - [Windows](https://github.com/FaultedSapiens/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
 <br><br><br>
 
-## Description
+## Short about 
 
 **Hotoe** is a quickshell alternative, built for fast prototyping between systems and open to new developers from web-frontend. <br>
-It's a great solution to prototype big projects / new modules of big projects or trying styles in a few hours with pure HTML
+It's a great solution to prototype big projects or their modules / trying new styles in a few hours.
 
 Hotoe provides full web-stack experience, including:
 + sound APIs
 + 3D libraries
 + latest css styles 
 + DOM page structure
-Working as a native desktop application. 
 
-We're using wry model, working with your systems native webview. Depending on the platform, idle usage might wary from **30MiB** to **200MiB**.
+> [!IMPORTANT]
+> We're using wry model — working with your systems native webview. <br>
+> Depending on the platform, idle usage might wary from **30MiB** to **200MiB**. <br>
+> If this is too much for your demands, you'd rather not use Hotoe
 
-We highly recommend reading [the conepts of EWAs](EWAs.md)
+> [!TIP]
+> Also, we highly recommend reading [the conepts of EWAs](EWAs.md) before you start <br>
+> It will help you to understand our minor restrictions that you might face later
+
 <br><br>
 
 ## Problems we take care of
