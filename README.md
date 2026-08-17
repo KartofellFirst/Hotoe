@@ -81,7 +81,7 @@ Here's a current situation in short:
 | :--- | :---: | :---: | :---: | :--- |
 | *Electron / Tauri / Wails* | No | **Great** | Limited | No native layer-shell / overlay support on Wayland |
 | *GTK / Qt + Bindings* | **Native** | Painful | Linux Only | Much worse DX than web-tech stacks. Wayland-chained |
-| **Hotoe** | **Native** | **Great** | **Yes** | **The catch?** |
+| **Hotoe** | **Native** | **Great** | **Yes** | **Still in development** |
 
 No cross-platform solution introduced except Hotoe. That leads us to the next problem
 
