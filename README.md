@@ -33,7 +33,7 @@ Showcase gallery -> [here](Showcase.md) <br>
 Hotoe provides full web-stack experience, including:
 + sound APIs
 + 3D libraries
-+ Filters
++ latest css styles 
 + DOM page structure
 
 Your application will have one-file structure and readable for any frontender code, but it will not be lightweight.
