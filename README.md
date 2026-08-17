@@ -28,21 +28,18 @@ Showcase gallery -> [here](Showcase.md) <br>
 
 ## Description
 
-**Hotoe** is an application engine designed specifically for building EWAs (bars, menus, HUDs. [Learn more](EWA.md)) using standard Web technologies.
+**Hotoe** is a quickshell alternative, built for fast prototyping between systems and open to new users.
 
-It abstracts low-level display layers (like Wayland's `layer_shell` or OS-native overlay surfaces) into a unified, zero-config HTML/CSS/JS runtime, powered by Fluent-X [Native Capabilities API](Fluent-X.md).
+Hotoe provides full web-stack experience, including:
++ sound APIs
++ 3D libraries
++ Filters
++ DOM page structure
 
-### Is Hotoe a good fit for me?
-Is definitely for:
-- A frontend guy who can make beautiful things, but doesn't know how to run it outside of a browser
-- Newbies in programming who want to customize their systems, but it's hard to find the best stack to learn rn
-- A tired dev who’s done with big Electron/Tauri APIs and 20-minute “quick starts”
-- Someone whose frontend is already a 10k+ line document and he doesn’t want to figure out how to bolt Node or Rust on top of it
+Your application will have one-file structure and readable for any frontender code, but it will not be lightweight.
+Hotoe do not promise you anything less than 200mib usage. But after you finish your prototyping, you can rewrite your app in any other language.
 
-You don’t learn ~~Node~~, don’t learn ~~Rust~~. **Basic JS is already enough to build an application**.<br>
-Our API is conveniently scoped on EWAs, so it is hard to find something shorter and easier for every one of the above.
-
-<br>
+<br><br>
 
 ## Problems we take care of
 
