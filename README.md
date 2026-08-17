@@ -44,7 +44,7 @@ Additionally we provide:
 
 > [!IMPORTANT]
 > We're using wry model — working with your systems native webview. <br>
-> Depending on the platform, idle usage might wary from **30MiB** to **200MiB**. <br>
+> Depending on the platform, idle usage might wary from **30MiB** to **200MiB** per app. <br>
 > If this is too much for your demands, you'd rather not use Hotoe, but
 > don’t be surprised when thing that uses 50MiB on macOS will take 350MiB on Wayland. **Its not our problem**, it's about GTKWebview in general **and we are not able to fix this**.
 
