@@ -11,7 +11,7 @@ The main repo of every Hotoe Engine. </p>
 </h1>
 
 ### Navigator:
-What is Hotoe [3 min](#description) <br>
+What is Hotoe [3 min](#shortly-about-everything) <br>
 How we solve your problems [3 min](#problems-we-take-care-of) <br>
 Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Read the documentation [10 min](Fluent-X.md) <br>
@@ -87,10 +87,10 @@ No cross-platform solution introduced except Hotoe. That leads us to the next pr
 
 <sub>4. Contributing issues</sub><br>
 How my friend from MacOS will contribute if I use `layer_shell_qt`?<br>
-He can't. He's forced to use QEMU or make platform bridges (it will still not look the same tho).
+He can't. He's forced to use QEMU or make platform bridges.
 
 Hotoe made to solve this problem. <br>
-Design the prototype together, optimize alone on your favorite gtk/qt/whatever else you decide to use..<br>
+Design the prototype together, optimize alone using your favorite gtk/qt/whatever else you want.<br>
 <br>
 The neat part is that this works with not-friends too. We expand the range of possible contributors for your project already from "picking a framework" stage of planning.
 
