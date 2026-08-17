@@ -28,20 +28,19 @@ Showcase gallery -> [here](Showcase.md) <br>
 
 ## Description
 
-**Hotoe** is a quickshell alternative, built for fast prototyping between systems and open to new users.
+**Hotoe** is a quickshell alternative, built for fast prototyping between systems and open to new developers from web-frontend. <br>
+It's a great solution to prototype big projects / new modules of big projects or trying styles in a few hours with pure HTML
 
 Hotoe provides full web-stack experience, including:
 + sound APIs
 + 3D libraries
 + latest css styles 
 + DOM page structure
+Working as a native desktop application. 
 
-Your application will have one-file structure and will stay readable for any frontender. <br>
-Hotoe promises you an application without any other backed besides JS, but also admitting that it will not be lightweight. <br>
-After you finish your prototyping, if it does not fit your expectations, you can rewrite your app in any other language. <br>
-Depending on the platform, minimal usage might vary from **30Mib** to **200Mib**. We use your native webview as the main renderer.
+We're using wry model, working with your systems native webview. Depending on the platform, idle usage might wary from **30MiB** to **200MiB**.
 
-Some things we restrict and highly not recommend doing. Read the conepts of [EWAs](Ewa.md)
+We highly recommend reading [the conepts of EWAs](EWAs.md)
 <br><br>
 
 ## Problems we take care of
