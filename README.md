@@ -36,9 +36,11 @@ Hotoe provides full web-stack experience, including:
 + latest css styles 
 + DOM page structure
 
-Your application will have one-file structure and readable for any frontender code, but it will not be lightweight.
-Hotoe do not promise you anything less than 200mib usage. But after you finish your prototyping, you can rewrite your app in any other language.
+Your application will have one-file structure and will stay readable for any frontender. <br>
+Hotoe promises you an application without any other backed rather than JS, but also admitting that it will not be lightweight. <br>
+Hotoe do not promise you anything less than **200mib usage** per app. After you finish your prototyping, if it does not fit your expectations, you can rewrite your app in any other language.
 
+Some things we restrict and highly not recommend doing. Read the conepts of [EWAs](Ewa.md)
 <br><br>
 
 ## Problems we take care of
