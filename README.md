@@ -46,13 +46,20 @@ Some things we restrict and highly not recommend doing. Read the conepts of [EWA
 ## Problems we take care of
 
 <sub>1. Switching to another framework problem</sub><br>
-You want to build a HUD, but learning Hotoe from scratch and then after prototyping learning another framework to optimize might sound disgusting<br>
+You want to build a HUD, <br>
+but learning Hotoe from scratch <br> 
+then after prototyping your HUD learning another framework to optimize it might sound too much.<br>
+
+Thats why Hotoe's API is built to be compact. That's why we have a quickstart in 1 minute. <br>
+Prototyping language should be easy and comfortable to use.
+
+<sub>2. Loosing your previous environment</sub>
 We storgly tolerate that, and admit that losing your your `npm`, `pip`, etc is not the way.<br>
 Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe!<br>
 You will be able to translate your backend to your next (optimized) versions of the project.<br><br>
 [How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
 
-<sub>2. Availability problems</sub><br>
+<sub>3. Availability problems</sub><br>
 You could not know, but your usual frameworks are not built to create widgets, menus and etc.. <br>
 Here's a current situation in short:
 
@@ -64,7 +71,7 @@ Here's a current situation in short:
 
 No cross-platform solution introduced except Hotoe. That leads us to the next problem
 
-<sub>3. Contributing issues</sub><br>
+<sub>4. Contributing issues</sub><br>
 How my friend from MacOS will contribute if I use `layer_shell_qt`?<br>
 He can't. He's forced to use QEMU or make platform bridges (it will still not look the same tho).
 
