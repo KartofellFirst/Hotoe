@@ -28,7 +28,7 @@ Showcase gallery -> [here](Showcase.md) <br>
 
 ## Shortly about everything
 
-**Hotoe** is a quickshell alternative, built for fast prototyping between systems and open to new developers from web-frontend. <br>
+**Hotoe** is a quickshell alternative, built for fast prototyping between systems using HTML. <br>
 It's a great solution to prototype big projects or their modules / trying new styles in a few hours.
 
 Hotoe provides full web-stack experience, including:
@@ -40,7 +40,7 @@ Hotoe provides full web-stack experience, including:
 Additionally we provide:
 + local database
 + ipc related methods
-+ fast global hotkey binding actoss systems
++ fast global hotkey binding across systems
 
 > [!IMPORTANT]
 > We're using wry model — working with your systems native webview. <br>
