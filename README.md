@@ -46,10 +46,11 @@ Some things we restrict and highly not recommend doing. Read the conepts of [EWA
 ## Problems we take care of
 
 <sub>1. Switching to another framework problem</sub><br>
-losing your your `npm`, `pip` and other utilities might sound scary, and we tolerate that. <br>
-Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe! <br><br>
+You want to build a HUD, but learning Hotoe from scratch and then after prototyping learning another framework to optimize might sound disgusting<br>
+We storgly tolerate that, and admit that losing your your `npm`, `pip`, etc is not the way.<br>
+Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe!<br>
+You will be able to translate your backend to your next (optimized) versions of the project.<br><br>
 [How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
-
 
 <sub>2. Availability problems</sub><br>
 You could not know, but your usual frameworks are not built to create widgets, menus and etc.. <br>
