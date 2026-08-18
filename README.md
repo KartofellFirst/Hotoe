@@ -43,13 +43,9 @@ Additionally we provide:
 + fast global hotkey binding across systems
 
 > [!IMPORTANT]
-> We’re using the wry model — working with your system’s native webview.
+> We’re using the wry (Tauri) model — working with your system’s native webview.
 >
 > Depending on the platform, idle usage can range from **~30 MiB** to **~200 MiB** per app.
->
-> If this is too much for your needs, Hotoe is probably not the right tool.
->
-> Don’t be surprised when something that uses 50 MiB on macOS takes 300+ MiB on Wayland — this is a WebKitGTK characteristic, not something we can fix.
 
 > [!TIP]
 > Also, we highly recommend reading [the conepts of EWAs](EWAs.md) before you start <br>
@@ -146,9 +142,10 @@ Limit your body's width and height<br>
 <body style="max-width: 50%; max-height: 30%;" SIR>
 ```
 
-**Great!** It looks like an EWA already! But we're finishing this quick start here. It was really quick, as it should be. <br> 
-From now on you are by yourself. Read [API docs](Fluent-X.md) or give it to your agent to study. Also one more gift tho... <br>
-Don't treat them as personal limitations. They called manners for a reason —
+**Great!**<br>
+But we're finishing this quick start here. It was really quick, as it should be. <br> 
+For further instructions check [API docs](Fluent-X.md) or give it to your agent to study. <br>
+Additionally, you can read Hotoe manners list: 
 
 <details>
 <summary>Read manners list</summary>
