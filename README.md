@@ -28,28 +28,17 @@ Showcase gallery -> [here](Showcase.md) <br>
 
 ## Shortly about everything
 
-**Hotoe** is a quickshell alternative, built for fast prototyping between systems using HTML. <br>
-It's a great solution to prototype big projects or their modules / trying new styles in a few hours.
+**Hotoe** is a quickshell alternative, built for fast creating and prototyping of the [EWAs](EWAs.md) (HUD's, bars, menus, etc) between systems using HTML. <br>
+Despite the normal applications, widgets creation starts from the frontend. That usually happens because widgets do not need a great backend, they just call APIs or poll-update displayed values. That means we just need something frontend-oriented to build them, right?
 
-Hotoe provides full web-stack experience, including:
-+ sound APIs
-+ 3D libraries
-+ latest css styles 
-+ DOM page structure
+But people keep on creating languages like QML with signals and else shit. GUYS JUST GIVE UP and admit that HTML with DOM is just better. We have these terrifyingly beautiful websites styled as OSs, use webviews in our apps, but nobody notices the obvious?
 
-Additionally we provide:
-+ local database
-+ ipc related methods
-+ fast global hotkey binding across systems
+How much longer it should take to admit that you’re ready to accept RAM usage in a trade off to build in HTML. You have enough RAM to have 5-6 webviews opened on your PC additionally to whatever you are doing with it. Especially when they are not permanently rendered. ESPECIALLY when it’s more than 8GiBs on your device
 
-> [!IMPORTANT]
-> We’re using the wry (Tauri) model — working with your system’s native webview.
->
-> Depending on the platform, idle usage can range from **~30 MiB** to **~200 MiB** per app.
+WEB frontend community is so large so when you say “now you can build widgets for your PC using HTML” to the whole world — the amount of great new designs will be uncountable
 
-> [!TIP]
-> Also, we highly recommend reading [the conepts of EWAs](EWAs.md) before you start <br>
-> It will help you to understand our minor restrictions that you might face later
+That basically what hotoe is about:<br>
+_"You only need a backend when it's trully necessary and if you want something beautiful you need a normal frontend"_ <br>
 
 <br><br>
 
