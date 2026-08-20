@@ -47,7 +47,7 @@ This section will be more personal, because I'm going to talk directly to you
 Seriously, people stopped to value their time. You start it as a fan project, but after 2-3 month of debugging/updating/improving/growing a community around it — the time you could save on writing it with HTML is starting to count in *weeks*. 
 
 Now, does at least **one week** of your time / time of your contributors worth **100MiB** RAM usage difference? Or even a **1000MiB**? <br>
-<sup>**1000MiB** of DDR5 RAM is about $15 in the RAM shortage period in case you want actual numbers</sup><br>
+<sup>(**1000MiB** of DDR5 RAM is about $15 in the RAM shortage period in case you want actual numbers)</sup><br>
 But you waste not one week, not two.
 
 HTML is optimized for its job, it has one of the largest communities to join. What QML has? You really think that covers?
