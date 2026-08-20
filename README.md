@@ -11,8 +11,8 @@ The main repo of every Hotoe Engine. </p>
 </h1>
 
 ### Navigator:
-What is Hotoe [3 min](#description) <br>
-How we solve your problems [3 min](#problems-we-take-care-of) <br>
+What is Hotoe [1 min](#core-concept) <br>
+Why would I choose it? [2 min](#why-would-i-choose-it) <br>
 Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Read the documentation [10 min](Fluent-X.md) <br>
 Popular questions -> [here](DeveloperQA.md) <br>
@@ -26,50 +26,43 @@ Showcase gallery -> [here](Showcase.md) <br>
 - [Windows](https://github.com/FaultedSapiens/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
 <br><br><br>
 
-## Description
+## Core concept
 
-**Hotoe** is an application engine designed specifically for building EWAs (bars, menus, HUDs. [Learn more](EWA.md)) using standard Web technologies.
+**Hotoe** is a quickshell alternative, built for fast creation and prototyping of the [EWAs](EWAs.md) (HUD's, bars, menus, etc) between systems using HTML. 
 
-It abstracts low-level display layers (like Wayland's `layer_shell` or OS-native overlay surfaces) into a unified, zero-config HTML/CSS/JS runtime, powered by Fluent-X [Native Capabilities API](Fluent-X.md).
+Despite the normal applications, widgets creation starts from the frontend and needs a frontend-first language — such as HTML.
 
-### Is Hotoe a good fit for me?
-Is definitely for:
-- A frontend guy who can make beautiful things, but doesn't know how to run it outside of a browser
-- Newbies in programming who want to customize their systems, but it's hard to find the best stack to learn rn
-- A tired dev who’s done with big Electron/Tauri APIs and 20-minute “quick starts”
-- Someone whose frontend is already a 10k+ line document and he doesn’t want to figure out how to bolt Node or Rust on top of it
+<br><br>
 
-You don’t learn ~~Node~~, don’t learn ~~Rust~~. **Basic JS is already enough to build an application**.<br>
-Our API is conveniently scoped on EWAs, so it is hard to find something shorter and easier for every one of the above.
+
+## Why would I choose it?
+This section will be more personal, because I'm going to talk directly to you
+
+<a href="https://google.com/search?q=Why%20should%20I%20value%20my%20time?">Do you value your time?</a> — <br>
+<br>
+。<br>
+。<br>
+。<br>
+<br>
+Seriously, people stopped to value their time. You start it as a fan project, but after 2-3 month of debugging/updating/improving/growing a community around it — the time you could save on writing it with HTML is starting to count in *weeks*. 
+
+Now, does at least **one week** of your time / time of your contributors worth **100MiB** RAM usage difference? Or even a **1000MiB**? 
+
+> **1000MiB** of DDR5 RAM is about $15 in the RAM shortage period in case you want actual numbers
+
+But you waste not one week, not two.
+
+HTML is optimized for its job, it has one of the largest communities to join. But what are QML pros to compare? — RAM? Something else? You really think that covers on a normal PC?
+
+Use Quickshell for your old laptop and Hotoe for actual projects. Don’t waste your and your contributors time if you respect them
 
 <br>
 
-## Problems we take care of
-
-<sub>1. Switching to another framework problem</sub><br>
-losing your your `npm`, `pip` and other utilities might sound scary, and we tolerate that. <br>
-Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe! <br><br>
-[How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
-
-
-<sub>2. Availability problems</sub><br>
-You could not know, but your usual frameworks are not built to create widgets, menus and etc.. <br>
-Here's a current situation in short:
-
-| Framework | Layer Shell Support | DX (Web Tech) | Cross-Platform HUDs | The Catch |
-| :--- | :---: | :---: | :---: | :--- |
-| *Electron / Tauri / Wails* | No | **Great** | Limited | No native layer-shell / overlay support on Wayland |
-| *GTK / Qt + Bindings* | **Native** | Painful | Linux Only | Much worse DX than web-tech stacks. Wayland-chained |
-| **Hotoe** | **Native** | **Great** | **Yes** | **The catch?** |
-
-No cross-platform solution introduced except Hotoe. That leads us to the next problem
-
-<sub>3. Contributing issues</sub><br>
-How my friend from MacOS will contribute if I use `layer_shell_qt`?<br>
-He can't. He's forced to use QEMU or make platform bridges (it will still not look the same tho).
-
-But with Hotoe now it is possible, of course. <br>
-And this works with not-friends too btw. We expand the range of possible contributors for your project already from "picking a framework" stage of planning.
+### Also
+If you have chosen Hotoe, here are other advantages we give you:
++ Connect any backend you want to your project in 2 lines. (We don’t require one specific language like Node/Rust/C)
++ Contributors from WEB (The oldest design community is now your community too)
++ Minimalistic JS API (you want to just poll fastfetch? Yes, you can. Without C++, right from your frontend)
 
 <br><br>
 
@@ -119,9 +112,10 @@ Limit your body's width and height<br>
 <body style="max-width: 50%; max-height: 30%;" SIR>
 ```
 
-**Great!** It looks like an EWA already! But we're finishing this quick start here. It was really quick, as it should be. <br> 
-From now on you are by yourself. Read [API docs](Fluent-X.md) or give it to your agent to study. Also one more gift tho... <br>
-Don't treat them as personal limitations. They called manners for a reason —
+**Great!**<br>
+But we're finishing this quick start here. It was really quick, as it should be. <br> 
+For further instructions check [API docs](Fluent-X.md) or give it to your agent to study. <br>
+Additionally, you can read Hotoe manners list: 
 
 <details>
 <summary>Read manners list</summary>
