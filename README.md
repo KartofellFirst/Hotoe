@@ -99,7 +99,7 @@ If you have chosen Hotoe, here are other advantages we give you:
 ---
 *Run this in your project's folder:*
 ```
-Hotoe run
+hotoe run
 ```
 **Done!**  
 Hope you figured out how to close it...
