@@ -11,8 +11,8 @@ The main repo of every Hotoe Engine. </p>
 </h1>
 
 ### Navigator:
-What is Hotoe [3 min](#shortly-about-everything) <br>
-How we solve your problems [3 min](#problems-we-take-care-of) <br>
+What is Hotoe [1 min](#core-concept) <br>
+Why would I choose it? [2 min](#why-would-i-choose-it) <br>
 Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
 Read the documentation [10 min](Fluent-X.md) <br>
 Popular questions -> [here](DeveloperQA.md) <br>
@@ -26,62 +26,43 @@ Showcase gallery -> [here](Showcase.md) <br>
 - [Windows](https://github.com/FaultedSapiens/Hotoe-Windows) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{orange}alpha}$$
 <br><br><br>
 
-## Shortly about everything
+## Core concept
 
-**Hotoe** is a quickshell alternative, built for fast creating and prototyping of the [EWAs](EWAs.md) (HUD's, bars, menus, etc) between systems using HTML. <br>
-Despite the normal applications, widgets creation starts from the frontend. That usually happens because widgets do not need a great backend, they just call APIs or poll-update displayed values. That means we just need something frontend-oriented to build them, right?
+**Hotoe** is a quickshell alternative, built for fast creation and prototyping of the [EWAs](EWAs.md) (HUD's, bars, menus, etc) between systems using HTML. 
 
-But people keep on creating languages like QML with signals and else shit. GUYS JUST GIVE UP and admit that HTML with DOM is just better. We have these terrifyingly beautiful websites styled as OSs, use webviews in our apps, but nobody notices the obvious?
-
-How much longer it should take to admit that you’re ready to accept RAM usage in a trade off to build in HTML. You have enough RAM to have 5-6 webviews opened on your PC additionally to whatever you are doing with it. Especially when they are not permanently rendered. ESPECIALLY when it’s more than 8GiBs on your device
-
-WEB frontend community is so large so when you say “now you can build widgets for your PC using HTML” to the whole world — the amount of great new designs will be uncountable
-
-That basically what hotoe is about:<br>
-_"You only need a backend when it's trully necessary and if you want something beautiful you need a normal frontend"_ <br>
+Despite the normal applications, widgets creation starts from the frontend and needs a frontend-first language — such as HTML.
 
 <br><br>
 
-## Problems we take care of
 
-<sub>1. Switching to another framework problem</sub><br>
-You want to build a HUD, <br>
-but learning Hotoe from scratch, then after prototyping your HUD learning another framework to optimize it might sound too much of extra work.<br>
+## Why would I choose it?
+This section will be more personal, because I'm going to talk directly to you
 
-But lets be real here: <br>
-Hotoe do not ask you to "learn" anything.<br>
-If you know JS — building with hotoe it is literally about aknowlegding existance of the second `navigator` on your page<br>
-You just go and write. That's why our quickstart is in 1 minute
-
-Hotoe follows this one rule, that guarantees its minimalism — <br>
-_"Prototyping language should be easy and comfortable to use. Comfortable enough to keep choosing it from heavy real frameworks"_
-
-<sub>2. Loosing your previous environment</sub><br>
-We admit that losing your your `npm`, `pip`, etc is not cool, and we tolerate that.<br>
-Instead of trying to replace them, we have made a guide for you on how to bring your familiar toolkit to Hotoe in 2 lines.<br>
-Later you will be able to translate this backend to your next (optimized) versions of the project without rewriting it.<br><br>
-[How to connect any additional backend to Hotoe in 2 lines](Extensions.md)
-
-<sub>3. Availability problems</sub><br>
-You could not know, but most of the frameworks you've heard about are not built to create widgets, menus and etc.. <br>
-Here's a current situation in short:
-
-| Framework | Layer Shell Support | DX (Web Tech) | Cross-Platform HUDs | The Catch |
-| :--- | :---: | :---: | :---: | :--- |
-| *Electron / Tauri / Wails* | No | **Great** | Limited | No native layer-shell / overlay support on Wayland |
-| *GTK / Qt + Bindings* | **Native** | Painful | Linux Only | Much worse DX than web-tech stacks. Wayland-chained |
-| **Hotoe** | **Native** | **Great** | **Yes** | **Still in development** |
-
-No cross-platform solution introduced except Hotoe. That leads us to the next problem
-
-<sub>4. Contributing issues</sub><br>
-How my friend from MacOS will contribute if I use `layer_shell_qt`?<br>
-He can't. He's forced to use QEMU or make platform bridges.
-
-Hotoe made to solve this problem. <br>
-Design the prototype together, optimize alone using your favorite gtk/qt/whatever else you want.<br>
+<a href="https://google.com/search?q=Why%20should%20I%20value%20my%20time?">Do you value your time?</a> — <br>
 <br>
-The neat part is that this works with not-friends too. We expand the range of possible contributors for your project already from "picking a framework" stage of planning.
+。<br>
+。<br>
+。<br>
+<br>
+Seriously, people stopped to value their time. You start it as a fan project, but after 2-3 month of debugging/updating/improving/growing a community around it — the time you could save on writing it with HTML is starting to count in *weeks*. 
+
+Now, does at least **one week** of your time / time of your contributors worth **100MiB** RAM usage difference? Or even a **1000MiB**? 
+
+> **1000MiB** of DDR5 RAM is about $15 in the RAM shortage period in case you want actual numbers
+
+But you waste not one week, not two.
+
+HTML is optimized for its job, it has one of the largest communities to join. But what are QML pros to compare? — RAM? Something else? You really think that covers on a normal PC?
+
+Use Quickshell for your old laptop and Hotoe for actual projects. Don’t waste your and your contributors time if you respect them
+
+<br>
+
+### Also
+If you have chosen Hotoe, here are other advantages we give you:
++ Connect any backend you want to your project in 2 lines. (We don’t require one specific language like Node/Rust/C)
++ Contributors from WEB (The oldest design community is now your community too)
++ Minimalistic JS API (you want to just poll fastfetch? Yes, you can. Without C++, right from your frontend)
 
 <br><br>
 
