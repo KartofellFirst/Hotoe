@@ -1,5 +1,5 @@
 # Inatallation.md
-How to setup our CLI
+How to setup our CLI (Download it from the releases)
 
 ## requirements:
 + `Python 3.11+`
