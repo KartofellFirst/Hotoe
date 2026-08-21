@@ -10,16 +10,6 @@ The main repo of every Hotoe Engine. </p>
 </p>
 </h1>
 
-### Navigator:
-What is Hotoe [1 min](#core-concept) <br>
-Why would I choose it? [2 min](#why-would-i-choose-it) <br>
-Start with Hotoe [1 min](#one-minute-separates-you-from-your-hello-world-app) + Manners and stuff [4 min](#second-step-to-become-hotoe-user) <br>
-Read the documentation [10 min](Fluent-X.md) <br>
-Popular questions -> [here](DeveloperQA.md) <br>
-Showcase gallery -> [here](Showcase.md) <br>
-<b><sub>recommended</sub><br>Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)</b>
-<br><br>
-
 ## Available platforms:
 - [Linux (Wayland Session)](https://github.com/KartofellFirst/Hotoe-Wayland) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{darkgreen}stable}$$
 - [MacOS](https://github.com/KartofellFirst/Hotoe-MacOS) &nbsp;&nbsp;&nbsp;&nbsp; $${\color{yellow}planned}$$
@@ -27,42 +17,27 @@ Showcase gallery -> [here](Showcase.md) <br>
 <br><br><br>
 
 ## Core concept
+**Despite the normal applications, widgets creation starts from the frontend and deserves a frontend-first language — such as HTML.**
 
-**Hotoe** is a quickshell alternative, built for fast creation and prototyping of the [EWAs](EWAs.md) (HUD's, bars, menus, etc) between systems using HTML. 
+> [!IMPORTANT]
+> Quick terminology guide: <br>
+> [EWA](EWAs.md) — Enhanced Web Application (PWA analogy) <br>
+> ⤷ _HUDs, menus, bars, floating widgets, etc._
 
-Despite the normal applications, widgets creation starts from the frontend and needs a frontend-first language — such as HTML.
+**Hotoe** is a [quickshell](https://quickshell.org) alternative, built for fast creation and prototyping of the EWAs between operating systems. 
 
-<br><br>
++ Minimalistic [JS API](Fluent-X.md) (Enough to build basic widgets (update system state values, open apps, execute scripts))
++ If you need one, connect any backend you want to your project in 2 lines. (We don’t require specific language like Node/Rust/C, connect any using IPC)
++ Real 1 minute [quick start](#one-minute-separates-you-from-your-hello-world-app) followed by further advices to improve your ideas
++ [The biggest](https://google.com/search?q=How%20big%20WEB%20dev%20community%20is?) community (Number of people who know HTML is 10th if not 100th times bigger than people who knows QML. It is way more likely to find contributors with Hotoe)
++ [Save](https://google.com/search?q=Why%20should%20I%20value%20my%20time?) time (Coding with fine-tuned high-level languages saves weeks of time even in medium-long projects and helps prototyping. That is why people choose Python over C/C++)
 
-
-## Why would I choose it?
-This section will be more personal, because I'm going to talk directly to you
-
-<a href="https://google.com/search?q=Why%20should%20I%20value%20my%20time?">Do you value your time?</a> — <br>
-<br>
-。<br>
-。<br>
-。<br>
-<br>
-Seriously, people stopped to value their time. You start it as a fan project, but after 2-3 month of debugging/updating/improving/growing a community around it — the time you could save on writing it with HTML is starting to count in *weeks*. 
-
-Now, does at least **one week** of your time / time of your contributors worth **100MiB** RAM usage difference? Or even a **1000MiB**? <br>
-<sup>(**1000MiB** of DDR5 RAM is about $15 in the RAM shortage period in case you want actual numbers)</sup><br>
-But you waste not one week, not two.
-
-HTML is optimized for its job, it has one of the largest communities to join. What QML has? You really think that covers?
-
-Use Quickshell for your old laptop and Hotoe for actual projects. Don’t waste your and your contributors time
-
-<br>
-
-### Also
-If you have chosen Hotoe, here are other advantages we give you:
-+ Connect any backend you want to your project in 2 lines. (We don’t require one specific language like Node/Rust/C)
-+ Contributors from WEB (The oldest design community is now your community too)
-+ Minimalistic JS API (you want to just poll fastfetch? Yes, you can. Without C++, right from your frontend)
 
 <br><br>
+Popular questions -> [here](DeveloperQA.md) <br>
+<b><sub>recommended</sub><br>Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)</b>
+<br><br>
+
 
 ## Quick start 
 *Requirements:*  
@@ -73,6 +48,15 @@ If you have chosen Hotoe, here are other advantages we give you:
 **ONE minute separates you from your Hello World app** 
 ---
 *Take your HTML frontend from whatever web app you have or use this default VSCode template below*
+
+<details><summary>I don’t understand</summary>
+It's fine, follow step by step: <br>
+1. Create a folder for your project somewhere, to keep files organized <br>
+2. Create a file named <code>index.html</code> in this folder <br>
+3. Right-click it and open with your text editor (not browser) <br>
+4. Paste the text from the template below into it and follow further steps
+</details>
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -95,28 +79,26 @@ If you have chosen Hotoe, here are other advantages we give you:
 </body>
 ```
 ---
-*Run this in your project's folder:*
+*Save and run this in your project's folder:*
 ```
 hotoe run
 ```
 **Done!**  
-Hope you figured out how to close it...
+If you have figured out how to close it (click the "Hello World!" text if don't), I think we can finish this quickstart right here. <br>
+For further instructions check [API docs](Fluent-X.md) or give it to your agent to study. <br>
+You can also see our [projects gallery](Showcase.md) <br>
 
----
-### Second step to become Hotoe user
+Our next recommendation will be: <br>
 Limit your body's width and height<br>
 
 ```html 
 <body style="max-width: 50%; max-height: 30%;" SIR>
 ```
 
-**Great!**<br>
-But we're finishing this quick start here. It was really quick, as it should be. <br> 
-For further instructions check [API docs](Fluent-X.md) or give it to your agent to study. <br>
-Additionally, you can read Hotoe manners list: 
+and 
 
 <details>
-<summary>Read manners list</summary>
+<summary>Read the manners list</summary>
 <br>
 <blockquote>
 <br><ol>
@@ -126,7 +108,7 @@ Your application has an advantage of user's system. It's above everything. As th
 Exceptions: app launchers, docks or every other application whose main purpose is to help opening external windowed software or webpages.</li><br>
 <li>EWA <b>does not</b> interact with the WM.<br><hr>Leave it to normal apps. If you want a normal window use other frameworks.<br>Things like exclusive zone are not allowed too (if you even know what is it). Think of a EWA more like a guest in user's system.</li><br>
 <li>Everything that can be localized <b>must</b> be localized<br><hr>To keep your application snappy, sources must be pre-loaded. Ideally, your application has to be able to open offline.</li><br>
-<li>No <b>embedded content</b> should have access to the API<br><hr>The only rule that secures your application. You must open external links in user's standard browser where they are sandboxed. <br>Things like JS libraries and iframe content better be pre-loaded, so no one can inject fxAPI calls into them unnoticed.</li><br>
+<li>No <b>embedded content</b> should have access to the API<br><hr>The only rule that secures your application. You must open external links in user's standard browser where they are sandboxed. <br>Things like JS libraries and iframe content better be pre-loaded, so no one can inject fxAPI calls into them unnoticed. </li><br>
 <li>EWA decides itself how its UI looks. EWA's shapes are not necessarily rectangular. Minimize button might collapse, close button might minimize. We dont style your application with frames, dont tile them. We fight for EWA's beauty being untouched and we appreciate artists that bring life in their rises with our framework. <b>Don’t be scared</b> of making something unusual.</li><br>
 <br></ol>
 </blockquote>
