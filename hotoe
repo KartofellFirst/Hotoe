@@ -5,7 +5,7 @@ Hotoe CLI v0.2.0
 Usage:
     hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
     hotoe compile [-w/--wd=path/to/dir] 
-    
+    hotoe version
     hotoe build          (not implemented yet)
 """
 
