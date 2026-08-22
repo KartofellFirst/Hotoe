@@ -26,16 +26,17 @@ The main repo of every Hotoe Engine. </p>
 
 **Hotoe** is a [quickshell](https://quickshell.org) alternative, built for fast creation and prototyping of the EWAs between operating systems. 
 
+Features:
 + Minimalistic [JS API](Fluent-X.md) (Enough to build basic widgets (update system state values, open apps, execute scripts))
 + If you need one, connect any backend you want to your project in 2 lines. (We don’t require specific language like Node/Rust/C, connect any using IPC)
 + Real 1 minute [quick start](#one-minute-separates-you-from-your-hello-world-app) followed by further advices to improve your ideas
-+ [The biggest](https://google.com/search?q=How%20big%20WEB%20dev%20community%20is?) community (Number of people who know HTML is 10th if not 100th times bigger than people who knows QML. It is way more likely to find contributors with Hotoe)
-+ [Save](https://google.com/search?q=Why%20should%20I%20value%20my%20time?) time (Coding with fine-tuned high-level languages saves weeks of time even in medium-long projects and helps prototyping. That is why people choose Python over C/C++)
++ [The biggest](https://google.com/search?q=How%20big%20WEB%20dev%20community%20is?) community (Number of people who know HTML is 10s if not 100s times bigger than people who knows QML. It is way more likely to find contributors with Hotoe)
++ [Save](https://google.com/search?q=Why%20should%20I%20value%20my%20time?) time (Coding with fine-tuned high-level languages saves weeks of time (especially for newbies) and helps prototyping. That is why people choose Python over C/C++)
 
 
-<br><br>
+<br>
 Popular questions -> [here](DeveloperQA.md) <br>
-<b><sub>recommended</sub><br>Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)</b>
+Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)</b>
 <br><br>
 
 
@@ -51,6 +52,7 @@ Popular questions -> [here](DeveloperQA.md) <br>
 
 <details><summary>I don’t understand</summary>
 It's fine, follow step by step: <br>
+0. Make sure <a href="Installation.md">hotoe CLI</a> is installed and working on your device 
 1. Create a folder for your project somewhere, to keep files organized <br>
 2. Create a file named <code>index.html</code> in this folder <br>
 3. Right-click it and open with your text editor (not browser) <br>
