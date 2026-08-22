@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Hotoe CLI v0.1.0
+Hotoe CLI v0.2.0
 
 Usage:
     hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
     hotoe compile [-w/--wd=path/to/dir] 
+    
     hotoe build          (not implemented yet)
 """
 
@@ -23,15 +24,13 @@ from random import randint
 from urllib.request import Request, urlopen
 
 ENGINE_ZIP_URL = {
-    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.0.0/Hotoe-Wayland.zip"
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.1.0/Hotoe-Wayland.zip"
 }
 FXAPI_JS_URL = {
-    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.0.0/fxAPI.js"
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.1.0/fxAPI.js"
 }
 
-ENGINE_RUN_COMMAND = {
-    "linux-wayland": ".hotoe/python main.py"
-}
+VERSION = "v0.2.0"
 
 WAYLAND_PIP_REQUIREMENTS = ["PyGObject", "pycairo", "pyzmq"]
 
@@ -39,25 +38,6 @@ CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache", "hotoe")
 
 IGNORE_NAMES = {".git", "__pycache__", ".venv", "venv", ".hotoe", "__MACOSX", ".DS_Store"}
 ENGINE_READY_MARKER = "_engine_ready"
-
-SHORTCUTS = {
-    "push": "fx.pushString",
-    "SIRs": "fx.recalculateInputRegions",
-    "CLOSE": "fx.closeApplication",
-    "write": "fx.writeFile",
-    "remove": "fx.removeFile",
-    "scan": "fx.scanDirectory",
-    "read": "fx.requestFileContent",
-    "openExternal": "fx.openExternal",
-    "exec": "fx.execute",
-    "hotkey": "fx.registerHotkey",
-    "store": "fx.saveToCache",
-    "rob": "fx.getKeyValues",
-    "grab": "fx.getValueFromCache",
-    "toss": "fx.deleteFromCache",
-    "getDaemons": "fx.getDaemons",
-    "kill": "fx.killDaemon",
-}
 
 LISTENERS = {
     "receive": "window.addEventListener('busMessage', function(event) { const message = event.detail;",
@@ -364,9 +344,6 @@ class AppParser:
 
         self.content = re.sub(rf"<\s*(\w+)([^>]*?)\s+{re.escape('SIR')}([^>]*)>", r'<\1\2 class="hotoe-input-region-regulator-box"\3>', self.content)
 
-        for key, val in SHORTCUTS.items():
-            self._smart_method_replace(key, val)
-
         for key, val in LISTENERS.items():
             self._smart_listener_replace(key, val)
 
@@ -385,10 +362,6 @@ class AppParser:
             if name == 'id': result['id'] = content
             elif name == 'developer': result['developer'] = content
         return json.dumps(result)
-
-    def _smart_method_replace(self, replace, replaced):
-        pattern = rf"(?<!\.)\b{re.escape(replace)}\s*\("
-        self.content = re.sub(pattern, f"{replaced}(", self.content)
 
     def _smart_listener_replace(self, key, js_prefix):
         pattern = re.compile(rf"(?<![:\w])\b{re.escape(key)}\s*\{{")
@@ -597,6 +570,10 @@ def cmd_compile(args):
 def cmd_build(args):
     print("`hotoe build` is not implemented yet.")
 
+def cmd_version(args):
+    print(f"\033[1mHotoe CLI {VERSION}\033[0m")
+    print("Check latest releases on Github: https://github.com/KartofellFirst/hotoe")
+
 def main():
     parser = argparse.ArgumentParser(prog="hotoe")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -613,6 +590,9 @@ def main():
 
     build_p = sub.add_parser("build", help="(not implemented yet)")
     build_p.set_defaults(func=cmd_build)
+
+    version_p = sub.add_parser("version", help="get current CLI version")
+    version_p.set_defaults(func=cmd_version)
 
     args = parser.parse_args()
     args.func(args)
