@@ -1,4 +1,4 @@
-# Inatallation.md
+# Installation.md
 How to setup our CLI (Download it from the releases)
 
 ## requirements:
