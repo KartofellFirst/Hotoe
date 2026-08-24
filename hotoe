@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Hotoe CLI v0.2.0
+Hotoe CLI v0.1.9 <- 0.2.0 will be later
 
 Usage:
     hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
