@@ -33,8 +33,8 @@ Features:
 + [The biggest](https://google.com/search?q=How%20big%20WEB%20dev%20community%20is?) community (Number of people who know HTML is 10s if not 100s times bigger than people who knows QML. It is way more likely to find contributors with Hotoe)
 + [Save](https://google.com/search?q=Why%20should%20I%20value%20my%20time?) time (Coding with fine-tuned high-level languages saves weeks of time (especially for newbies) and helps prototyping. That is why people choose Python over C/C++)
 
-
 <br>
+
 Popular questions -> [here](DeveloperQA.md) <br>
 Pages version of the repo -> [link](https://KartofellFirst.github.io/Hotoe)</b>
 <br><br>
