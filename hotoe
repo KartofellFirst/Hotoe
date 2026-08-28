@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Hotoe CLI v0.1.9 <- 0.2.0 will be later
+Hotoe CLI v0.2.0 will be later
 
 Usage:
     hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
@@ -341,8 +341,8 @@ class AppParser:
         self.content = self.content.replace("<script>", f"\n<script>\n{self.fxAPI}\n</script>\n<script>")
 
         self.content = self.content.replace("{% LOCAL_BUS_ADDRESS %}", "ipc://hotoe-bus.ipc")
-
-        self.content = re.sub(rf"<\s*(\w+)([^>]*?)\s+{re.escape('SIR')}([^>]*)>", r'<\1\2 class="hotoe-input-region-regulator-box"\3>', self.content)
+        
+        self.content = re.sub(r"<\s*(\w+)([^>]*?)\s+SIR\b([^>]*)>", self._sir_replace, self.content)
 
         for key, val in LISTENERS.items():
             self._smart_listener_replace(key, val)
@@ -352,6 +352,14 @@ class AppParser:
         with open(os.path.join(self.output_dir, "manifest.json"), "w", encoding="utf-8") as mf:
             mf.write(self._create_manifest())
         return self.output_dir
+
+    def _sir_replace(self, m):
+        tag, attrs = m.group(1), m.group(2) + m.group(3)
+        if re.search(r'class\s*=\s*"', attrs):
+            attrs = re.sub(r'class\s*=\s*"([^"]*)"', r'class="\1 hotoe-input-region-regulator-box"', attrs, count=1)
+        else:
+            attrs += ' class="hotoe-input-region-regulator-box"'
+        return f"<{tag}{attrs}>"
 
     def _create_manifest(self):
         meta_tags = re.findall(r'<meta\s+name=["\']([^"\']+)["\']\s+content=["\']([^"\']+)["\']\s*/?>', self.content)
