@@ -8,7 +8,7 @@ This document describes the convenient high-level API and serves as a user manua
 If you want to contribute with Hotoe, docs for you are upcoming. For now for the exact method signatures, return structures, event names, error handling and internal behaviour, see engine-contributing guidelines in Hotoe-Wayland repo. [Return to README](/)
 </blockquote>
 
-### Fluent-X API v1 toolkit contains 6 categories of methods:<br>
+### V1 toolkit contains 6 categories of methods:<br>
 *Essential* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
@@ -20,7 +20,7 @@ If you want to contribute with Hotoe, docs for you are upcoming. For now for the
 *Most powerful* -> [visit](#most-powerful-tool) <br>
 <sup>terminal commands execution and daemons managing</sup><br>
 *Other* -> [visit](#other-utilities) <br>
-<sup>global shortcuts and else convenient stuff</sup><br>
+<sup>everything else</sup><br>
 
 ## Basics
 Setting up the input region:<br>
