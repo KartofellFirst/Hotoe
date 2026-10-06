@@ -8,15 +8,6 @@ This document describes the convenient high-level API and serves as a user manua
 If you want to contribute with Hotoe, docs for you are upcoming. For now for the exact method signatures, return structures, event names, error handling and internal behaviour, see engine-contributing guidelines in Hotoe-Wayland repo. [Return to README](/)
 </blockquote>
 
-> [!NOTE]
-> The Hotoe parser is not perfect. In rare and complex cases it may ignore some sugar calls or produce unexpected results.
->
-> Because of this we document **both** styles:
-> - High-level sugar (`push()`, `read()`, `SIRs()`…)
-> - Raw `fx.*` calls
->
-> You can freely mix them, parser built to tolerate both. Use sugar for simple readable code and fall back to raw `fx.*` in complicated parts.
-
 ### Fluent-X API v1 toolkit contains 6 categories of methods:<br>
 *Essential* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
@@ -40,28 +31,16 @@ Setting up the input region:<br>
 > Now application grabs focus as `<mytag>` hovered. Alternatively, you can add the `.hotoe-input-region-regulator-box` class to your tag to have the same effect without sacrificing classes.
 
 
-> [!CAUTION]
-> <details><summary>expand</summary>
-> if you will do something like: <br>
-> <code>&lt;mytag class="mytag" SIR></code> <br> <b>it will not work as SIR</b>
-> <details><summary>Why?</summary> Because <code>SIR</code> literally parses into the second class of your element like this: <br>
-> <code>&lt;mytag class="mytag" class="hotoe-input-region-regulator-box"></code> <br>
-> which will be ignored by your browser to avoid crashing the page. If you want to add class to your input region element, see instructions above</details></details>
-
 Recalculating input regions after DOM updates:<br>
 <sup>after resizing/moving/destroying elements</sup>
 > ```javascript
 > SIRs()
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.recalculateInputRegions()</nobr></pre></details>
 
 Closing the application:
 > ```javascript
 > CLOSE()
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.closeApplication()</nobr></pre></details> 
 
 Setting up application properties:<br>
 <sup>You should absolutely add those `meta` tags to your `index.html`</sup>
@@ -96,9 +75,6 @@ Publishing string into IPC:<br>
 > ```bash
 > button clicked
 > ```
-> 
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>button onclick="fx.pushString('button clicked')"</nobr></pre></details>
 
 Adding IPC message listener:<br>
 <sup>`const message` will be pre-defined</sup>
@@ -145,9 +121,6 @@ Reading text files & checking existence:<br>
 > 1. `type` *(string)* — text
 > 2. `mime` *(string)* — mimetype of the file
 > 3. `content` *(string)* — raw file content
->
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.requestFileContent("essay.txt")</nobr></pre></details>
 
 Reading binary files / Opening images:
 > To load local images or binary assets into the DOM, put their content as URI in source:
@@ -160,9 +133,6 @@ Reading binary files / Opening images:
 > 2. `mime` *(string)* — mimetype of the file
 > 3. `encoded` *(string)* — raw base64-encoded string
 > 4. `content` *(string)* — complete data URI, ready to be assigned to `src` or `href`
->
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.requestFileContent("$PICTURES/bg.png")</nobr></pre></details>
 
 Creating or writing files (String or Base64):<br>
 <sup>`.then()` and `.catch()` also work here if needed</sup>
@@ -173,16 +143,12 @@ Creating or writing files (String or Base64):<br>
 > // Write raw binary/image data from a Base64 string (3rd argument = true)
 > write("$CACHE/MY_APP/saved_image.png", base64String, true);
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.writeFile(&lt;arguments>)</nobr></pre></details>
 
 Deleting a file:<br>
 <sup>`.then()` and `.catch()` also work here if needed</sup>
 > ```javascript
 > remove("$CACHE/MY_APP/temp.txt");
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.removeFile("$CACHE/MY_APP/temp.txt")</nobr></pre></details>
 
 Scanning directories:
 > ```javascript
@@ -198,9 +164,6 @@ Scanning directories:
 > 2. `path` *(string)* — Full resolved path (`"/home/user/Hotoe/main.py"`)
 > 3. `isDir` *(boolean)* — `true` if directory, `false` if file
 > 4. `size` *(number)* — File size in bytes
->
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.scanDirectory("~/Hotoe")</nobr></pre></details>
 
 ---
 
@@ -215,32 +178,24 @@ Saving or rewriting to cache:<br>
 >```javascript
 > store(data, "var-01") 
 >```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.saveToCache(data, "var-01")</nobr></pre></details>
 
 Getting values from cache:<br>
 <sup>you're grabbing the key to then open the cell with the value</sup>
 > ```javascript
 > grab("id").then(value => console.log(value))
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.getValueFromCache("id")</nobr></pre></details>
 
 Getting keys to values:<br>
 <sup>you don't have to keep all the keys with yourself... just go and take them!</sup>
 > ```javascript
 > rob().then(keys => push(keys))
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.getKeyValues()</nobr></pre></details>
 
 Deleting from Cache:<br>
 <sup>toss the key away and this data should not bother you anymore... `.catch(err)` works here too if needed</sup>
 > ```javascript
 > toss("id")
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.deleteFromCache("id")</nobr></pre></details>
 
 ---
 
@@ -257,9 +212,6 @@ Executing fire-and-forget terminal command:<br>
 >
 > Promise returns with 3 strings array: <br>
 > `stdout`, `stderr` and `exitCode` <br>
-> 
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.execute("python main.py", {"timeout": 30000})</nobr></pre></details>
 
 Starting a background daemon:<br>
 <sup>a separated process that will be running even when your app is closed. You can get process id from `.then()`</sup>
@@ -274,17 +226,12 @@ Becoming aware of running daemons:<br>
 > ```javascript
 > getDaemons().then(list => console.log(list))
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.getDaemons()</nobr></pre></details>
 
 Killing a daemon:<br>
 <sup>I could call this function `slay()` or `exorcise()`, but I think that's enough with my namings</sup>
 > ```javascript
 > kill(pid) // + optional .then/catch()
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.killDaemon(pid)</nobr></pre></details>
-
 ---
 
 ## Other Utilities
@@ -292,6 +239,9 @@ Killing a daemon:<br>
 ### hotkey
 > [!TIP]
 > Every EWA has to have a way to open it. PC or laptop is not a tablet. We can leave zones on screen where user hovers to open your app or make him open it manually every time he needs it, but the best approach for lightweight applications, HUDs and etc is to bind a global hotkey —
+
+> [!WARNING]
+> In future versions hotkey might not be available due to the linux support issues
 
 Setting up a global hotkey combination:<br>
 <sup>works even when your app loses focus</sup>
@@ -306,8 +256,6 @@ Setting up a global hotkey combination:<br>
 >     push("user just pressed SUPER+D!")
 > })
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.registerHotkey()</nobr></pre></details>
 >
 > <details><summary>Wayland problems (click)</summary>
 > Unfortunately, on Wayland reading global keyboard events is impossible.  
@@ -326,8 +274,6 @@ Opening a link in system's standard browser:<br>
 > ```javascript
 > openExternal("https://youtube.com/randomvideolink")
 > ```
-> <details><summary>parses into (click):</summary>
-> <pre><nobr>fx.openExternal("https://youtube.com/randomvideolink")</nobr></pre></details>
 
 ### Environment variables
 Embedding template environment variables:
