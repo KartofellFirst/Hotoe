@@ -275,5 +275,38 @@ Opening a link in system's standard browser:<br>
 > openExternal("https://youtube.com/randomvideolink")
 > ```
 
+### Connecting additional backend to Hotoe
 
+<b>Linux/macOS:</b><br>
+> [!NOTE]
+> Our bridges built using ZMTP. Therefore, you can connect to it using ZeroMQ library for your backend. <br>
+> <code><b>addr</b></code> — is a variable with the path to your project directory. <i>e.g. /home/user/myproj</i>
+> <br><br>
+> <code>ipc://<b>addr</b>/.hotoe/sub.ipc</code> ~ subscription address <br>
+> <code>ipc://<b>addr</b>/.hotoe/pub.ipc</code> ~ publishing address
+
+examples: <br>
+<details><summary>python</summary>
+  
+```python
+import zmq, time, json
+
+context = zmq.Context()
+
+"""will send a message to JS backend and your listener"""
+pub = context.socket(zmq.PUB)
+pub.connect('ipc:///home/user/myproj/.hotoe/pub.ipc')
+time.sleep(0.4) # <- can be lower
+pub.send_string(json.dumps({"text": "hello JS!"}))
+
+"""will show you messages from JS push() and pub.ipc"""
+sub = context.socket(zmq.SUB)
+sub.connect("ipc:///home/user/myproj/.hotoe/sub.ipc")
+sub.setsockopt_string(zmq.SUBSCRIBE, "")
+while True:
+    print(sub.recv_string()) # <- printing messages
+```
+
+</details>
+</details>
 
