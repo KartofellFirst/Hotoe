@@ -275,11 +275,5 @@ Opening a link in system's standard browser:<br>
 > openExternal("https://youtube.com/randomvideolink")
 > ```
 
-### Environment variables
-Embedding template environment variables:
-> ```javascript
-> const ipc_socket_address = {% LOCAL_BUS_ADDRESS %};
-> ```
-
 
 
