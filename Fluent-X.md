@@ -234,36 +234,7 @@ Killing a daemon:<br>
 > ```
 ---
 
-## Other Utilities
-
-### hotkey
-> [!TIP]
-> Every EWA has to have a way to open it. PC or laptop is not a tablet. We can leave zones on screen where user hovers to open your app or make him open it manually every time he needs it, but the best approach for lightweight applications, HUDs and etc is to bind a global hotkey —
-
-> [!WARNING]
-> In future versions hotkey might not be available due to the linux support issues
-
-Setting up a global hotkey combination:<br>
-<sup>works even when your app loses focus</sup>
-> ```javascript
-> hotkey("SUPER+D", "myevent")
-> 
-> /* you can setup events listener immediately
-> or only after user allows registration (hotkey(...).then(e => / user allowed registration logic / ))
-> or warn him after he refused to do that (hotkey(...).catch(e => / user declined the request logic /))
-> */
-> window.addEventListener("myevent", function (e) {
->     push("user just pressed SUPER+D!")
-> })
-> ```
->
-> <details><summary>Wayland problems (click)</summary>
-> Unfortunately, on Wayland reading global keyboard events is impossible.  
-> 
-> We've solved this problem by shipping small CLI utility inside our Wayland backend, but even this do not guarantee that after user allows the registration, he will not forget to bind combination to his config or will not bind it to another key combination.  
->  
-> If event in `.then(event)` block returns with `{"method": "manually"}` - you must keep in mind the human factor it contains.
-> </details>
+## Other
 
 ### openExternal()
 > [!TIP]
