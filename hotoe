@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""
-Hotoe CLI v0.2.0 will be later
-
-Usage:
-    hotoe run [-d/--debug, -w/--wd=path/to/dir, -s/--set_main=filename]
-    hotoe compile [-w/--wd=path/to/dir] 
-    hotoe version
-    hotoe build          (not implemented yet)
-"""
 
 import argparse
 import importlib
@@ -36,7 +27,7 @@ WAYLAND_PIP_REQUIREMENTS = ["PyGObject", "pycairo", "pyzmq"]
 
 CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache", "hotoe")
 
-IGNORE_NAMES = {".git", "__pycache__", ".venv", "venv", ".hotoe", "__MACOSX", ".DS_Store"}
+IGNORE_NAMES = {".git", "__pycache__", ".venv", "venv", ".hotoe", "__MACOSX", ".DS_Store", "app.zip"}
 ENGINE_READY_MARKER = "_engine_ready"
 
 LISTENERS = {
@@ -145,12 +136,6 @@ def install_wayland_pip_requirements(venv_python):
 # Downloading 
 # ============================================================
 
-# def _download(url, dest_path):
-#     logger.info("Downloading %s -> %s", url, dest_path)
-#     os.makedirs(os.path.dirname(dest_path) or ".", exist_ok=True)
-#     req = Request(url, headers={"User-Agent": "hotoe-cli"})
-#     with urlopen(req, timeout=60) as resp, open(dest_path, "wb") as out:
-#         shutil.copyfileobj(resp, out)
 def _download(url, dest_path):
     logger.info("Downloading %s -> %s", url, dest_path)
     dest_dir = os.path.dirname(dest_path) or "."
@@ -179,6 +164,30 @@ def _flatten_single_root(extract_dir):
     if os.path.isdir(macosx):
         shutil.rmtree(macosx)
 
+def _fetch_engine_into(eng_dir):
+    os.makedirs(eng_dir, exist_ok=True)
+    zip_path = os.path.join(eng_dir, "_engine_download.zip")
+    _download(ENGINE_ZIP_URL[PLATFORM], zip_path)
+
+    with zipfile.ZipFile(zip_path, "r") as zf:
+        zf.extractall(eng_dir)
+    os.remove(zip_path)
+    _flatten_single_root(eng_dir)
+
+    _download(FXAPI_JS_URL[PLATFORM], os.path.join(eng_dir, "fxAPI.js"))
+    with open(os.path.join(eng_dir, ENGINE_READY_MARKER), "w") as f:
+        f.write("ok")
+
+def download_engine(force=False):
+    eng_dir = os.path.join(CACHE_DIR, PLATFORM)
+    if force and os.path.isdir(eng_dir):
+        shutil.rmtree(eng_dir)
+    if _engine_is_ready(eng_dir):
+        return eng_dir
+    _fetch_engine_into(eng_dir)
+    return eng_dir
+
+"""
 def download_engine(force=False):
     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
     if force and os.path.isdir(eng_dir):
@@ -206,45 +215,11 @@ def download_fxapi():
     if os.path.exists(dest_path): return dest_path 
     _download(FXAPI_JS_URL[PLATFORM], dest_path)
     return dest_path
+"""
 
 def _engine_is_ready(eng_dir):
     return os.path.isfile(os.path.join(eng_dir, ENGINE_READY_MARKER))
 
-# def download_engine(force=False):
-#     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
-#     if force and os.path.isdir(eng_dir):
-#         shutil.rmtree(eng_dir)
-#     if _engine_is_ready(eng_dir):
-#         return eng_dir
-# 
-#     os.makedirs(eng_dir, exist_ok=True)
-#     zip_path = os.path.join(eng_dir, "_engine_download.zip")
-#     _download(ENGINE_ZIP_URL[PLATFORM], zip_path)
-# 
-#     with zipfile.ZipFile(zip_path, "r") as zf:
-#         zf.extractall(eng_dir)
-#     os.remove(zip_path)
-# 
-#     with open(os.path.join(eng_dir, ENGINE_READY_MARKER), "w") as f:
-#         f.write("ok")
-# 
-#     download_fxapi()
-#     return eng_dir
-
-# def download_engine(force=False):
-#     eng_dir = os.path.join(CACHE_DIR, PLATFORM)
-#     if force and os.path.isdir(eng_dir): shutil.rmtree(eng_dir)
-#     if os.path.exists(eng_dir): return eng_dir
-
-#     os.makedirs(eng_dir, exist_ok=True)
-#     zip_path = os.path.join(eng_dir, "_engine_download.zip")
-#     _download(ENGINE_ZIP_URL[PLATFORM], zip_path)
-
-#     with zipfile.ZipFile(zip_path, "r") as zf:
-#         zf.extractall(eng_dir)
-#     os.remove(zip_path)
-#     download_fxapi()
-#     return eng_dir
 
 # ============================================================
 # Wayland dependency checks
@@ -342,8 +317,6 @@ class AppParser:
 
         self.content = self.content.replace("{% LOCAL_BUS_ADDRESS %}", "ipc://hotoe-bus.ipc")
         
-        self.content = re.sub(r"<\s*(\w+)([^>]*?)\s+SIR\b([^>]*)>", self._sir_replace, self.content)
-
         for key, val in LISTENERS.items():
             self._smart_listener_replace(key, val)
 
@@ -352,14 +325,6 @@ class AppParser:
         with open(os.path.join(self.output_dir, "manifest.json"), "w", encoding="utf-8") as mf:
             mf.write(self._create_manifest())
         return self.output_dir
-
-    def _sir_replace(self, m):
-        tag, attrs = m.group(1), m.group(2) + m.group(3)
-        if re.search(r'class\s*=\s*"', attrs):
-            attrs = re.sub(r'class\s*=\s*"([^"]*)"', r'class="\1 hotoe-input-region-regulator-box"', attrs, count=1)
-        else:
-            attrs += ' class="hotoe-input-region-regulator-box"'
-        return f"<{tag}{attrs}>"
 
     def _create_manifest(self):
         meta_tags = re.findall(r'<meta\s+name=["\']([^"\']+)["\']\s+content=["\']([^"\']+)["\']\s*/?>', self.content)
@@ -565,14 +530,25 @@ def cmd_run(args):
     
 def cmd_compile(args):
     project_dir = args.wd or os.getcwd()
+    if PLATFORM not in ENGINE_ZIP_URL:
+        logger.error(
+            "Only Wayland is supported right now (detected: %s). "
+            "Other platforms aren't implemented yet.",
+            PLATFORM,)
+        sys.exit(1)
     download_engine()
-    output = stage_engine_into_project(project_dir=project_dir, platform=PLATFORM)
+    output = stage_engine_into_project(
+        project_dir=project_dir,
+        platform=PLATFORM,
+        input_file=args.set_main or "index.html",
+    )
+
     path = os.path.join(output, "run.sh")
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(RUN_SH_TEMPLATE)
     os.chmod(path, 0o755)
-    archive_base = os.path.join(project_dir, "app")
-    archive_path = shutil.make_archive(archive_base, "zip", output)
+
+    archive_path = shutil.make_archive(os.path.join(project_dir, "app"), "zip", output)
     logger.info("Compilation finished successfully -> %s", archive_path)
 
 def cmd_build(args):
@@ -581,6 +557,20 @@ def cmd_build(args):
 def cmd_version(args):
     print(f"\033[1mHotoe CLI {VERSION}\033[0m")
     print("Check latest releases on Github: https://github.com/KartofellFirst/hotoe")
+
+def cmd_update(args):
+    eng_dir = os.path.join(CACHE_DIR, PLATFORM)
+    tmp_dir = eng_dir + ".new"
+    shutil.rmtree(tmp_dir, ignore_errors=True)
+    try:
+        _fetch_engine_into(tmp_dir)
+    except Exception:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        logger.error("Update failed, keeping the installed engine")
+        sys.exit(1)
+    shutil.rmtree(eng_dir, ignore_errors=True)
+    os.rename(tmp_dir, eng_dir)
+    logger.info("Engine updated")
 
 def main():
     parser = argparse.ArgumentParser(prog="hotoe")
@@ -594,6 +584,7 @@ def main():
 
     compile_p = sub.add_parser("compile", help="compile the app into app.zip with run.sh file")
     compile_p.add_argument("-w", "--wd", dest="wd", help="working directory path")
+    compile_p.add_argument("-s", "--set_main", dest="set_main", help="set main file name")
     compile_p.set_defaults(func=cmd_compile)
 
     build_p = sub.add_parser("build", help="(not implemented yet)")
@@ -601,6 +592,9 @@ def main():
 
     version_p = sub.add_parser("version", help="get current CLI version")
     version_p.set_defaults(func=cmd_version)
+
+    update_p = sub.add_parser("update", help="re-download engine files to match your CLI version. \nFor latest CLI versions check hotoe releases on github")
+    update_p.set_defaults(func=cmd_update)
 
     args = parser.parse_args()
     args.func(args)
