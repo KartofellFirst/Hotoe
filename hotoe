@@ -544,9 +544,6 @@ def cmd_compile(args):
     archive_path = shutil.make_archive(os.path.join(project_dir, "app"), "zip", output)
     logger.info("Compilation finished successfully -> %s", archive_path)
 
-def cmd_build(args):
-    print("`hotoe build` is not implemented yet.")
-
 def cmd_version(args):
     print(f"\033[1mHotoe CLI {VERSION}\033[0m")
     print("Check latest releases on Github: https://github.com/KartofellFirst/hotoe")
