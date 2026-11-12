@@ -46,7 +46,7 @@ Recalculating input regions after DOM updates:<br>
 > SIRs()
 > ```
 >
-> <i>After v0.3.0, SIRs function obtained a complicated backend with rasterizer that might cause CPU spikes during often calls. To avoid it, throttle down calls rate down to 30 FPS</i><br>
+> <i>After v0.3.0, SIRs function obtained a complicated backend with rasterizer that might cause CPU spikes during often calls. To avoid it, throttle the call rate down to 30 FPS</i><br>
 > <details><summary>arguments (click)</summary>
 > <hr>
 >
