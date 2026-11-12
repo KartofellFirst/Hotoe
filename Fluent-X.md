@@ -9,7 +9,7 @@ If you want to contribute with Hotoe, docs for you are upcoming. For now for the
 </blockquote>
 
 ### V1 toolkit contains 6 categories of methods:<br>
-*Essential* -> [visit](#basics) <br>
+*Essentials* -> [visit](#basics) <br>
 <sup>input regions management, closing an application and etc</sup><br>
 *IPC related* -> [visit](#ipc-related-methods) <br>
 <sup>communicate your JS backend to whatever other backend you want through local IPC</sup><br>
@@ -26,16 +26,41 @@ If you want to contribute with Hotoe, docs for you are upcoming. For now for the
 Setting up the input region:<br>
 <sup>SIR - Set as Input Region</sup>
 > ```html
-> <mytag SIR>
+> <mytag sir>
 > ```
-> Now application grabs focus as `<mytag>` hovered. Alternatively, you can add the `.hotoe-input-region-regulator-box` class to your tag to have the same effect without sacrificing classes.
-
+> Now application grabs focus when `<mytag>` is hovered. <br>
+> <i><sub>Alternatively, you can add the `.hotoe-input-region-regulator-box` class to your tag to have the same effect. </sub><br>
+> <sup>This feature came from the first version and is retained purely for backward compatibility</sup></i>
+>
+> To **deactivate** the input region, use the dedicated `active` tag
+>
+> ```html
+> <mytag sir active="false">
+> ```
+>
+> <sup>then update data about input regions using `SIRs()`</sup>
 
 Recalculating input regions after DOM updates:<br>
 <sup>after resizing/moving/destroying elements</sup>
 > ```javascript
 > SIRs()
 > ```
+>
+> <i>After v0.3.0, SIRs function obtained a complicated backend with rasterizer that might cause CPU spikes during often calls. To avoid it, throttle down calls rate down to 30 FPS</i><br>
+> <details><summary>arguments (click)</summary>
+> <hr>
+>
+> ```javascript
+> SIRs({ density: 300 }) // density -> <int>
+> ```
+> density allows you to set the maximum amount of rows during rasterization. A lower value can reduce freezes on old hardware; the default is 300. Higher value can improve quality in the bigger non-rectangle regions
+> <br><hr>
+> 
+> ```javascript
+> SIRs({ manual: [[0, 0, 300, 200], [300, 200, 500, 300]] }) // [[x, y, w, h]]
+> ```
+> manual allows you to bypass the rasterizer and define regions manually. Calling SIRs() with `manual: [...]` ignores any checks, so your active elements with the `sir` will not be counted
+> </details>
 
 Closing the application:
 > ```javascript
@@ -44,7 +69,7 @@ Closing the application:
 
 Setting up application properties:<br>
 <sup>You should absolutely add those `meta` tags to your `index.html`</sup>
-> ```html
+> ```html 
 > <meta name="developer" content="my_name">
 > <meta name="id" content="com.hotoe.dummy-app">
 > ```
