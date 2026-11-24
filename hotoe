@@ -15,10 +15,10 @@ from random import randint
 from urllib.request import Request, urlopen
 
 ENGINE_ZIP_URL = {
-    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.1.0/Hotoe-Wayland.zip"
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.2.0/Hotoe-Wayland.zip"
 }
 FXAPI_JS_URL = {
-    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.1.0/fxAPI.js"
+    "linux-wayland": "https://github.com/KartofellFirst/Hotoe-Wayland/releases/download/v1.2.0/fxAPI.js"
 }
 
 VERSION = "v0.2.0"
